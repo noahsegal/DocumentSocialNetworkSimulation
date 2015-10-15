@@ -69,8 +69,9 @@ public class Consumer {
 	 * Like documents, follow users, etc.
 	 * 
 	 * @param documents List of documents received from search()
+	 * @return ALWAYS RETURN NULL
 	 */
-	public void takeTurn(List<Document> documents) {
+	public Document takeTurn(List<Document> documents) {
 		// Like documents that are not currently liked && match tag
 		// Follow producers that are not currently followed
 		for (Document doc: documents) {
@@ -81,7 +82,7 @@ public class Consumer {
 				}
 			}
 		}
-		
+		return null;		
 	}
 	
 	/**

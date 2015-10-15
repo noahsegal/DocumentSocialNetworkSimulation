@@ -23,11 +23,33 @@ public class Producer extends Consumer {
 		uploadedDocuments = new ArrayList<>();
 	}
 	
-	public void takeTurn(List<Document> documents) {
+	/**
+	 * Create a new document
+	 * Like documents, follow users, etc.
+	 * 
+	 * @return Document The newly created document
+	 */
+	public Document takeTurn(List<Document> documents) {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
-		documents.add( produceDocument(docName) );
+		Document newDoc = produceDocument(docName);
+		documents.add(newDoc);
 		
 		super.takeTurn(documents);
+		return newDoc;
+	}
+	
+	/**
+	 * Create a new document and add it to the list of uploaded documents
+	 * 
+	 * @param name Name for the new document
+	 * @param tag Tag for the new document
+	 * @param id ID for the new document
+	 * @return a new document
+	 */
+	public Document produceDocument(String name) {
+		Document newDoc = new Document(name, this.getTag(), this);
+		uploadedDocuments.add(newDoc);
+		return newDoc;
 	}
 
 	/**
@@ -52,20 +74,6 @@ public class Producer extends Consumer {
 		Producer producer = (Producer) obj;
 		
 		return uploadedDocuments.equals(producer.getUploadedDocuments());
-	}
-	
-	/**
-	 * Create a new document and add it to the list of uploaded documents
-	 * 
-	 * @param name Name for the new document
-	 * @param tag Tag for the new document
-	 * @param id ID for the new document
-	 * @return a new document
-	 */
-	public Document produceDocument(String name) {
-		Document newDoc = new Document(name, this.getTag(), this);
-		uploadedDocuments.add(newDoc);
-		return newDoc;
 	}
 	
 	
