@@ -7,11 +7,11 @@ import java.util.List;
  * @author Justin
  * Class to hold information on a document 
  */
-public class Document  {
+public class Document implements Comparable<Document> {
 	private List<Consumer> likers;	// List of Consumers who like me
 	private String tag;				// Tag that specifies the interest
 	private String name;			// Document Name
-	private int producerID;			// ID of the producer
+	private Producer producer;			// ID of the producer
 	
 	public Document(String name, String tag, int id) {
 		this.tag = tag;
@@ -34,8 +34,16 @@ public class Document  {
 	 */
 	@Override
 	public String toString() {
-		return "Name: "+ name +" ProducerID: " + producerID + " Tag: " + tag
+		return "Name: "+ name +" ProducerID: " + producer.getID() + " Tag: " + tag
 				+ "Number of likes: " + likers.size();
+	}
+	/**
+	 * @param Document to compare against
+	 * @return 1 if this is larger, -1 if d is large, 0 if equal
+	 */
+	@Override
+	public int compareTo(Document d) {
+		return this.likers.size() - d.likers.size();
 	}
 	
 	/**
@@ -58,7 +66,7 @@ public class Document  {
 					}
 				}
 				return ( (this.tag.equals(d.tag)) && (this.name.equals(d.name)) &&
-						(this.producerID == d.producerID) );
+						(this.producer.equals(d.producer)) );
 			}
 		}
 		return false;
@@ -140,15 +148,15 @@ public class Document  {
 	 * get the producerID who made this Document
 	 * @return producerID
 	 */
-	public int getProducerID() {
-		return producerID;
+	public Producer getProducer() {
+		return producer;
 	}
 
 	/**
 	 * set the producerID for this document
 	 * @param producerID, new id
 	 */
-	public void setProducerID(int producerID) {
-		this.producerID = producerID;
+	public void setProducerID(Producer producer) {
+		this.producer = producer;
 	}
 }
