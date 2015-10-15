@@ -24,11 +24,14 @@ public class Producer extends Consumer {
 	}
 	
 	public void takeTurn(List<Document> documents) {
+		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
+		documents.add( produceDocument(docName) );
 		
+		super.takeTurn(documents);
 	}
 
 	/**
-	 * 
+	 * @return String Providing information on the Producer
 	 */
 	public String toString() {
 		return super.toString()
@@ -36,10 +39,19 @@ public class Producer extends Consumer {
 	}
 	
 	/**
-	 * 
+	 * @return boolean Whether the Producer objects are equal or not
 	 */
 	public boolean equals(Object obj) {
-		return false;
+		if (!super.equals(obj)) {
+			return false;
+		}
+		
+		if ( !(obj instanceof Producer) ) {
+			return false;
+		}
+		Producer producer = (Producer) obj;
+		
+		return uploadedDocuments.equals(producer.getUploadedDocuments());
 	}
 	
 	/**
@@ -50,8 +62,8 @@ public class Producer extends Consumer {
 	 * @param id ID for the new document
 	 * @return a new document
 	 */
-	public Document produceDocument(String name, String tag, int id) {
-		Document newDoc = new Document(name, tag, id);
+	public Document produceDocument(String name) {
+		Document newDoc = new Document(name, this.getTag(), this);
 		uploadedDocuments.add(newDoc);
 		return newDoc;
 	}
@@ -98,6 +110,10 @@ public class Producer extends Consumer {
 		if (i >= 0 && null != d) {
 			uploadedDocuments.add(i, d);
 		}
+	}
+	
+	public int getUploadedDocumentSize() {
+		return uploadedDocuments.size();
 	}
 	
 
