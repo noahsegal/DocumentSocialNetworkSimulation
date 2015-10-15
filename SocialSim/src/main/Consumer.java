@@ -89,7 +89,7 @@ public class Consumer {
 	 * @return String
 	 */
 	public String toString() {
-		return this.getClass().getName()
+		return this.getClass().getSimpleName()
 				+ " with ID: " + id + " and tag: " + tag 
 				+ "\nFollowing " + following.size() + " people"
 				+ "\nFollowed By " + followers.size() + " people"
