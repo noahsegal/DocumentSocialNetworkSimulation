@@ -13,10 +13,10 @@ public class Document implements Comparable<Document> {
 	private String name;			// Document Name
 	private Producer producer;			// ID of the producer
 	
-	public Document(String name, String tag, int id) {
+	public Document(String name, String tag, Producer p) {
 		this.tag = tag;
 		this.name = name;
-		setProducerID(id);
+		producer = p;
 		likers = new ArrayList<Consumer>();
 	}
 	
