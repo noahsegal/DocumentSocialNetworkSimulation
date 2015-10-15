@@ -72,19 +72,23 @@ public class Consumer {
 	 */
 	public void takeTurn(List<Document> documents) {
 		// Like documents that are not currently liked && match tag
+		// Follow producers that are not currently followed
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.tag) && !likedDocs.contains(doc)) {
 				likedDocs.add(doc);
+				if (!following.contains(doc.getProducer())) {
+					following.add(doc.getProducer());
+				}
 			}
 		}
-		// Follow producers that are not currently followed
+		
 	}
 	
 	/**
 	 * @return String
 	 */
 	public String toString() {
-		return this.getClass().toString()
+		return this.getClass().getName()
 				+ " with ID: " + id + " and tag: " + tag 
 				+ "\nFollowing " + following.size() + " people"
 				+ "\nFollowed By " + followers.size() + " people"
