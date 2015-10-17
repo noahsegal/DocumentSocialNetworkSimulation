@@ -58,8 +58,9 @@ public class Producer extends Consumer {
 	 * Update payoff based on documents with same tag (interest)
 	 * 
 	 * @param documents List of documents returned from the search
+	 * @return int The consumer's new payoff
 	 */
-	private void calcProducerPayoff(List<Document> documents) {
+	private int calcProducerPayoff(List<Document> documents) {
 		int pay = 0;
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.getTag())) {
@@ -67,6 +68,7 @@ public class Producer extends Consumer {
 			}
 		}
 		setPayoff(pay);
+		return pay;
 	}
 
 	
