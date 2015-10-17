@@ -24,17 +24,21 @@ public class Producer extends Consumer {
 	}
 	
 	/**
-	 * Create a new document
-	 * Like documents, follow users, etc.
-	 * 
-	 * @return Document The newly created document
+	 * Take a turn in the simulation:
+	 *  Create a new document
+	 *  Likes documents & follow producers
+	 *  
+	 * @param allDocuments List of all documents
+	 * @param k Number of documents to search for
+	 * @return CONUSMER ALWAYS RETURNS NULL
 	 */
 	public Document takeTurn(List<Document> documents) {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
-		documents.add(newDoc);
 		
-		super.takeTurn(documents);
+		documents.add(newDoc);
+		likeDocsAndProducers(documents);
+		
 		return newDoc;
 	}
 	
@@ -42,57 +46,74 @@ public class Producer extends Consumer {
 	 * Create a new document and add it to the list of uploaded documents
 	 * 
 	 * @param name Name for the new document
-	 * @param tag Tag for the new document
-	 * @param id ID for the new document
-	 * @return a new document
+	 * @return Document A new document
 	 */
 	public Document produceDocument(String name) {
 		Document newDoc = new Document(name, this.getTag(), this);
 		uploadedDocuments.add(newDoc);
 		return newDoc;
 	}
-
+	
 	/**
-	 * @return String Providing information on the Producer
+	 * Update payoff based on documents with same tag (interest)
+	 * 
+	 * @param documents List of documents returned from the search
 	 */
+	private void calcProducerPayoff(List<Document> documents) {
+		int pay = 0;
+		for (Document doc: documents) {
+			if (doc.getTag().equals(this.getTag())) {
+				pay++;
+			}
+		}
+		setPayoff(pay);
+	}
+
+	
+	/**
+	 * @return String description of the Producer
+	 */
+	@Override
 	public String toString() {
-		return super.toString()
-				+ "\nUploaded " + uploadedDocuments.size() + " documents";
+		int docSize = uploadedDocuments.size();
+		if (docSize == 1) {
+			return super.toString() + "Uploaded " + docSize + " document\n";
+		}
+		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents";
 	}
 	
 	/**
-	 * @return boolean Whether the Producer objects are equal or not
+	 * @param obj Object to check equality
+	 * @return boolean Whether the Object is equal to this Producer
 	 */
+	@Override
 	public boolean equals(Object obj) {
-		if (!super.equals(obj)) {
-			return false;
-		}
+		if (!super.equals(obj)) return false;
 		
-		if ( !(obj instanceof Producer) ) {
-			return false;
-		}
+		if ( !(obj instanceof Producer) ) return false;
+
 		Producer producer = (Producer) obj;
 		
 		return uploadedDocuments.equals(producer.getUploadedDocuments());
 	}
 	
 	
-	/*
-	 * Getters & Setters
-	 */
+	//////////////////////////
+	//  Getters & Setters  ///
+	//////////////////////////
 	
 	/**
-	 * 
-	 * @return
+	 * Get the list of documents this Producer has uploaded
+	 * @return List Uploaded documents
 	 */
 	public List<Document> getUploadedDocuments() {
 		return uploadedDocuments;
 	}
 	
 	/**
-	 * 
-	 * @param i
-	 * @return
+	 * Get an uploaded document specified by the index 
+	 * @param i Index of document to get
+	 * @return Document
 	 */
 	public Document getUploadedDocument(int i) {
 		if (i >= 0 && !uploadedDocuments.isEmpty()) {
@@ -102,17 +123,17 @@ public class Producer extends Consumer {
 	}
 
 	/**
-	 * 
-	 * @param uploadedDocuments
+	 * Set the list of uploaded documents
+	 * @param uploadedDocuments List of documents
 	 */
 	public void setUploadedDocuments(List<Document> uploadedDocuments) {
 		this.uploadedDocuments = uploadedDocuments;
 	}
 	
 	/**
-	 * 
-	 * @param i
-	 * @param d
+	 * Set an uploaded document specified by the index
+	 * @param i Index of document to set
+	 * @param d Document
 	 */
 	public void setUploadedDocument(int i, Document d) {
 		if (i >= 0 && null != d) {
@@ -120,6 +141,10 @@ public class Producer extends Consumer {
 		}
 	}
 	
+	/**
+	 * Get the size of the uploadedDocuments list
+	 * @return int Size
+	 */
 	public int getUploadedDocumentSize() {
 		return uploadedDocuments.size();
 	}

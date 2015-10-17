@@ -35,7 +35,7 @@ public class Document implements Comparable<Document> {
 	@Override
 	public String toString() {
 		return "Name: "+ name +" ProducerID: " + producer.getID() + " Tag: " + tag
-				+ "Number of likes: " + likers.size();
+				+ " Number of likes: " + likers.size();
 	}
 	/**
 	 * @param Document to compare against
