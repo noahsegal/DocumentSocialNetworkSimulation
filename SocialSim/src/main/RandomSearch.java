@@ -5,6 +5,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+
+/**
+ * This will return random K documents for consumer c.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class RandomSearch implements Search {
 
 	@Override

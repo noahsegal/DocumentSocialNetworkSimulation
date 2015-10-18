@@ -4,6 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * PopularitySearch implements search and returns the most popular search results matching a users tag.
+ * If there is not enough Documents that match a users tag. It will return the most popular unmatched documents.
+ * If the user request to many documents it will return all documents.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ *
+ */
 public class PopularitySearch implements Search {
 
 	@Override
@@ -13,17 +21,24 @@ public class PopularitySearch implements Search {
 		if(k>documents.size())
 			return documents;
 		
-		List<Document> documentCopy = new ArrayList<Document>(documents);
-		Collections.sort(documentCopy);
+		List<Document> documentsCopy = new ArrayList<Document>(documents);
+		List<Document> unmatchedDocuments = new ArrayList<Document>();
+		Collections.sort(documentsCopy);
 		
 		
-		//going through list and moving all non-matching documents to back of the list in their popularity order.
-		documentCopy.forEach(doc -> {
-			if(!isSameTag(c,doc)) documentCopy.add(doc);
-		});
+		//going through list and moving all non-matching documents to the unmatched list in their popularity order.
+		for(Document d : documentsCopy){
+			if(!isSameTag(c,d)){
+				documentsCopy.remove(d);
+				unmatchedDocuments.add(d);
+			}
+		}
+	
+		//adding all unmatched documents to the back of the main list again.
+		documentsCopy.addAll(unmatchedDocuments);
 		
 		//return k popular documents
-		return documentCopy.subList(0,k);
+		return documentsCopy.subList(0,k);
 	}
 	
 	/**
