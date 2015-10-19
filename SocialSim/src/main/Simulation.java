@@ -225,5 +225,52 @@ public class Simulation {
 		
 		return s;
 	}
+	
+	
+	//////////////////////////
+	//  Getters & Setters  ///
+	//////////////////////////
+	
+	/* Current Turn */
+	
+	/**
+	 * Set the currentTurn
+	 * 
+	 * @param currentTurn
+	 */
+	public void setCurrentTurn(int currentTurn)
+	{
+		this.currentTurn = currentTurn;
+	}
+	
+	/**
+	 * Get the current turn
+	 * 
+	 * @return int
+	 */
+	public int getCurrentTurn()
+	{
+		return currentTurn;
+	}
+	
+	/**
+	 * Set the current ID 
+	 * 
+	 * @param currentId
+	 */
+	public void setCurrentId(int currentId)
+	{
+		this.currentId = currentId;
+	}
+	
+	/**
+	 * Get the current ID
+	 * 
+	 * @return int
+	 */
+	public int getCurrentId()
+	{
+		return currentId;
+	}
 
 }
