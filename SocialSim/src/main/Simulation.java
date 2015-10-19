@@ -138,7 +138,11 @@ public class Simulation {
 				System.out.println("How many documents would you like to search for?");
 				k = sc.nextInt();
 				if (k > documents.size())
+				{
 					k = documents.size();
+					loop = false;
+				}
+					
 				else loop = false;
 			}
 			takeTurn(k);
@@ -169,13 +173,10 @@ public class Simulation {
 		Random rand = new Random();
 		Consumer c = consumers.get(rand.nextInt(consumers.size()));
 		
-		System.out.println("Turn #" + currentTurn + "\nTurn of " + c.getClass().getSimpleName() + " #" + c.getID());
+		System.out.println("Turn #" + currentTurn + "\nTurn of " + c.getClass().getSimpleName() + " #" + c.getID() + " with tag " + c.getTag());
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
 		List<Document> searchResults = searchMethod.search(c, documents, k);
-		Document d = c.takeTurn(searchResults);
-		if (d != null)
-			documents.add(d);
 		
 		String results = "\nSearch Results: \n";
 		for(Document doc: searchResults)
@@ -183,6 +184,11 @@ public class Simulation {
 			results += doc.toString()+"\n";
 		}
 		System.out.println(results + "\n");
+		
+		Document d = c.takeTurn(searchResults);
+		if (d != null)
+			documents.add(d);
+		
 
 		calculateProducerPayoff(searchResults);
 		if (!(c instanceof Producer))
