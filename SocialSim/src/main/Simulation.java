@@ -12,6 +12,11 @@ public class Simulation {
 	private List<Consumer> consumers;
 	private List<Document> documents;
 	private HashMap<Consumer, ArrayList<Integer>> payoffs;
+	public HashMap<Consumer, ArrayList<Integer>> getPayoffs() {
+		return payoffs;
+	}
+
+
 	private PopularitySearch searchMethod;
 	private List<String> tags;
 	private int numberOfConsumers;
@@ -231,7 +236,6 @@ public class Simulation {
 	//  Getters & Setters  ///
 	//////////////////////////
 	
-	/* Current Turn */
 	
 	/**
 	 * Set the currentTurn
@@ -272,5 +276,209 @@ public class Simulation {
 	{
 		return currentId;
 	}
+	
+	/**
+	 * Set the current ID 
+	 * 
+	 * @param currentId
+	 */
+	public void setConsumers(List<Consumer> consumers)
+	{
+		this.consumers = consumers;
+	}
+	
+	/**
+	 * Get the current ID
+	 * 
+	 * @return consumer
+	 */
+	public List<Consumer> getConsumers()
+	{
+		return consumers;
+	}
+	
+	/**
+	 * Set the current ID 
+	 * 
+	 * @param currentId
+	 */
+	public void setDocuments(List<Document> documents)
+	{
+		this.documents = documents;
+	}
+	
+	/**
+	 * Get the current ID
+	 * 
+	 * @return consumer
+	 */
+	public List<Document> getDocuments()
+	{
+		return documents;
+	}
 
+	/**
+	 * Set the list of payoffs
+	 * 
+	 * @param payoffs
+	 */
+	public void setPayoffs(HashMap<Consumer, ArrayList<Integer>> payoffs) {
+		this.payoffs = payoffs;
+	}
+
+	/**
+	 * Get the search method function
+	 * 
+	 * @return
+	 */
+	public PopularitySearch getSearchMethod() {
+		return searchMethod;
+	}
+
+	/**
+	 * get the search method
+	 * 
+	 * @param searchMethod
+	 */
+	public void setSearchMethod(PopularitySearch searchMethod) {
+		this.searchMethod = searchMethod;
+	}
+
+	/**
+	 * get the list of tags
+	 * 
+	 * @return
+	 */
+	public List<String> getTags() {
+		return tags;
+	}
+
+	/**
+	 * set the list of tags
+	 * 
+	 * @param tags
+	 */
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+
+	/**
+	 * get the number of consumers
+	 * 
+	 * @return
+	 */
+	public int getNumberOfConsumers() {
+		return numberOfConsumers;
+	}
+
+	/**
+	 * set the number of consumers
+	 * 
+	 * @param numberOfConsumers
+	 */
+	public void setNumberOfConsumers(int numberOfConsumers) {
+		this.numberOfConsumers = numberOfConsumers;
+	}
+
+	/**
+	 * get the number of producers
+	 * 
+	 * @return
+	 */
+	public int getNumberOfProducers() {
+		return numberOfProducers;
+	}
+
+	/**
+	 * set the number of producers
+	 * 
+	 * @param numberOfProducers
+	 */
+	public void setNumberOfProducers(int numberOfProducers) {
+		this.numberOfProducers = numberOfProducers;
+	}
+
+	/**
+	 * get the number of turns
+	 * 
+	 * @return
+	 */
+	public int getNumberOfTurns() {
+		return numberOfTurns;
+	}
+
+	/**
+	 * set the number of turns
+	 * 
+	 * @param numberOfTurns
+	 */
+	public void setNumberOfTurns(int numberOfTurns) {
+		this.numberOfTurns = numberOfTurns;
+	}
+	
+	/**
+	 * sets a consumer index
+	 * 
+	 * @param i
+	 * @param c
+	 */
+	public void setConsumers(int i, Consumer c)
+	{
+		consumers.set(i, c);
+	}
+	
+	/**
+	 * get a specific consumer at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public Consumer getConsumers(int i)
+	{
+		return consumers.get(i);
+	}
+	
+	/**
+	 * set a document in the list
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void setTags(int i, String t)
+	{
+		tags.set(i, t);
+	}
+	
+	/**
+	 * get a specific document at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public String getTags(int i)
+	{
+		return tags.get(i);
+	}
+	
+	/**
+	 * set a document in the list
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void setDocuments(int i, Document d)
+	{
+		documents.set(i, d);
+	}
+	
+	/**
+	 * get a specific document at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public Document getDocuments(int i)
+	{
+		return documents.get(i);
+	}
 }
