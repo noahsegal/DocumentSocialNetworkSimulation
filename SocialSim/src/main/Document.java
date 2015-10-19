@@ -25,7 +25,8 @@ public class Document implements Comparable<Document> {
 	 * @param c the consumer that likes this
 	 */
 	public void likeDocument(Consumer c) {
-		likers.add(c);
+		if(!likers.contains(c))
+			likers.add(c);
 	}
 	
 	/**
