@@ -23,22 +23,24 @@ public class PopularitySearch implements Search {
 		
 		List<Document> documentsCopy = new ArrayList<Document>(documents);
 		List<Document> unmatchedDocuments = new ArrayList<Document>();
+		List<Document> popularityDocuments = new ArrayList<Document>();
 		Collections.sort(documentsCopy);
 		
 		
-		//going through list and moving all non-matching documents to the unmatched list in their popularity order.
+		//going through list and moving all matching documents to the matched list in their popularity order. Moving all unmatched to a unmatched in popularity order.
 		for(Document d : documentsCopy){
-			if(!isSameTag(c,d)){
-				documentsCopy.remove(d);
+			if(isSameTag(c,d)){
+				popularityDocuments.add(d);
+			}else{
 				unmatchedDocuments.add(d);
 			}
 		}
 	
 		//adding all unmatched documents to the back of the main list again.
-		documentsCopy.addAll(unmatchedDocuments);
+		popularityDocuments.addAll(unmatchedDocuments);
 		
 		//return k popular documents
-		return documentsCopy.subList(0,k);
+		return popularityDocuments.subList(0,k);
 	}
 	
 	/**
