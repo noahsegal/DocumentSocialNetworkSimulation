@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author Justin
+ * @author Justin Fleming
  * Class to hold information on a document 
  */
 public class Document implements Comparable<Document> {
