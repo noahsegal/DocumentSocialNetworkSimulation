@@ -38,7 +38,7 @@ To start the program run simulation.jar and follow the simulation instructions.
 
 - Insert known issues here.
 
-Social Sim Created By:
+##Social Sim Created By:
 
 - Justin Fleming
 
