@@ -43,7 +43,7 @@ public class Producer extends Consumer {
 	}
 	
 	/**
-	 * Create a new document and add it to the list of uploaded documents
+	 * Create a new document, add it to the list of uploaded documents, and like it
 	 * 
 	 * @param name Name for the new document
 	 * @return Document A new document
@@ -51,6 +51,7 @@ public class Producer extends Consumer {
 	public Document produceDocument(String name) {
 		Document newDoc = new Document(name, this.getTag(), this);
 		uploadedDocuments.add(newDoc);
+		likeDoc(newDoc);
 		return newDoc;
 	}
 	

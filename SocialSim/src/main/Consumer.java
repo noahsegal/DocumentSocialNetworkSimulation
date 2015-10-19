@@ -60,7 +60,7 @@ public class Consumer {
 	/**
 	 * Like a document (add it to the likedDoc list)
 	 * 
-	 * @param doc New document you wish to follow
+	 * @param doc New document you wish to like
 	 */
 	public void likeDoc(Document doc) {
 		if (null != doc && !likedDocs.contains(doc)) {
@@ -123,7 +123,7 @@ public class Consumer {
 		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
 		else s += "\nFollowing " + following.size() + " people";
 		
-		if (followers.size() == 1) s += "\nFollowed By " + followers.size() + " person";
+		if (followers.size() == 1) s += "\nFollowed by " + followers.size() + " person";
 		else s += "\nFollowed By " + followers.size() + " people";
 		
 		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
