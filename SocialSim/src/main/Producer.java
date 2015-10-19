@@ -60,7 +60,7 @@ public class Producer extends Consumer {
 	 * @param documents List of documents returned from the search
 	 * @return int The consumer's new payoff
 	 */
-	private int calcProducerPayoff(List<Document> documents) {
+	public int calcProducerPayoff(List<Document> documents) {
 		int pay = 0;
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.getTag())) {
@@ -81,7 +81,7 @@ public class Producer extends Consumer {
 		if (docSize == 1) {
 			return super.toString() + "Uploaded " + docSize + " document\n";
 		}
-		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents";
+		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n";
 	}
 	
 	/**

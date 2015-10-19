@@ -15,7 +15,6 @@ public class Consumer {
 	private List<Consumer> following;
 	private List<Consumer> followers;
 	private List<Document> likedDocs;
-	private Search searchMethod;
 	private int id;
 	private int payoff;
 	
@@ -32,31 +31,35 @@ public class Consumer {
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
-		searchMethod = new PopularitySearch();
 	}
 
 	/**
 	 * Add a new user to the list of people following this consumer
+	 * 
 	 * @param newFollower New Consumer that follows you
 	 */
 	public void addFollower(Consumer newFollower) {
-		if (null != newFollower && !followers.contains(newFollower)) {
+		if (null != newFollower && !followers.contains(newFollower) && !this.equals(newFollower)) {
 			followers.add(newFollower);
+			newFollower.following.add(this);
 		}
 	}
 	
 	/**
 	 * Follow a user (add them to the following list)
+	 * 
 	 * @param newUser New user you wish to follow
 	 */
 	public void followUser(Consumer newUser) {
-		if (null != newUser && !following.contains(newUser)) {
+		if (null != newUser && !following.contains(newUser) && !this.equals(newUser)) {
 			following.add(newUser);
+			newUser.followers.add(this);
 		}
 	}
 	
 	/**
 	 * Like a document (add it to the likedDoc list)
+	 * 
 	 * @param doc New document you wish to follow
 	 */
 	public void likeDoc(Document doc) {
@@ -68,6 +71,7 @@ public class Consumer {
 	/**
 	 * Like documents with matching tags (interests)
 	 * Follow the Producers of newly liked documents
+	 * 
 	 * @param documents List of documents
 	 */
 	protected void likeDocsAndProducers(List<Document> documents) {
@@ -92,21 +96,11 @@ public class Consumer {
 		likeDocsAndProducers(documents);
 		return null;		
 	}
-	
-	/**
-	 * Search all documents using specified search method
-	 * 
-	 * @param allDocuments List of all documents
-	 * @param k Number of documents to return
-	 * @return List of documents
-	 */
-	public List<Document> searchDocs(List<Document> allDocuments, int k) {
-		return searchMethod.search(this, allDocuments, k);
-	}
-	
+
 	/**
 	 * Calculate and set a payoff based on number of documents
 	 * the Consumer hasn't seen AND match their tag (interest)
+	 * 
 	 * @param documents List of documents returned from search
 	 */
 	private void calcConsumerPayoff(List<Document> documents) {
@@ -124,14 +118,23 @@ public class Consumer {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()
-				+ " with ID: " + id + " and tag: " + tag 
-				+ "\nFollowing " + following.size() + " people"
-				+ "\nFollowed By " + followers.size() + " people"
-				+ "\nLikes " + likedDocs.size() + " documents\n";
+		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
+		
+		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
+		else s += "\nFollowing " + following.size() + " people";
+		
+		if (followers.size() == 1) s += "\nFollowed By " + followers.size() + " person";
+		else s += "\nFollowed By " + followers.size() + " people";
+		
+		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
+		else s += "\nLikes " + likedDocs.size() + " documents\n";
+		
+		return s;
 	}
 	
 	/**
+	 * Check if two 
+	 * 
 	 * @param obj Object to check equality
 	 * @return boolean Whether the Object is equal to this Consumer
 	 */
@@ -154,6 +157,7 @@ public class Consumer {
 	/* Tag */
 	/**
 	 * Get the Consumer's tag
+	 * 
 	 * @return String
 	 */
 	public String getTag() {
@@ -162,6 +166,7 @@ public class Consumer {
 
 	/**
 	 * Set the Consumer's tag
+	 * 
 	 * @param tag New tag for the Consumer
 	 */
 	public void setTag(String tag) {
@@ -310,23 +315,6 @@ public class Consumer {
 	 */
 	public int getNumberOfLikedDocs() {
 		return likedDocs.size();
-	}
-
-	/* Search Method */
-	/**
-	 * Get the current search method being used
-	 * @return Search The search class being used 
-	 */
-	public Search getSearchMethod() {
-		return searchMethod;
-	}
-	
-	/**
-	 * Set the search method
-	 * @param searchMethod New search class to be used
-	 */
-	public void setSearch(Search searchMethod) {
-		this.searchMethod = searchMethod;
 	}
 
 	/* Payoff */
