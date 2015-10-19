@@ -138,7 +138,7 @@ public class Consumer {
 	}
 	
 	/**
-	 * Check if two 
+	 * Check if two Consumers are the same
 	 * 
 	 * @param obj Object to check equality
 	 * @return boolean Whether the Object is equal to this Consumer
@@ -150,7 +150,7 @@ public class Consumer {
 
 		Consumer consumer = (Consumer) obj;
 		
-		return tag.equals(consumer.tag) && followers.equals(consumer.followers) 
+		return tag.equals(consumer.tag) && (id == consumer.id) && followers.equals(consumer.followers) 
 				&& following.equals(consumer.following) && likedDocs.equals(consumer.likedDocs);
 	}
 	
