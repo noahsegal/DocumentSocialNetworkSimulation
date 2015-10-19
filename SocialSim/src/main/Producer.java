@@ -35,7 +35,7 @@ public class Producer extends Consumer {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
 		
-		likeDocsAndProducers(documents);
+		likeDocsFollowUsers(documents);
 		
 		return newDoc;
 	}
