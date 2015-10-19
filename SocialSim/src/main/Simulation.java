@@ -12,6 +12,7 @@ public class Simulation {
 	private List<Consumer> consumers;
 	private List<Document> documents;
 	private HashMap<Consumer, ArrayList<Integer>> payoffs;
+	private PopularitySearch searchMethod;
 	private List<String> tags;
 	private int numberOfConsumers;
 	private int numberOfProducers;
@@ -36,6 +37,7 @@ public class Simulation {
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
 		payoffs = new HashMap<Consumer, ArrayList<Integer>>();
+		searchMethod = new PopularitySearch();
 	}
 	
 	/**
@@ -131,7 +133,7 @@ public class Simulation {
 				System.out.println("How many documents would you like to search for?");
 				k = sc.nextInt();
 				if (k > documents.size())
-					System.out.println("There are not that many documents");
+					k = documents.size();
 				else loop = false;
 			}
 			takeTurn(k);
@@ -165,13 +167,10 @@ public class Simulation {
 		System.out.println("Turn #" + currentTurn + "\nTurn of " + c.getClass().getSimpleName() + " #" + c.getID());
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = c.searchDocs(documents, k);
+		List<Document> searchResults = searchMethod.search(c, documents, k);
 		Document d = c.takeTurn(searchResults);
 		if (d != null)
 			documents.add(d);
-		
-		Consumer followedUser = c.getFollowing().get(c.getFollowing().size()-1);
-		Document likedDoc = c.getLikedDocs().get(c.getLikedDocs().size()-1);
 		
 		String results = "\nSearch Results: \n";
 		for(Document doc: searchResults)
@@ -181,19 +180,12 @@ public class Simulation {
 		System.out.println(results + "\n");
 
 		calculateProducerPayoff(searchResults);
-		if (c instanceof Producer)
-		{
-			System.out.println("Producer #" + c.getID() + " liked document #" 
-					+ likedDoc.getName() + ", followed " + followedUser.getClass().getSimpleName() 
-					+ " #" + followedUser.getID() + " and uploaded Document #" + d.getName());
-		}
-		else
+		if (!(c instanceof Producer))
 		{
 			payoffs.get(c).add(c.getPayoff());
-			System.out.println("Consumer #" + c.getID() + " liked document #" 
-					+ likedDoc.getName() + " and followed " + followedUser.getClass().getSimpleName() 
-					+ " #" + followedUser.getID());
 		}
+		
+		System.out.println(toString());
 		
 	}
 	

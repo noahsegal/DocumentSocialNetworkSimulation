@@ -65,6 +65,7 @@ public class Consumer {
 	public void likeDoc(Document doc) {
 		if (null != doc && !likedDocs.contains(doc)) {
 			likedDocs.add(doc);
+			doc.likeDocument(this);
 		}
 	}
 
@@ -76,8 +77,8 @@ public class Consumer {
 	 */
 	protected void likeDocsAndProducers(List<Document> documents) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(this.tag) && !likedDocs.contains(doc)) {
-				likedDocs.add(doc);
+			if (doc.getTag().equals(this.tag)) {
+				likeDoc(doc);
 				followUser(doc.getProducer());
 			}
 		}
