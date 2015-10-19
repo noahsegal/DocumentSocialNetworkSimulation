@@ -28,15 +28,13 @@ public class Producer extends Consumer {
 	 *  Create a new document
 	 *  Likes documents & follow producers
 	 *  
-	 * @param allDocuments List of all documents
-	 * @param k Number of documents to search for
-	 * @return CONUSMER ALWAYS RETURNS NULL
+	 * @param documents List of documents from search
+	 * @return Document Newly created document
 	 */
 	public Document takeTurn(List<Document> documents) {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
 		
-		documents.add(newDoc);
 		likeDocsAndProducers(documents);
 		
 		return newDoc;
