@@ -81,7 +81,7 @@ public class Producer extends Consumer {
 		if (docSize == 1) {
 			return super.toString() + "Uploaded " + docSize + " document\n";
 		}
-		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents";
+		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n";
 	}
 	
 	/**

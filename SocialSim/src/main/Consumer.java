@@ -118,11 +118,18 @@ public class Consumer {
 	 */
 	@Override
 	public String toString() {
-		return this.getClass().getSimpleName()
-				+ " with ID: " + id + " and tag: " + tag 
-				+ "\nFollowing " + following.size() + " people"
-				+ "\nFollowed By " + followers.size() + " people"
-				+ "\nLikes " + likedDocs.size() + " documents\n";
+		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
+		
+		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
+		else s += "\nFollowing " + following.size() + " people";
+		
+		if (followers.size() == 1) s += "\nFollowed By " + followers.size() + " person";
+		else s += "\nFollowed By " + followers.size() + " people";
+		
+		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
+		else s += "\nLikes " + likedDocs.size() + " documents\n";
+		
+		return s;
 	}
 	
 	/**
