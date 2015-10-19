@@ -40,8 +40,9 @@ public class Consumer {
 	 * @param newFollower New Consumer that follows you
 	 */
 	public void addFollower(Consumer newFollower) {
-		if (null != newFollower && !followers.contains(newFollower)) {
+		if (null != newFollower && !followers.contains(newFollower) && !this.equals(newFollower)) {
 			followers.add(newFollower);
+			newFollower.following.add(this);
 		}
 	}
 	
@@ -50,8 +51,9 @@ public class Consumer {
 	 * @param newUser New user you wish to follow
 	 */
 	public void followUser(Consumer newUser) {
-		if (null != newUser && !following.contains(newUser)) {
+		if (null != newUser && !following.contains(newUser) && !this.equals(newUser)) {
 			following.add(newUser);
+			newUser.followers.add(this);
 		}
 	}
 	
