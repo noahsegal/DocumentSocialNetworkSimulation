@@ -75,13 +75,17 @@ public class Consumer {
 	 * 
 	 * @param documents List of documents
 	 */
-	protected void likeDocsAndProducers(List<Document> documents) {
+	protected void likeDocsFollowUsers(List<Document> documents) {
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.tag)) {
 				likeDoc(doc);
 				followUser(doc.getProducer());
+				
+				doc.getLikers().forEach( (newUser) -> {
+					followUser(newUser);
+					});
+				}
 			}
-		}
 	}
 	
 	/**
@@ -94,7 +98,7 @@ public class Consumer {
 	 */
 	public Document takeTurn(List<Document> documents) {
 		calcConsumerPayoff(documents);
-		likeDocsAndProducers(documents);
+		likeDocsFollowUsers(documents);
 		return null;		
 	}
 
