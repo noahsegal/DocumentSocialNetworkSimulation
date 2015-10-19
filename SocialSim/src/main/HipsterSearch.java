@@ -17,6 +17,7 @@ public class HipsterSearch implements Search {
 			return documents;
 		
 		List<Document> documentCopy = new ArrayList<>(documents);
+		Collections.sort(documentCopy);
 		Collections.reverse(documentCopy);
 		return documentCopy.subList(0,k);
 		

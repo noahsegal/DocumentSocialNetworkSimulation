@@ -97,7 +97,6 @@ public class Consumer {
 		return null;		
 	}
 
-	
 	/**
 	 * Calculate and set a payoff based on number of documents
 	 * the Consumer hasn't seen AND match their tag (interest)
