@@ -57,6 +57,7 @@ public class Simulation {
 			{
 				System.out.println("Invalid input");
 				sc.next();
+				continue;
 			}
 		}
 		inputLoop = true;
@@ -70,6 +71,7 @@ public class Simulation {
 			{
 				System.out.println("Invalid input");
 				sc.next();
+				continue;
 			}
 		}
 		inputLoop = true;
@@ -83,6 +85,7 @@ public class Simulation {
 			{
 				System.out.println("Invalid input");
 				sc.next();
+				continue;
 			}
 		}
 		
@@ -104,6 +107,7 @@ public class Simulation {
 				{
 					System.out.println("Invalid input");
 					sc.next();
+					continue;
 				}
 			}
 			
@@ -162,7 +166,7 @@ public class Simulation {
 			while (inputLoop)
 			{
 				System.out.println("Next Turn? Y or N");
-				s = sc.next();
+				s = sc.next().toUpperCase();
 				if (s.equals("N"))
 				{
 					System.out.println("Exiting Simulation");
@@ -171,9 +175,9 @@ public class Simulation {
 				else if (!s.equals("Y"))
 				{
 					System.out.println("Invalid input.");
-					sc.next();
-				} else
-					inputLoop = false;
+					continue;
+				}
+				inputLoop = false;
 			}
 			
 			int k = 0;
@@ -193,6 +197,7 @@ public class Simulation {
 				{
 					System.out.println("Invalid Input");
 					sc.next();
+					continue;
 				}
 			}
 			takeTurn(k);

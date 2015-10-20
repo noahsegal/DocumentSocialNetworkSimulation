@@ -36,7 +36,7 @@ To start the program run simulation.jar and follow the simulation instructions.
 
 ## Known Issues
 
-- Insert known issues here.
+-  Two unused search methods are included, HipsterSearch.java and RandomSearch.java. To be ignored for Milenstone1.
 
 ##Social Sim Created By:
 
