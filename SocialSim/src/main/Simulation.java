@@ -12,11 +12,6 @@ public class Simulation {
 	private List<Consumer> consumers;
 	private List<Document> documents;
 	private HashMap<Consumer, ArrayList<Integer>> payoffs;
-	public HashMap<Consumer, ArrayList<Integer>> getPayoffs() {
-		return payoffs;
-	}
-
-
 	private PopularitySearch searchMethod;
 	private List<String> tags;
 	private int numberOfConsumers;
@@ -50,13 +45,46 @@ public class Simulation {
 	 */
 	private void startGame()
 	{
+		boolean inputLoop = true;
 		Scanner sc = new Scanner(System.in);
-		System.out.println("How many producers are there?");
-		numberOfProducers = sc.nextInt();
-		System.out.println("How many consumers are there?");
-		numberOfConsumers = sc.nextInt();
-		System.out.println("How many turns are there?");
-		numberOfTurns = sc.nextInt();
+		while (inputLoop)
+		{
+			System.out.println("How many producers are there?");
+			try {
+				numberOfProducers = sc.nextInt();
+				inputLoop = false;
+			} catch (Exception e)
+			{
+				System.out.println("Invalid input");
+				sc.next();
+			}
+		}
+		inputLoop = true;
+		while(inputLoop)
+		{
+			System.out.println("How many consumers are there?");
+			try {
+				numberOfConsumers = sc.nextInt();
+				inputLoop = false;
+			} catch (Exception e)
+			{
+				System.out.println("Invalid input");
+				sc.next();
+			}
+		}
+		inputLoop = true;
+		while(inputLoop)
+		{
+			System.out.println("How many turns are there?");
+			try {
+				numberOfTurns = sc.nextInt();
+				inputLoop = false;
+			} catch (Exception e)
+			{
+				System.out.println("Invalid input");
+				sc.next();
+			}
+		}
 		
 		currentTurn = 1;
 		currentId = 1;
@@ -64,8 +92,21 @@ public class Simulation {
 		while (currentId <= numberOfProducers)
 		{
 			Producer p = new Producer(currentId);
-			System.out.println("Producer #" + currentId + " is created. Input the taste of the producer.");
-			String tag = sc.next();
+			String tag = null;
+			inputLoop = true;
+			while(inputLoop)
+			{
+				System.out.println("Producer #" + currentId + " is created. Input the taste of the producer.");
+				try {
+					tag = sc.next();
+					inputLoop = false;
+				} catch (Exception e)
+				{
+					System.out.println("Invalid input");
+					sc.next();
+				}
+			}
+			
 			p.setTag(tag);
 			documents.add(p.produceDocument(currentId + "-" + p.getUploadedDocumentSize()));
 			consumers.add(p);
@@ -94,18 +135,20 @@ public class Simulation {
 	}
 	
 	/**
-	 * The game play loop
+	 * The simulation loop
 	 */
 	private void playGame()
 	{
 		Scanner sc = new Scanner(System.in);
 		currentTurn = 1;
 		
+		boolean inputLoop = true;
+		
 		System.out.println("Would you like to begin the simulation? Y or N");
 		String s = sc.next();
-		if (s.equals("N"))
+		if (s.toUpperCase().equals("N"))
 			System.exit(0);
-		else if (!s.equals("Y"))
+		else if (!s.toUpperCase().equals("Y"))
 		{
 			System.out.println("Invalid input.");
 			playGame();
@@ -115,35 +158,42 @@ public class Simulation {
 		//the loop for the duration of the game
 		while(currentTurn < numberOfTurns+1)
 		{
-			while (true)
+			inputLoop = true;
+			while (inputLoop)
 			{
 				System.out.println("Next Turn? Y or N");
 				s = sc.next();
 				if (s.equals("N"))
 				{
-					System.out.println("Exiting Game");
+					System.out.println("Exiting Simulation");
 					System.exit(0);
 				}
 				else if (!s.equals("Y"))
 				{
 					System.out.println("Invalid input.");
-					continue;
-				} else break;
+					sc.next();
+				} else
+					inputLoop = false;
 			}
 			
 			int k = 0;
-			boolean loop = true;
-			while (loop)
+			inputLoop  = true;
+			while (inputLoop)
 			{
 				System.out.println("How many documents would you like to search for?");
-				k = sc.nextInt();
-				if (k > documents.size())
+				try
 				{
-					k = documents.size();
-					loop = false;
+					k = sc.nextInt();
+					if (k > documents.size())
+					{
+						k = documents.size();
+					}
+					inputLoop = false;
+				} catch (Exception e)
+				{
+					System.out.println("Invalid Input");
+					sc.next();
 				}
-					
-				else loop = false;
 			}
 			takeTurn(k);
 			currentTurn++;
@@ -242,6 +292,14 @@ public class Simulation {
 	//  Getters & Setters  ///
 	//////////////////////////
 	
+	/**
+	 * get the payoffs list
+	 * 
+	 * @return the hashmap of payoffs
+	 */
+	public HashMap<Consumer, ArrayList<Integer>> getPayoffs() {
+		return payoffs;
+	}
 	
 	/**
 	 * Set the currentTurn
