@@ -3,6 +3,8 @@ package main;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -31,16 +33,17 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel consumersTableModel;
 	private DefaultTableModel producersTableModel;
 
-	private int numberOfTurns;	// number of turns in the sim
-	private int numberOfProds;  // number of Producers in sim
-	private int numberOfCons;   // number of Consumers in sim
-	private int numberOfTags;   // number of Tags in sim
-	private int numberOfSearchResults; // number of Search Results each turn
+	private int numberOfTurns;			// number of turns in the sim
+	private int numberOfProds;  		// number of Producers in sim
+	private int numberOfCons;         	// number of Consumers in sim
+	private int numberOfTags;   		// number of Tags in sim
+	private int numberOfSearchResults;  // number of Search Results each turn
 
 	public MainWindow(){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints con = new GridBagConstraints();
+		con.fill = GridBagConstraints.BOTH;
 		JPanel panel = new JPanel(layout);
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(80);
@@ -57,7 +60,7 @@ public class MainWindow extends JFrame {
 		JLabel documentTableLabel 	= new JLabel("Documents");
 		JLabel consumerTableLabel	= new JLabel("Consumers");
 		JLabel producerTableLabel 	= new JLabel("Producer");
-		String documentTableHeader[] = {"ID", "Tag(s)", "Likes", "ProducerID"};
+		String documentTableHeader[] = {"Name", "Tag(s)", "Likes", "ProducerID"};
 		String consumerTableHeader[] = {"ID", "Tag(s)", "Followers", "Following", "Payoff"};
 		String producerTableHeader[] = {"ID", "Tag(s)", "Followers", "Following", "Payoff", "Documents"};
 
@@ -102,6 +105,107 @@ public class MainWindow extends JFrame {
 	public static void main(String[] args) {
 		System.out.println("In main");
 		MainWindow win = new MainWindow();
+		
+//		ArrayList<Consumer> users = new ArrayList<Consumer>();
+//		ArrayList<Document> docs = new ArrayList<Document>();
+//		
+//		for(int i = 0; i < 10; i++) {
+//			if( i % 2 == 0) {
+//				users.add(new Producer(i));
+//				Producer p = (Producer) users.get(i);
+//				docs.add(p.getUploadedDocument(0));
+//			}
+//			else
+//				users.add(new Consumer(i));
+//		}
+//		win.updateTables(docs, users);
+//		win.updateTables(docs, users);
+	}
+	
+	/**
+	 * Update the tables displayed in the GUI
+	 * @param docs, Documents to add
+	 * @param users, Users in sim to add
+	 */
+	public void updateTables (List<Document> docs, List<Consumer> users) {
+		clearTableModels();
+		
+		
+		for(int i = 0; i < users.size(); i ++) {
+			if(users.get(i) instanceof Producer) {
+				updateProducerTable((Producer) users.get(i));
+				continue;
+			}
+			
+			updateConsumerTable(users.get(i));
+		}
+		
+		for(int i = 0; i < docs.size(); i ++) {
+			updateDocumentTable(docs.get(i));
+		}
+	}
+	
+	private void clearTableModels() {
+		for(int i = 0; i < producersTableModel.getRowCount(); i++) 
+			producersTableModel.removeRow(i);
+
+		
+		for(int i = 0; i < consumersTableModel.getRowCount(); i++) 
+			consumersTableModel.removeRow(i);
+		
+		for(int i = 0; i < documentsTableModel.getRowCount(); i++)
+			documentsTableModel.removeRow(i);
+		
+	}
+	
+	/**
+	 * add a row to the producer table
+	 * @param prod, the producer to be added
+	 */
+	private void updateProducerTable(Producer prod) {
+		int producerId	= prod.getID();
+		String tag 		= prod.getTag();
+		int followers 	= prod.getNumberOfFollowers();
+		int following 	= prod.getNumberOfFollowing();
+		int payoff 		= prod.getPayoff();
+		int docs 		= prod.getUploadedDocumentSize();
+		
+		Object[] rowData = {producerId, tag, followers, following, payoff, docs};
+		
+		producersTableModel.addRow(rowData);
+	}
+	
+	/**
+	 * add a row to the consumer table
+	 * @param con, the consumer to be added
+	 */
+	private void updateConsumerTable(Consumer con) {
+		int producerId	= con.getID();
+		String tag 		= con.getTag();
+		int followers 	= con.getNumberOfFollowers();
+		int following 	= con.getNumberOfFollowing();
+		int payoff 		= con.getPayoff();
+		
+		Object[] rowData = {producerId, tag, followers, following, payoff};
+		
+		consumersTableModel.addRow(rowData);
+	}
+	
+	/**
+	 * add a row to the documents table
+	 * @param doc, the document to be added
+	 */
+	private void updateDocumentTable(Document doc) {
+		if(doc == null) {
+			return;
+		}
+		String docName	= doc.getName();
+		String tag 		= doc.getTag();
+		int likes 		= doc.getLikers().size();
+		int prodID 		= doc.getProducer().getID();
+		
+		Object[] rowData = {docName, tag, likes, prodID};
+		documentsTableModel.addRow(rowData);
 	}
 
 	/**
