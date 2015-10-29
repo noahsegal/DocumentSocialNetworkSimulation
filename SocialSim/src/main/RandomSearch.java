@@ -14,7 +14,7 @@ import java.util.Random;
 public class RandomSearch implements Search {
 
 	@Override
-	public List<Document> search(Consumer consumer, List<Document> documents, int k) {
+	public List<Document> search(User user, List<Document> documents, int k) {
 		
 		long seed = System.nanoTime();
 		//if there is less documents than requested return all documents

@@ -7,7 +7,7 @@ import java.util.List;
 public class DumbSearch implements Search {
 
 	@Override
-	public List<Document> search(Consumer consumers, List<Document> documents, int k) {
+	public List<Document> search(User users, List<Document> documents, int k) {
 		// TODO Auto-generated method stub
 		if(k>documents.size())
 			return documents;

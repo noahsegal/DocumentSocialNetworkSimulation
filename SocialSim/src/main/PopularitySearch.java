@@ -15,7 +15,7 @@ import java.util.List;
 public class PopularitySearch implements Search {
 
 	@Override
-	public List<Document> search(Consumer c, List<Document> documents, int k) {
+	public List<Document> search(User user, List<Document> documents, int k) {
 		
 		//if there is less documents than requested return all documents
 		if(k>documents.size())
@@ -29,7 +29,7 @@ public class PopularitySearch implements Search {
 		
 		//going through list and moving all matching documents to the matched list in their popularity order. Moving all unmatched to a unmatched in popularity order.
 		for(Document d : documentsCopy){
-			if(isSameTag(c,d)){
+			if(isSameTag(user,d)){
 				popularityDocuments.add(d);
 			}else{
 				unmatchedDocuments.add(d);
@@ -49,8 +49,8 @@ public class PopularitySearch implements Search {
 	 * @param document - document to compare
 	 * @return - True if tag matches; False otherwise 
 	 */
-	private boolean isSameTag(Consumer c, Document d){
-		return (c.getTag().equals(d.getTag()));
+	private boolean isSameTag(User user, Document d){
+		return (user.getTag().equals(d.getTag()));
 	}
 
 }

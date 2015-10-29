@@ -11,7 +11,7 @@ import java.util.List;
 public class HipsterSearch implements Search {
 	
 	@Override
-	public List<Document> search(Consumer c, List<Document> documents, int k) {
+	public List<Document> search(User user, List<Document> documents, int k) {
 		
 		if(k>documents.size())
 			return documents;
