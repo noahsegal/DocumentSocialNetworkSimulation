@@ -34,12 +34,13 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel producersTableModel;
 
 	private Simulation sim;
-	
+
 	private int numberOfTurns;			// number of turns in the sim
 	private int numberOfProds;  		// number of Producers in sim
 	private int numberOfCons;         	// number of Consumers in sim
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
+	private boolean initialized;		// has the simulation been initialized
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -48,7 +49,8 @@ public class MainWindow extends JFrame {
 		con.fill = GridBagConstraints.BOTH;
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
-		
+		initialized = false;
+
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(80);
 		numberOfProdsField 			= new JTextField(80);
@@ -59,6 +61,32 @@ public class MainWindow extends JFrame {
 		documentsTableModel			= new DefaultTableModel(5, 4);
 		consumersTableModel			= new DefaultTableModel();
 		producersTableModel			= new DefaultTableModel();
+
+		// Setting up ActionListioner
+		startButton.addActionListener(ae -> {
+			try{
+				if(!initialized){
+					numberOfTurns 			= new Integer(numberOfTurnsField.getText());
+					numberOfProds 			= new Integer(numberOfProdsField.getText());
+					numberOfCons  			= new Integer(numberOfConsField.getText());
+					numberOfTags  			= new Integer(numberOfTagsField.getText());
+				}
+				numberOfSearchResults = new Integer(numberOfSearchResultsField.getText());
+			}catch (Exception e) {
+				System.out.println("Invalid Field");
+				return;
+			}
+			if(!initialized) {
+				sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
+				startButton.setText("Step");
+				initialized = true;
+				numberOfTurnsField.setEnabled(false);
+				numberOfProdsField.setEnabled(false);
+				numberOfConsField.setEnabled(false);
+				numberOfTagsField.setEnabled(false);
+			}
+			sim.takeTurn(numberOfSearchResults);
+		});
 
 		// Other Components		-- Ones we arn't keeping track of
 		JLabel documentTableLabel 	= new JLabel("Documents");
@@ -100,32 +128,12 @@ public class MainWindow extends JFrame {
 
 		//Build Graph   -- Ninth to  rows
 		//con.gridheight = 4;
-		
+
 		getContentPane().add(panel);
 		setSize(600,400);
 		setVisible(true);
 	}
 
-//	public static void main(String[] args) {
-//		System.out.println("In main");
-//		MainWindow win = new MainWindow();
-//		
-//		ArrayList<Consumer> users = new ArrayList<Consumer>();
-//		ArrayList<Document> docs = new ArrayList<Document>();
-//		
-//		for(int i = 0; i < 10; i++) {
-//			if( i % 2 == 0) {
-//				users.add(new Producer(i));
-//				Producer p = (Producer) users.get(i);
-//				docs.add(p.getUploadedDocument(0));
-//			}
-//			else
-//				users.add(new Consumer(i));
-//		}
-//		win.updateTables(docs, users);
-//		win.updateTables(docs, users);
-//	}
-	
 	/**
 	 * Update the tables displayed in the GUI
 	 * @param docs, Documents to add
@@ -133,8 +141,8 @@ public class MainWindow extends JFrame {
 	 */
 	public void updateTables (List<Document> docs, List<User> users) {
 		clearTableModels();
-		
-		
+		System.out.println(users.size());
+
 		for(int i = 0; i < users.size(); i ++) {
 			if(users.get(i) instanceof Producer) {
 				updateProducerTable((Producer) users.get(i));
@@ -142,28 +150,26 @@ public class MainWindow extends JFrame {
 			}
 			else if(users.get(i) instanceof Consumer){
 				updateConsumerTable((Consumer) users.get(i));
+				continue;
 			}
-			
 		}
-		
+
 		for(int i = 0; i < docs.size(); i ++) {
 			updateDocumentTable(docs.get(i));
 		}
 	}
-	
-	private void clearTableModels() {
-		for(int i = 0; i < producersTableModel.getRowCount(); i++) 
-			producersTableModel.removeRow(i);
 
-		
-		for(int i = 0; i < consumersTableModel.getRowCount(); i++) 
-			consumersTableModel.removeRow(i);
-		
-		for(int i = 0; i < documentsTableModel.getRowCount(); i++)
-			documentsTableModel.removeRow(i);
-		
+	private void clearTableModels() {
+		while(producersTableModel.getRowCount() > 0)
+			producersTableModel.removeRow(0);
+
+		while(consumersTableModel.getRowCount() > 0) 
+			consumersTableModel.removeRow(0);
+
+		while(documentsTableModel.getRowCount() > 0)
+			documentsTableModel.removeRow(0);
 	}
-	
+
 	/**
 	 * add a row to the producer table
 	 * @param prod, the producer to be added
@@ -175,12 +181,12 @@ public class MainWindow extends JFrame {
 		int following 	= prod.getNumberOfFollowing();
 		int payoff 		= prod.getPayoff();
 		int docs 		= prod.getUploadedDocumentSize();
-		
+
 		Object[] rowData = {producerId, tag, followers, following, payoff, docs};
-		
+
 		producersTableModel.addRow(rowData);
 	}
-	
+
 	/**
 	 * add a row to the consumer table
 	 * @param con, the consumer to be added
@@ -191,12 +197,12 @@ public class MainWindow extends JFrame {
 		int followers 	= con.getNumberOfFollowers();
 		int following 	= con.getNumberOfFollowing();
 		int payoff 		= con.getPayoff();
-		
+
 		Object[] rowData = {producerId, tag, followers, following, payoff};
-		
+
 		consumersTableModel.addRow(rowData);
 	}
-	
+
 	/**
 	 * add a row to the documents table
 	 * @param doc, the document to be added
@@ -209,7 +215,7 @@ public class MainWindow extends JFrame {
 		String tag 		= doc.getTag();
 		int likes 		= doc.getLikers().size();
 		int prodID 		= doc.getProducer().getID();
-		
+
 		Object[] rowData = {docName, tag, likes, prodID};
 		documentsTableModel.addRow(rowData);
 	}
