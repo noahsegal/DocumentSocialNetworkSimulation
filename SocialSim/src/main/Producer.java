@@ -9,7 +9,7 @@ import java.util.List;
  * Class responsible for the Producer --> Inherits from Consumer
  */
 
-public class Producer extends Consumer {
+public class Producer extends User {
 
 	private List<Document> uploadedDocuments;
 	
@@ -19,7 +19,10 @@ public class Producer extends Consumer {
 	 * @param id User ID
 	 */
 	public Producer(int id) {
-		super(id);
+		this.id = id;
+		following = new ArrayList<>();
+		followers = new ArrayList<>();
+		likedDocs = new ArrayList<>();
 		uploadedDocuments = new ArrayList<>();
 	}
 	
@@ -31,6 +34,7 @@ public class Producer extends Consumer {
 	 * @param documents List of documents from search
 	 * @return Document Newly created document
 	 */
+	@Override
 	public Document takeTurn(List<Document> documents) {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
@@ -38,6 +42,24 @@ public class Producer extends Consumer {
 		likeDocsFollowUsers(documents);
 		
 		return newDoc;
+	}
+	
+	/**
+	 * Update payoff based on documents with same tag (interest)
+	 * 
+	 * @param documents List of documents returned from the search
+	 * @return int The User's new payoff
+	 */
+	@Override
+	public int calculatePayoff(List<Document> documents) {
+		int pay = 0;
+		for (Document doc: documents) {
+			if (doc.getTag().equals(this.getTag())) {
+				pay++;
+			}
+		}
+		setPayoff(pay);
+		return pay;
 	}
 	
 	/**
@@ -52,25 +74,7 @@ public class Producer extends Consumer {
 		likeDoc(newDoc);
 		return newDoc;
 	}
-	
-	/**
-	 * Update payoff based on documents with same tag (interest)
-	 * 
-	 * @param documents List of documents returned from the search
-	 * @return int The consumer's new payoff
-	 */
-	public int calcProducerPayoff(List<Document> documents) {
-		int pay = 0;
-		for (Document doc: documents) {
-			if (doc.getTag().equals(this.getTag())) {
-				pay++;
-			}
-		}
-		setPayoff(pay);
-		return pay;
-	}
 
-	
 	/**
 	 * @return String description of the Producer
 	 */

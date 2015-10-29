@@ -8,7 +8,7 @@ import java.util.List;
  * Class to hold information on a document 
  */
 public class Document implements Comparable<Document> {
-	private List<Consumer> likers;	// List of Consumers who like me
+	private List<User> likers;	// List of Users who like me
 	private String tag;				// Tag that specifies the interest
 	private String name;			// Document Name
 	private Producer producer;			// ID of the producer
@@ -17,16 +17,16 @@ public class Document implements Comparable<Document> {
 		this.tag = tag;
 		this.name = name;
 		producer = p;
-		likers = new ArrayList<Consumer>();
+		likers = new ArrayList<User>();
 	}
 	
 	/**
 	 * Add a liker to this Document
-	 * @param c the consumer that likes this
+	 * @param u the User that likes this
 	 */
-	public void likeDocument(Consumer c) {
-		if(!likers.contains(c))
-			likers.add(c);
+	public void likeDocument(User u) {
+		if(!likers.contains(u))
+			likers.add(u);
 	}
 	
 	/**
@@ -80,16 +80,16 @@ public class Document implements Comparable<Document> {
 	 * Get the list of people who like this
 	 * @return likers
 	 */
-	public List<Consumer> getLikers() {
+	public List<User> getLikers() {
 		return likers;
 	}
 	
 	/**
-	 * Get the Consumer in the likers list at i
+	 * Get the User in the likers list at i
 	 * @param i the index in list
 	 * @return the value at i, null if out of range
 	 */
-	public Consumer getLikers(int i) {
+	public User getLikers(int i) {
 		if(i < likers.size() && i > 0) {
 			return likers.get(i);
 		}
@@ -100,17 +100,17 @@ public class Document implements Comparable<Document> {
 	 * Set the list of people who like this to likers
 	 * @param likers, the new list
 	 */
-	public void setLikers(List<Consumer> likers) {
+	public void setLikers(List<User> likers) {
 		this.likers = likers;
 	}
 	
 	/**
-	 * Set the Consumer at i
+	 * Set the User at i
 	 * @param i, index
-	 * @param c, new consumer
+	 * @param u, new User
 	 */
-	public void setLikers(int i, Consumer c) {
-		this.likers.set(i,c);
+	public void setLikers(int i, User u) {
+		this.likers.set(i,u);
 	}
 	
 	/**
