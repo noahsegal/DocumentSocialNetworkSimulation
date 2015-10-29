@@ -131,7 +131,7 @@ public class MainWindow extends JFrame {
 	 * @param docs, Documents to add
 	 * @param users, Users in sim to add
 	 */
-	public void updateTables (List<Document> docs, List<Consumer> users) {
+	public void updateTables (List<Document> docs, List<User> users) {
 		clearTableModels();
 		
 		
@@ -140,8 +140,10 @@ public class MainWindow extends JFrame {
 				updateProducerTable((Producer) users.get(i));
 				continue;
 			}
+			else if(users.get(i) instanceof Consumer){
+				updateConsumerTable((Consumer) users.get(i));
+			}
 			
-			updateConsumerTable(users.get(i));
 		}
 		
 		for(int i = 0; i < docs.size(); i ++) {
