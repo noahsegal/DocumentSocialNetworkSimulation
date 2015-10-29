@@ -55,7 +55,7 @@ public class Simulation {
 	/**
 	 * Logic to start the game and get the necessary information from the use
 	 */
-	private void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
+	public void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
 	{
 		int index;
 		Random rand;
@@ -102,7 +102,7 @@ public class Simulation {
 	 * 
 	 * @param k The number of documents to search for
 	 */
-	private void takeTurn(int k)
+	public void takeTurn(int k)
 	{
 		//select random consumer or producer
 		Random rand = new Random();
