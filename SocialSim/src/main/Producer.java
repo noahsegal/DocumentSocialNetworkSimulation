@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Group: MyNiftyJavaRepo
  * @author Noah Segal
- * Class responsible for the Producer --> Inherits from Consumer
+ * Class responsible for the Producer. Extends the Abstract User Class
  */
 
 public class Producer extends User {

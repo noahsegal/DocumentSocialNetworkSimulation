@@ -2,6 +2,12 @@ package main;
 
 import java.util.List;
 
+/**
+ * Group: MyNiftyJavaRepo
+ * @author Noah Segal
+ * Abstract Class responsible for the User
+ */
+
 public abstract class User {
 
 	//////////////////////////

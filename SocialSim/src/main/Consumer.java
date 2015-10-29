@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Group: MyNiftyJavaRepo
  * @author Noah Segal
- * Class responsible for the Consumer
+ * Class responsible for the Consumer. Extends the Abstract User Class
  */
 
 public class Consumer extends User {
