@@ -18,8 +18,9 @@ public class Consumer extends User {
 	 * 
 	 * @param id User ID
 	 */
-	public Consumer(int id) {
+	public Consumer(int id, Search searchMethod) {
 		this.id = id;
+		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
@@ -45,18 +46,14 @@ public class Consumer extends User {
 	 * the Consumer hasn't seen AND match their tag (interest)
 	 * 
 	 * @param documents List of documents returned from search
-	 * @return int The User's new payoff
 	 */
 	@Override
-	protected int calculatePayoff(List<Document> documents) {
-		int pay = 0;
+	protected void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
 			if (!likedDocs.contains(doc) && doc.getTag().equals(this.tag)) {
-				pay++;
+				payoff++;
 			}
 		}
-		setPayoff(pay);
-		return pay;
 	}
 	
 	/**

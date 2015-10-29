@@ -18,6 +18,7 @@ public abstract class User {
 	protected List<User> following;
 	protected List<User> followers;
 	protected List<Document> likedDocs;
+	protected Search searchMethod;
 	protected int id;
 	protected int payoff;
 	
@@ -27,7 +28,7 @@ public abstract class User {
 	
 	public abstract Document takeTurn(List<Document> documents);
 	
-	protected abstract int calculatePayoff(List<Document> documents);
+	protected abstract void calculatePayoff(List<Document> documents);
 	
 	
 	//////////////////////////
@@ -253,6 +254,23 @@ public abstract class User {
 	 */
 	public int getNumberOfLikedDocs() {
 		return likedDocs.size();
+	}
+	
+	/* SearchType */
+	/**
+	 * Get the User's searchType
+	 * @return searchType
+	 */
+	public Search getSearchMethod() {
+		return searchMethod;
+	}
+	
+	/**
+	 * Set the User's searchType
+	 * @param searchType New searchType value
+	 */
+	public void setSearchMethod(Search searchMethod) {
+		this.searchMethod = searchMethod;
 	}
 
 	/* Payoff */

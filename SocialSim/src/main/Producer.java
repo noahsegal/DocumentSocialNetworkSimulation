@@ -18,8 +18,9 @@ public class Producer extends User {
 	 * 
 	 * @param id User ID
 	 */
-	public Producer(int id) {
+	public Producer(int id, Search searchMethod) {
 		this.id = id;
+		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
@@ -48,18 +49,14 @@ public class Producer extends User {
 	 * Update payoff based on documents with same tag (interest)
 	 * 
 	 * @param documents List of documents returned from the search
-	 * @return int The User's new payoff
 	 */
 	@Override
-	public int calculatePayoff(List<Document> documents) {
-		int pay = 0;
+	public void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.getTag())) {
-				pay++;
+				payoff++;
 			}
 		}
-		setPayoff(pay);
-		return pay;
 	}
 	
 	/**
