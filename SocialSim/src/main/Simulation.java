@@ -71,7 +71,7 @@ public class Simulation {
 		
 		while (currentId <= numberOfProducers)
 		{
-			Producer p = new Producer(currentId);
+			Producer p = new Producer(currentId, new PopularitySearch());
 			index = rand.nextInt(tags.size());
 			String s = tags.get(index);
 			p.setTag(s);
@@ -83,7 +83,7 @@ public class Simulation {
 		
 		while (currentId <= numberOfProducers+numberOfConsumers)
 		{
-			Consumer c = new Consumer(currentId);
+			Consumer c = new Consumer(currentId, new PopularitySearch());
 			index = rand.nextInt(tags.size());
 			String s = tags.get(index);
 			c.setTag(s);
