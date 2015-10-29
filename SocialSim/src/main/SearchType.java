@@ -7,5 +7,5 @@ package main;
  * @version 0.0.1
  */
 public enum SearchType {
-	PopularitySearch, RandomSearch, HipsterSearch 
+	PopularitySearch, RandomSearch, HipsterSearch, DumbSearch
 }
