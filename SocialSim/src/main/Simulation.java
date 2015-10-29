@@ -93,8 +93,6 @@ public class Simulation {
 			currentId++;
 		}
 		
-		mw.updateTables(documents, users);
-		
 	}
 
 	/**
@@ -102,7 +100,7 @@ public class Simulation {
 	 * 
 	 * @param k The number of documents to search for
 	 */
-	public void takeTurn(int k)
+	public boolean takeTurn(int k)
 	{
 		//select random consumer or producer
 		Random rand = new Random();
@@ -116,7 +114,6 @@ public class Simulation {
 		{
 			results += doc.toString()+"\n";
 		}
-		System.out.println(results + "\n");
 		
 		Document d = c.takeTurn(searchResults);
 		if (d != null)
@@ -128,7 +125,12 @@ public class Simulation {
 			payoffs.get(c).add(c.getPayoff());
 		}
 		
+		
 		mw.updateTables(documents, users);
+		currentTurn++;
+		if (numberOfTurns == currentTurn)
+			return false;
+		else return true;
 		
 	}
 	
