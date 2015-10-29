@@ -45,18 +45,14 @@ public class Consumer extends User {
 	 * the Consumer hasn't seen AND match their tag (interest)
 	 * 
 	 * @param documents List of documents returned from search
-	 * @return int The User's new payoff
 	 */
 	@Override
-	protected int calculatePayoff(List<Document> documents) {
-		int pay = 0;
+	protected void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
 			if (!likedDocs.contains(doc) && doc.getTag().equals(this.tag)) {
-				pay++;
+				payoff++;
 			}
 		}
-		setPayoff(pay);
-		return pay;
 	}
 	
 	/**

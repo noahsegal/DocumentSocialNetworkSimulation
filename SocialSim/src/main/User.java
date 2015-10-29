@@ -27,7 +27,7 @@ public abstract class User {
 	
 	public abstract Document takeTurn(List<Document> documents);
 	
-	protected abstract int calculatePayoff(List<Document> documents);
+	protected abstract void calculatePayoff(List<Document> documents);
 	
 	
 	//////////////////////////

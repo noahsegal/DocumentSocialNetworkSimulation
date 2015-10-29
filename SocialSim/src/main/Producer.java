@@ -48,18 +48,14 @@ public class Producer extends User {
 	 * Update payoff based on documents with same tag (interest)
 	 * 
 	 * @param documents List of documents returned from the search
-	 * @return int The User's new payoff
 	 */
 	@Override
-	public int calculatePayoff(List<Document> documents) {
-		int pay = 0;
+	public void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.getTag())) {
-				pay++;
+				payoff++;
 			}
 		}
-		setPayoff(pay);
-		return pay;
 	}
 	
 	/**
