@@ -18,8 +18,9 @@ public class Consumer extends User {
 	 * 
 	 * @param id User ID
 	 */
-	public Consumer(int id) {
+	public Consumer(int id, Search searchMethod) {
 		this.id = id;
+		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
