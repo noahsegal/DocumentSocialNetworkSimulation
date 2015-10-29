@@ -1,5 +1,8 @@
 package main;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
@@ -8,24 +11,24 @@ import java.util.*;
  * Class responsible for iteration of turns and setting up the system
  */
 public class Simulation {
-	
-	private List<Consumer> consumers;
-	private List<Document> documents;
-	private HashMap<Consumer, ArrayList<Integer>> payoffs;
-	private PopularitySearch searchMethod;
+
 	private List<String> tags;
+	private List<User> users;
+	private List<Document> documents;
+	private HashMap<User, ArrayList<Integer>> payoffs;
+	private PopularitySearch searchMethod;
+	private int numberOfTags;
 	private int numberOfConsumers;
 	private int numberOfProducers;
 	private int numberOfTurns;
 	private int currentTurn;
 	private int currentId;
+	private MainWindow mw;
 
 	public static void main(String[] args) 
 	{
-		System.out.println("Welcome to SocialSim.");
 		Simulation sim = new Simulation();
-		sim.startGame();
-		sim.playGame();
+		sim.mw = new MainWindow(sim);
 	}
 	
 	/**
@@ -33,190 +36,67 @@ public class Simulation {
 	 */
 	public Simulation()
 	{
-		consumers = new ArrayList<Consumer>();
+		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
-		payoffs = new HashMap<Consumer, ArrayList<Integer>>();
+		payoffs = new HashMap<User, ArrayList<Integer>>();
 		searchMethod = new PopularitySearch();
+		try {
+			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+				for (String tag : line.split(", ")) {
+				    tags.add(tag);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
 	 * Logic to start the game and get the necessary information from the use
 	 */
-	private void startGame()
+	private void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
 	{
-		boolean inputLoop = true;
-		Scanner sc = new Scanner(System.in);
-		while (inputLoop)
-		{
-			System.out.println("How many producers are there?");
-			try {
-				numberOfProducers = sc.nextInt();
-				inputLoop = false;
-			} catch (Exception e)
-			{
-				System.out.println("Invalid input");
-				sc.next();
-				continue;
-			}
-		}
-		inputLoop = true;
-		while(inputLoop)
-		{
-			System.out.println("How many consumers are there?");
-			try {
-				numberOfConsumers = sc.nextInt();
-				inputLoop = false;
-			} catch (Exception e)
-			{
-				System.out.println("Invalid input");
-				sc.next();
-				continue;
-			}
-		}
-		inputLoop = true;
-		while(inputLoop)
-		{
-			System.out.println("How many turns are there?");
-			try {
-				numberOfTurns = sc.nextInt();
-				inputLoop = false;
-			} catch (Exception e)
-			{
-				System.out.println("Invalid input");
-				sc.next();
-				continue;
-			}
-		}
+		int index;
+		Random rand;
+		
+		this.numberOfTurns = numberOfTurns;
+		this.numberOfTags = numberOfTags;
+		this.numberOfProducers = numberOfProducers;
+		this.numberOfConsumers = numberOfConsumers;
 		
 		currentTurn = 1;
 		currentId = 1;
+		rand = new Random();
 		
 		while (currentId <= numberOfProducers)
 		{
 			Producer p = new Producer(currentId);
-			String tag = null;
-			inputLoop = true;
-			while(inputLoop)
-			{
-				System.out.println("Producer #" + currentId + " is created. Input the taste of the producer.");
-				try {
-					tag = sc.next();
-					inputLoop = false;
-				} catch (Exception e)
-				{
-					System.out.println("Invalid input");
-					sc.next();
-					continue;
-				}
-			}
-			
-			p.setTag(tag);
-			documents.add(p.produceDocument(currentId + "-" + p.getUploadedDocumentSize()));
-			consumers.add(p);
-			tags.add(tag);
+			index = rand.nextInt(tags.size());
+			String s = tags.get(index);
+			p.setTag(s);
+			users.add(p);
 			payoffs.put(p, new ArrayList<Integer>());
 			payoffs.get(p).add(0);
 			currentId++;
 		}
 		
-		Random rand = new Random();
-		
 		while (currentId <= numberOfProducers+numberOfConsumers)
 		{
 			Consumer c = new Consumer(currentId);
-			int index = rand.nextInt(tags.size());
+			index = rand.nextInt(tags.size());
 			String s = tags.get(index);
 			c.setTag(s);
-			consumers.add(c);
+			users.add(c);
 			payoffs.put(c, new ArrayList<Integer>());
 			payoffs.get(c).add(0);
 			currentId++;
 		}
 		
-		System.out.println(this);
+		mw.updateTables(documents, users);
 		
 	}
-	
-	/**
-	 * The simulation loop
-	 */
-	private void playGame()
-	{
-		Scanner sc = new Scanner(System.in);
-		currentTurn = 1;
-		
-		boolean inputLoop = true;
-		
-		System.out.println("Would you like to begin the simulation? Y or N");
-		String s = sc.next();
-		if (s.toUpperCase().equals("N"))
-			System.exit(0);
-		else if (!s.toUpperCase().equals("Y"))
-		{
-			System.out.println("Invalid input.");
-			playGame();
-		}
-		
-		
-		//the loop for the duration of the game
-		while(currentTurn < numberOfTurns+1)
-		{
-			inputLoop = true;
-			while (inputLoop)
-			{
-				System.out.println("Next Turn? Y or N");
-				s = sc.next().toUpperCase();
-				if (s.equals("N"))
-				{
-					System.out.println("Exiting Simulation");
-					System.exit(0);
-				}
-				else if (!s.equals("Y"))
-				{
-					System.out.println("Invalid input.");
-					continue;
-				}
-				inputLoop = false;
-			}
-			
-			int k = 0;
-			inputLoop  = true;
-			while (inputLoop)
-			{
-				System.out.println("How many documents would you like to search for?");
-				try
-				{
-					k = sc.nextInt();
-					if (k > documents.size())
-					{
-						k = documents.size();
-					}
-					inputLoop = false;
-				} catch (Exception e)
-				{
-					System.out.println("Invalid Input");
-					sc.next();
-					continue;
-				}
-			}
-			takeTurn(k);
-			currentTurn++;
-			
-		}
-		s = "\n";
-		s += "Game is over. " + toString() + "\nHistory of consumer payoffs:";
-		for (Consumer con: consumers)
-		{
-			s += "\n" + con.getClass().getSimpleName() + " #" + con.getID() +": ";
-			for(Integer i:payoffs.get(con))
-			{
-				s+= i + " ";
-			}
-		}
-		System.out.println(s);
-	}
-	
+
 	/**
 	 * The turn a consumer will take
 	 * 
@@ -226,9 +106,7 @@ public class Simulation {
 	{
 		//select random consumer or producer
 		Random rand = new Random();
-		Consumer c = consumers.get(rand.nextInt(consumers.size()));
-		
-		System.out.println("Turn #" + currentTurn + "\nTurn of " + c.getClass().getSimpleName() + " #" + c.getID() + " with tag " + c.getTag());
+		User c = users.get(rand.nextInt(users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
 		List<Document> searchResults = searchMethod.search(c, documents, k);
@@ -244,14 +122,13 @@ public class Simulation {
 		if (d != null)
 			documents.add(d);
 		
-
 		calculateProducerPayoff(searchResults);
 		if (!(c instanceof Producer))
 		{
 			payoffs.get(c).add(c.getPayoff());
 		}
 		
-		System.out.println(toString());
+		mw.updateTables(documents, users);
 		
 	}
 	
@@ -262,11 +139,11 @@ public class Simulation {
 	 */
 	private void calculateProducerPayoff(List<Document> docs)
 	{
-		for (Consumer c : consumers) {
+		for (User c : users) {
 			if (c instanceof Producer)
 			{
 				Producer p = (Producer)c;
-				p.calcProducerPayoff(docs);
+				p.calculatePayoff(docs);
 				payoffs.get(p).add(p.getPayoff());
 			}
 		}
@@ -280,7 +157,7 @@ public class Simulation {
 		String s = "Current Standing: \n\nCurrent Contributors:\n";
 		for (int i = 0; i < currentId-1; i++)
 		{
-			s += consumers.get(i).toString() + "\n";
+			s += users.get(i).toString() + "\n";
 		}
 		
 		s += "Current Documents:\n";
@@ -302,7 +179,7 @@ public class Simulation {
 	 * 
 	 * @return the hashmap of payoffs
 	 */
-	public HashMap<Consumer, ArrayList<Integer>> getPayoffs() {
+	public HashMap<User, ArrayList<Integer>> getPayoffs() {
 		return payoffs;
 	}
 	
@@ -351,9 +228,9 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
-	public void setConsumers(List<Consumer> consumers)
+	public void setConsumers(List<User> users)
 	{
-		this.consumers = consumers;
+		this.users = users;
 	}
 	
 	/**
@@ -361,9 +238,9 @@ public class Simulation {
 	 * 
 	 * @return consumer
 	 */
-	public List<Consumer> getConsumers()
+	public List<User> getConsumers()
 	{
-		return consumers;
+		return users;
 	}
 	
 	/**
@@ -391,7 +268,7 @@ public class Simulation {
 	 * 
 	 * @param payoffs
 	 */
-	public void setPayoffs(HashMap<Consumer, ArrayList<Integer>> payoffs) {
+	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
 		this.payoffs = payoffs;
 	}
 
@@ -491,9 +368,9 @@ public class Simulation {
 	 * @param i
 	 * @param c
 	 */
-	public void setConsumers(int i, Consumer c)
+	public void setUser(int i, User c)
 	{
-		consumers.set(i, c);
+		users.set(i, c);
 	}
 	
 	/**
@@ -502,9 +379,9 @@ public class Simulation {
 	 * @param i
 	 * @return
 	 */
-	public Consumer getConsumers(int i)
+	public User getUsers(int i)
 	{
-		return consumers.get(i);
+		return users.get(i);
 	}
 	
 	/**
