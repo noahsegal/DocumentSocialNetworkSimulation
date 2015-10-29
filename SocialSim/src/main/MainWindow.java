@@ -33,18 +33,22 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel consumersTableModel;
 	private DefaultTableModel producersTableModel;
 
+	private Simulation sim;
+	
 	private int numberOfTurns;			// number of turns in the sim
 	private int numberOfProds;  		// number of Producers in sim
 	private int numberOfCons;         	// number of Consumers in sim
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
 
-	public MainWindow(){
+	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints con = new GridBagConstraints();
 		con.fill = GridBagConstraints.BOTH;
 		JPanel panel = new JPanel(layout);
+		this.sim = sim;
+		
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(80);
 		numberOfProdsField 			= new JTextField(80);
@@ -102,10 +106,10 @@ public class MainWindow extends JFrame {
 		setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		System.out.println("In main");
-		MainWindow win = new MainWindow();
-		
+//	public static void main(String[] args) {
+//		System.out.println("In main");
+//		MainWindow win = new MainWindow();
+//		
 //		ArrayList<Consumer> users = new ArrayList<Consumer>();
 //		ArrayList<Document> docs = new ArrayList<Document>();
 //		
@@ -120,7 +124,7 @@ public class MainWindow extends JFrame {
 //		}
 //		win.updateTables(docs, users);
 //		win.updateTables(docs, users);
-	}
+//	}
 	
 	/**
 	 * Update the tables displayed in the GUI
