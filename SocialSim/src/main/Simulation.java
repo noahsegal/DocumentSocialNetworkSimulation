@@ -103,21 +103,16 @@ public class Simulation {
 	public boolean takeTurn(int k)
 	{
 		//select random consumer or producer
-		Random rand = new Random();
-		User c = users.get(rand.nextInt(users.size()));
+		User c = users.get((int)(Math.random() * users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = searchMethod.search(c, documents, k);
-		
-		String results = "\nSearch Results: \n";
-		for(Document doc: searchResults)
-		{
-			results += doc.toString()+"\n";
-		}
+		List<Document> searchResults = c.searchMethod.search(c, documents, k);
 		
 		Document d = c.takeTurn(searchResults);
-		if (d != null)
+		if (d != null){
 			documents.add(d);
+			searchResults.add(d);
+		}
 		
 		calculateProducerPayoff(searchResults);
 		if (!(c instanceof Producer))
