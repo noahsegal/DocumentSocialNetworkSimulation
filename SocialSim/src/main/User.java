@@ -90,6 +90,28 @@ public abstract class User {
 				}
 			}
 	}
+	
+	/**
+	 * @return String of the list Users following this
+	 */
+	public String followerString() {
+		String s = "";
+		for (User u: followers) {
+			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+		}
+		return s;
+	}
+	
+	/**
+	 * @return String of the list of Users this follows
+	 */
+	public String followingString() {
+		String s = "";
+		for (User u: following) {
+			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+		}
+		return s;
+	}
 
 	//////////////////////////
 	//  Getters & Setters  ///
