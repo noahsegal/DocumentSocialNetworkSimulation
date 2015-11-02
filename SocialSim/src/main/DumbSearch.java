@@ -17,7 +17,7 @@ public class DumbSearch implements Search {
 		Collections.sort(documentsCopy);
 		Collections.reverse(documentsCopy);
 	
-		return documentsCopy;
+		return documentsCopy.subList(0, k);
 	}
 
 }
