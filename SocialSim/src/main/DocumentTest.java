@@ -62,8 +62,8 @@ public class DocumentTest {
 		assertEquals(d.compareTo(d2), 0);
 		d.likeDocument(p);
 		assertEquals(d.compareTo(d), 0);
-		assertEquals(d.compareTo(d2), 1);
-		assertEquals(d2.compareTo(d), -1);
+		assertEquals(d.compareTo(d2), -1);
+		assertEquals(d2.compareTo(d), 1);
 	}
 
 	@Test
