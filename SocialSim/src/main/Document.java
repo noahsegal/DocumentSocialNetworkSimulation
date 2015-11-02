@@ -90,7 +90,7 @@ public class Document implements Comparable<Document> {
 	 * @return the value at i, null if out of range
 	 */
 	public User getLikers(int i) {
-		if(i < likers.size() && i > 0) {
+		if(i < likers.size() && i >= 0) {
 			return likers.get(i);
 		}
 		return null;
