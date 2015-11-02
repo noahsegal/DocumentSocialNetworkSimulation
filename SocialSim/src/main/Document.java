@@ -40,11 +40,11 @@ public class Document implements Comparable<Document> {
 	}
 	/**
 	 * @param Document to compare against
-	 * @return 1 if d is larger, -1 if this is larger, 0 if equal
+	 * @return 1 if this is larger, -1 if d is larger, 0 if equal
 	 */
 	@Override
 	public int compareTo(Document d) {
-		return d.likers.size() - this.likers.size();
+		return this.likers.size() - d.likers.size();
 	}
 	
 	/**

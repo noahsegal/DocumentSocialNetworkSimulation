@@ -25,7 +25,7 @@ public class PopularitySearch implements Search {
 		List<Document> unmatchedDocuments = new ArrayList<Document>();
 		List<Document> popularityDocuments = new ArrayList<Document>();
 		Collections.sort(documentsCopy);
-		
+		Collections.reverse(documentsCopy);
 		
 		//going through list and moving all matching documents to the matched list in their popularity order. Moving all unmatched to a unmatched in popularity order.
 		for(Document d : documentsCopy){

@@ -15,6 +15,7 @@ public class DumbSearch implements Search {
 		List<Document> documentsCopy = new ArrayList<Document>(documents);
 		//sorting based on popularity
 		Collections.sort(documentsCopy);
+		Collections.reverse(documentsCopy);
 	
 		return documentsCopy;
 	}
