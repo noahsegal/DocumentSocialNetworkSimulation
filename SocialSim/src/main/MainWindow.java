@@ -1,9 +1,9 @@
 package main;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -14,6 +14,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
@@ -27,6 +32,8 @@ public class MainWindow extends JFrame {
 	private JTextField numberOfTagsField; // text field to get # of tags in sim
 	private JTextField numberOfSearchResultsField; // text field to get # of search results returned each turn
 
+	private JPanel chartPanel;
+	
 	private JButton startButton;
 
 	private DefaultTableModel documentsTableModel;
@@ -34,7 +41,6 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel producersTableModel;
 
 	private Simulation sim;
-	private Plot graph; //Plot class taken from http://yuriy-g.github.io/simple-java-plot/
 
 	private int numberOfTurns;			// number of turns in the sim
 	private int numberOfProds;  		// number of Producers in sim
@@ -55,15 +61,18 @@ public class MainWindow extends JFrame {
 		onGoing = false;
 
 		// Initialize Components
-		numberOfTurnsField 			= new JTextField(80);
-		numberOfProdsField 			= new JTextField(80);
-		numberOfConsField 			= new JTextField(80);
-		numberOfTagsField 			= new JTextField(80);
-		numberOfSearchResultsField 	= new JTextField(80);
+		numberOfTurnsField 			= new JTextField(20);
+		numberOfProdsField 			= new JTextField(20);
+		numberOfConsField 			= new JTextField(20);
+		numberOfTagsField 			= new JTextField(20);
+		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
 		documentsTableModel			= new DefaultTableModel(5, 4);
 		consumersTableModel			= new DefaultTableModel();
 		producersTableModel			= new DefaultTableModel();
+		chartPanel 					= new JPanel(new BorderLayout());
+		chartPanel.setMinimumSize(new Dimension(200, 200));
+		chartPanel.setMaximumSize(new Dimension(300, 300));
 
 		// Setting up ActionListioner
 		startButton.addActionListener(ae -> {
@@ -87,6 +96,7 @@ public class MainWindow extends JFrame {
 				setFieldEnabled(false);
 			}
 			initialized = this.sim.takeTurn(numberOfSearchResults);
+			plotData();
 			
 			if(!initialized) {
 				setFieldEnabled(true);
@@ -137,11 +147,15 @@ public class MainWindow extends JFrame {
 		con.gridwidth = GridBagConstraints.REMAINDER;  // End of row
 		panel.add(buildTable(producersTableModel, producerTableHeader), con);
 
-		//Build Graph   -- Ninth to  rows
-		//con.gridheight = 4;
+		//Build Graph   -- Ninth to Thirteenth rows
+		con.gridheight = 4;
+		con.gridwidth = GridBagConstraints.REMAINDER;  //End of row
+		panel.add(chartPanel, con);
 
 		getContentPane().add(panel);
-		setSize(1200,400);
+		setSize(600,400);
+		this.setMaximumSize(new Dimension(1100,700));
+		pack();
 		setVisible(true);
 	}
 
@@ -247,7 +261,8 @@ public class MainWindow extends JFrame {
 	private JPanel buildLabelField(String label, JTextField field) {
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints con = new GridBagConstraints();
-		field.setMinimumSize(new Dimension(35, 25));
+		field.setMinimumSize(new Dimension(25, 25));
+		field.setMaximumSize(new Dimension(30,25));
 		con.fill = GridBagConstraints.BOTH;
 		con.weightx = 0.0;
 
@@ -271,7 +286,8 @@ public class MainWindow extends JFrame {
 		tableModel.setColumnIdentifiers(header);
 		JTable table = new JTable(tableModel);
 		JScrollPane pane = new JScrollPane(table);
-		pane.setMinimumSize(new Dimension(300,200));
+		pane.setMinimumSize(new Dimension(100,200));
+		pane.setMaximumSize(new Dimension(100,200));
 		return pane;
 	}
 	
@@ -279,8 +295,14 @@ public class MainWindow extends JFrame {
 	 * Plot data on a bar graph
 	 */
 	private void plotData() {
-		HashMap<Integer, Integer> consumerData = buildData(consumersTableModel);
-		HashMap<Integer, Integer> producerData = buildData(producersTableModel); 
+		DefaultCategoryDataset data = buildData(consumersTableModel, producersTableModel);
+		JFreeChart chart = ChartFactory.createBarChart("User Payoffs",
+														"Users",
+														"Payoffs",
+														data);
+		ChartPanel myChart = new ChartPanel(chart);
+		chartPanel.removeAll();
+		chartPanel.add(myChart, BorderLayout.CENTER);
 	}
 	
 	/**
@@ -288,12 +310,16 @@ public class MainWindow extends JFrame {
 	 * @param model DefaultTableModel to build plot data from
 	 * @return HashMap of plot data key is x value, value is y value
 	 */
-	private HashMap<Integer, Integer> buildData(DefaultTableModel model) {
-		HashMap<Integer, Integer> payoffData = new HashMap<Integer, Integer>();
+	private DefaultCategoryDataset buildData(DefaultTableModel model, DefaultTableModel model2) {
+		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 		for(int i = 0; i < model.getRowCount(); i++) 
 		{
-			payoffData.put((Integer)model.getValueAt(i, 0), (Integer)model.getValueAt(i, 4));
+			dataset.addValue(new Double((Integer)model.getValueAt(i, 4)), "", (Integer)model.getValueAt(i, 0));
 		}
-		return payoffData;
+		for(int i = 0; i < model2.getRowCount(); i++) 
+		{
+			dataset.addValue(new Double((Integer)model2.getValueAt(i, 4)), "", (Integer)model2.getValueAt(i, 0));
+		}
+		return dataset;
 	}
 }
