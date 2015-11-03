@@ -3,7 +3,7 @@ package main;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -34,6 +34,7 @@ public class MainWindow extends JFrame {
 	private DefaultTableModel producersTableModel;
 
 	private Simulation sim;
+	private Plot graph; //Plot class taken from http://yuriy-g.github.io/simple-java-plot/
 
 	private int numberOfTurns;			// number of turns in the sim
 	private int numberOfProds;  		// number of Producers in sim
@@ -41,6 +42,7 @@ public class MainWindow extends JFrame {
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
+	private boolean onGoing;			// is the simulation still running
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -50,6 +52,7 @@ public class MainWindow extends JFrame {
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
 		initialized = false;
+		onGoing = false;
 
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(80);
@@ -66,6 +69,7 @@ public class MainWindow extends JFrame {
 		startButton.addActionListener(ae -> {
 			try{
 				if(!initialized){
+					clearTableModels();
 					numberOfTurns 			= new Integer(numberOfTurnsField.getText());
 					numberOfProds 			= new Integer(numberOfProdsField.getText());
 					numberOfCons  			= new Integer(numberOfConsField.getText());
@@ -77,15 +81,22 @@ public class MainWindow extends JFrame {
 				return;
 			}
 			if(!initialized) {
-				sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
+				this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
 				startButton.setText("Step");
 				initialized = true;
-				numberOfTurnsField.setEnabled(false);
-				numberOfProdsField.setEnabled(false);
-				numberOfConsField.setEnabled(false);
-				numberOfTagsField.setEnabled(false);
+				setFieldEnabled(false);
 			}
-			sim.takeTurn(numberOfSearchResults);
+			initialized = this.sim.takeTurn(numberOfSearchResults);
+			
+			if(!initialized) {
+				setFieldEnabled(true);
+				numberOfTurnsField.setText("");
+				numberOfProdsField.setText("");
+				numberOfConsField.setText("");
+				numberOfTagsField.setText("");
+				numberOfSearchResultsField.setText("");
+				startButton.setText("Start");
+			}
 		});
 
 		// Other Components		-- Ones we arn't keeping track of
@@ -130,7 +141,7 @@ public class MainWindow extends JFrame {
 		//con.gridheight = 4;
 
 		getContentPane().add(panel);
-		setSize(600,400);
+		setSize(1200,400);
 		setVisible(true);
 	}
 
@@ -141,7 +152,7 @@ public class MainWindow extends JFrame {
 	 */
 	public void updateTables (List<Document> docs, List<User> users) {
 		clearTableModels();
-		System.out.println(users.size());
+		System.out.println(docs.size());
 
 		for(int i = 0; i < users.size(); i ++) {
 			if(users.get(i) instanceof Producer) {
@@ -203,6 +214,13 @@ public class MainWindow extends JFrame {
 		consumersTableModel.addRow(rowData);
 	}
 
+	private void setFieldEnabled(boolean b) {
+		numberOfTurnsField.setEnabled(b);
+		numberOfProdsField.setEnabled(b);
+		numberOfConsField.setEnabled(b);
+		numberOfTagsField.setEnabled(b);
+	}
+	
 	/**
 	 * add a row to the documents table
 	 * @param doc, the document to be added
@@ -255,5 +273,27 @@ public class MainWindow extends JFrame {
 		JScrollPane pane = new JScrollPane(table);
 		pane.setMinimumSize(new Dimension(300,200));
 		return pane;
+	}
+	
+	/**
+	 * Plot data on a bar graph
+	 */
+	private void plotData() {
+		HashMap<Integer, Integer> consumerData = buildData(consumersTableModel);
+		HashMap<Integer, Integer> producerData = buildData(producersTableModel); 
+	}
+	
+	/**
+	 * Build Data to plot for either the Consumer or Producer
+	 * @param model DefaultTableModel to build plot data from
+	 * @return HashMap of plot data key is x value, value is y value
+	 */
+	private HashMap<Integer, Integer> buildData(DefaultTableModel model) {
+		HashMap<Integer, Integer> payoffData = new HashMap<Integer, Integer>();
+		for(int i = 0; i < model.getRowCount(); i++) 
+		{
+			payoffData.put((Integer)model.getValueAt(i, 0), (Integer)model.getValueAt(i, 4));
+		}
+		return payoffData;
 	}
 }
