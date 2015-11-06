@@ -16,7 +16,6 @@ public class Simulation {
 	private List<User> users;
 	private List<Document> documents;
 	private HashMap<User, ArrayList<Integer>> payoffs;
-	private PopularitySearch searchMethod;
 	private int numberOfTags;
 	private int numberOfConsumers;
 	private int numberOfProducers;
@@ -100,6 +99,7 @@ public class Simulation {
 	 * The turn a consumer will take
 	 * 
 	 * @param k The number of documents to search for
+	 * @return if the simulation is over
 	 */
 	public boolean takeTurn(int k)
 	{
@@ -149,8 +149,7 @@ public class Simulation {
 	/**
 	 * The string providing the information of the current state of the simulation
 	 */
-	public String toString()
-	{
+	public String toString(){
 		String s = "Current Standing: \n\nCurrent Contributors:\n";
 		for (int i = 0; i < currentId-1; i++)
 		{
@@ -164,6 +163,30 @@ public class Simulation {
 		}
 		
 		return s;
+	}
+	
+	public void copy(Simulation sim){
+		currentId = sim.currentId;
+		currentTurn = sim.currentTurn;
+		documents = new ArrayList<Document>(sim.documents);
+		users = new ArrayList<User>(sim.users);
+		numberOfConsumers = sim.numberOfConsumers;
+		numberOfProducers = sim.numberOfProducers;
+		numberOfTags = sim.numberOfTags;
+		numberOfTurns = sim.numberOfTurns;
+		tags = new ArrayList<String>(sim.tags);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Simulation))
+			return false;
+		
+		Simulation s = (Simulation)obj;
+		return s.currentId == currentId && s.currentTurn == currentTurn && s.documents.equals(documents) 
+				&& s.numberOfConsumers == numberOfConsumers && s.numberOfProducers == numberOfProducers 
+				&& s.numberOfTags == numberOfTags && s.numberOfTurns == numberOfTurns && s.tags.equals(tags)
+				&& s.users.equals(users);
 	}
 	
 	
@@ -270,24 +293,6 @@ public class Simulation {
 	}
 
 	/**
-	 * Get the search method function
-	 * 
-	 * @return
-	 */
-	public PopularitySearch getSearchMethod() {
-		return searchMethod;
-	}
-
-	/**
-	 * get the search method
-	 * 
-	 * @param searchMethod
-	 */
-	public void setSearchMethod(PopularitySearch searchMethod) {
-		this.searchMethod = searchMethod;
-	}
-
-	/**
 	 * get the list of tags
 	 * 
 	 * @return
@@ -382,6 +387,16 @@ public class Simulation {
 	}
 	
 	/**
+	 * get all the users
+	 * 
+	 * @return the users in the simulation
+	 */
+	public List<User> getUsers()
+	{
+		return users;
+	}
+	
+	/**
 	 * set a document in the list
 	 * 
 	 * @param i
@@ -423,5 +438,9 @@ public class Simulation {
 	public Document getDocuments(int i)
 	{
 		return documents.get(i);
+	}
+	
+	public void setMainWindow(MainWindow mw) {
+		this.mw = mw;
 	}
 }

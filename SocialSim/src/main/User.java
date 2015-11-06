@@ -112,6 +112,16 @@ public abstract class User {
 		}
 		return s;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof User))
+			return false;
+		
+		User u = (User)obj;
+		
+		return u.id == id;
+	}
 
 	//////////////////////////
 	//  Getters & Setters  ///
