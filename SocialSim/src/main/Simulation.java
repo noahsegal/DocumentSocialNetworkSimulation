@@ -40,7 +40,6 @@ public class Simulation {
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		searchMethod = new PopularitySearch();
 		try {
 			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
 				for (String tag : line.split(", ")) {
@@ -61,7 +60,9 @@ public class Simulation {
 		Random rand;
 		
 		this.numberOfTurns = numberOfTurns;
-		this.numberOfTags = numberOfTags;
+		if (numberOfTags > tags.size())
+			this.numberOfTags = tags.size();
+		else this.numberOfTags = numberOfTags;
 		this.numberOfProducers = numberOfProducers;
 		this.numberOfConsumers = numberOfConsumers;
 		
@@ -119,7 +120,6 @@ public class Simulation {
 		{
 			payoffs.get(c).add(c.getPayoff());
 		}
-		
 		
 		mw.updateTables(documents, users);
 		currentTurn++;
