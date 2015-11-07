@@ -58,25 +58,6 @@ public class Consumer extends User {
 	}
 	
 	/**
-	 * @return String Description of the Consumer
-	 */
-	@Override
-	public String toString() {
-		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
-		
-		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
-		else s += "\nFollowing " + following.size() + " people";
-		
-		if (followers.size() == 1) s += "\nFollowed by " + followers.size() + " person";
-		else s += "\nFollowed By " + followers.size() + " people";
-		
-		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
-		else s += "\nLikes " + likedDocs.size() + " documents\n";
-		
-		return s;
-	}
-	
-	/**
 	 * Check if two Consumers are the same
 	 * 
 	 * @param obj Object to check equality

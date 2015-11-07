@@ -113,6 +113,25 @@ public abstract class User {
 		return s;
 	}
 	
+	/**
+	 * @return String Description of the USER
+	 */
+	@Override
+	public String toString() {
+		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
+		
+		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
+		else s += "\nFollowing " + following.size() + " people";
+		
+		if (followers.size() == 1) s += "\nFollowed by " + followers.size() + " person";
+		else s += "\nFollowed By " + followers.size() + " people";
+		
+		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
+		else s += "\nLikes " + likedDocs.size() + " documents\n";
+		
+		return s;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (null == obj) return false;
