@@ -124,9 +124,29 @@ public class Simulation {
 		mw.updateTables(documents, users);
 		currentTurn++;
 		if (numberOfTurns+1 == currentTurn)
+		{
+			reset();
 			return false;
+		}
 		else return true;
 		
+	}
+	
+	private void reset()
+	{
+		users = new ArrayList<User>();
+		documents = new ArrayList<Document>();
+		tags = new ArrayList<String>();
+		payoffs = new HashMap<User, ArrayList<Integer>>();
+		try {
+			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+				for (String tag : line.split(", ")) {
+				    tags.add(tag);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -254,6 +274,38 @@ public class Simulation {
 	}
 	
 	/**
+	 * sets a consumer index
+	 * 
+	 * @param i
+	 * @param c
+	 */
+	public void setUser(int i, User c)
+	{
+		users.set(i, c);
+	}
+	
+	/**
+	 * get a specific consumer at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public User getUser(int i)
+	{
+		return users.get(i);
+	}
+	
+	/**
+	 * get all the users
+	 * 
+	 * @return the users in the simulation
+	 */
+	public List<User> getUsers()
+	{
+		return users;
+	}
+	
+	/**
 	 * Set the current ID 
 	 * 
 	 * @param currentId
@@ -370,38 +422,6 @@ public class Simulation {
 	 */
 	public void setNumberOfTurns(int numberOfTurns) {
 		this.numberOfTurns = numberOfTurns;
-	}
-	
-	/**
-	 * sets a consumer index
-	 * 
-	 * @param i
-	 * @param c
-	 */
-	public void setUser(int i, User c)
-	{
-		users.set(i, c);
-	}
-	
-	/**
-	 * get a specific consumer at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public User getUsers(int i)
-	{
-		return users.get(i);
-	}
-	
-	/**
-	 * get all the users
-	 * 
-	 * @return the users in the simulation
-	 */
-	public List<User> getUsers()
-	{
-		return users;
 	}
 	
 	/**

@@ -13,6 +13,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Group: MyNiftyJavaRepo
+ * Author: Monica Ruttle
+ * Class responsible for testing the Simulation class
+ */
+
 public class SimulationTest {
 	Simulation baseSimulation;
 	@Before
@@ -182,6 +188,12 @@ public class SimulationTest {
 	public void testSetNumberOfTurns() {
 		baseSimulation.setNumberOfTurns(5);
 		assertEquals("There are 5 turns", 5, baseSimulation.getNumberOfTurns());
+	}
+	
+	@Test
+	public void testGetUser() {
+		User p = baseSimulation.getUsers().get(0);
+		assertEquals("The first user is p", p, baseSimulation.getUser(0));
 	}
 
 	@Test
