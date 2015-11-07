@@ -89,8 +89,7 @@ public class Consumer extends User {
 
 		Consumer consumer = (Consumer) obj;
 		
-		return tag.equals(consumer.tag) && (id == consumer.id) && followers.equals(consumer.followers) 
-				&& following.equals(consumer.following) && likedDocs.equals(consumer.likedDocs);
+		return super.equals(consumer);
 	}
 	
 
