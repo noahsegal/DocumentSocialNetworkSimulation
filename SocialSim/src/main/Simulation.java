@@ -107,7 +107,7 @@ public class Simulation {
 		User c = users.get((int)(Math.random() * users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = c.searchMethod.search(c, documents, k);
+		List<Document> searchResults = new ArrayList<Document>(c.searchMethod.search(c, documents, k));
 		
 		Document d = c.takeTurn(searchResults);
 		if (d != null){
@@ -123,7 +123,7 @@ public class Simulation {
 		
 		mw.updateTables(documents, users);
 		currentTurn++;
-		if (numberOfTurns == currentTurn)
+		if (numberOfTurns == currentTurn+1)
 			return false;
 		else return true;
 		
