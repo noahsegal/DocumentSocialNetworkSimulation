@@ -123,7 +123,7 @@ public class Simulation {
 		
 		mw.updateTables(documents, users);
 		currentTurn++;
-		if (numberOfTurns == currentTurn+1)
+		if (numberOfTurns+1 == currentTurn)
 			return false;
 		else return true;
 		
