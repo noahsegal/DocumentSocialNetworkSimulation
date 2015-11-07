@@ -17,11 +17,13 @@ public class PopularitySearch implements Search {
 	@Override
 	public List<Document> search(User user, List<Document> documents, int k) {
 		
-		//if there is less documents than requested return all documents
-		if(k>documents.size())
-			return documents;
-		
 		List<Document> documentsCopy = new ArrayList<Document>(documents);
+		
+		//if there is less documents than requested return all documents
+		if(k>documentsCopy.size())
+			return documentsCopy;
+		
+
 		List<Document> unmatchedDocuments = new ArrayList<Document>();
 		List<Document> popularityDocuments = new ArrayList<Document>();
 		Collections.sort(documentsCopy);
@@ -51,6 +53,12 @@ public class PopularitySearch implements Search {
 	 */
 	private boolean isSameTag(User user, Document d){
 		return (user.getTag().equals(d.getTag()));
+	}
+
+	public boolean equals(Object obj){
+		if (null == obj) return false;
+		if ( !(obj instanceof PopularitySearch ) ) return false;
+		return true;
 	}
 
 }

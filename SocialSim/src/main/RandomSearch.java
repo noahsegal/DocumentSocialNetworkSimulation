@@ -17,15 +17,24 @@ public class RandomSearch implements Search {
 	public List<Document> search(User user, List<Document> documents, int k) {
 		
 		long seed = System.nanoTime();
+		ArrayList<Document> documentCopy = new ArrayList<>(documents);
 		//if there is less documents than requested return all documents
-		if(k>documents.size())
-			return documents;
+		if(k>documentCopy.size())
+			return documentCopy;
 
 		//copy documents and shuffle
-		ArrayList<Document> documentCopy = new ArrayList<>(documents);
+
 		Collections.shuffle(documentCopy, new Random(seed));
 
 		//return k elements
 		return documentCopy.subList(0, k);
 	}
+
+	@Override
+	public boolean equals(Object obj){
+		if (null == obj) return false;
+		if ( !(obj instanceof RandomSearch ) ) return false;
+		return true;
+	}
+	
 }

@@ -19,4 +19,7 @@ public interface Search {
 	 * @return - A list of documents that ranked highest in the search. 
 	 */
 	public List<Document> search(User u, List<Document> d, int k);
+	
+	@Override
+	public boolean equals(Object obj);
 }

@@ -74,5 +74,5 @@ public class DumbSearchTest {
 		list2.add(d2);
 		assertEquals(list2, s.search(c, listD, 3));
 	}
-
+	
 }
