@@ -57,6 +57,12 @@ public class SimulationTest {
 		assertEquals("The turn has incremented by 1", currentTurn+1, baseSimulation.getCurrentTurn());
 		assertFalse("The game is over", gameOver);
 	}
+	
+	public void testReset() {
+		baseSimulation.reset();
+		Simulation test = new Simulation();
+		assertEquals("A new instance of a simulation is the same as a reset one", test, baseSimulation);
+	}
 
 	@Test
 	public void testToString() {
@@ -67,6 +73,20 @@ public class SimulationTest {
 		s += "Current Documents:\n";
 		assertEquals("The game will print its current status", s, baseSimulation.toString());
 	}
+	
+	@Test
+	public void testCopy() {
+		Simulation sim = new Simulation();
+		sim.copy(baseSimulation);
+		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
+	}
+	
+	@Test
+	public void testEquals() {
+		Simulation sim = new Simulation();
+		sim.startGame(1, 1, 1, 1);
+		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
+	}
 
 	@Test
 	public void testGetPayoffs() {
@@ -76,13 +96,40 @@ public class SimulationTest {
 	}
 
 	@Test
+	public void testSetPayoffs() {
+		HashMap<User, ArrayList<Integer>> testPayoffs = new HashMap<User, ArrayList<Integer>>();
+		baseSimulation.setPayoffs(testPayoffs);
+		assertEquals("The payofss list is empty", testPayoffs, baseSimulation.getPayoffs());
+	}
+	
+	@Test
+	public void testGetPayoff() {
+		ArrayList<Integer> payoffList = new ArrayList<Integer>();
+		payoffList.add(0);
+		assertEquals("The first user has a payoff list with one entry of 0", payoffList, baseSimulation.getPayoff(baseSimulation.getUser(0)));
+	}
+	
+	@Test
+	public void testSetPayoff() {
+		User u = baseSimulation.getUser(0);
+		ArrayList<Integer> payoff = new ArrayList<Integer>();
+		baseSimulation.setPayoff(u, payoff);
+		assertEquals("The user u has an empty payoff list", payoff, baseSimulation.getPayoff(u));
+	}
+
+	@Test
+	public void testGetCurrentTurn() {
+		assertEquals("The current turn is 1", 1, baseSimulation.getCurrentTurn());
+	}
+
+	@Test
 	public void testSetCurrentTurn() {
 		baseSimulation.setCurrentTurn(5);
 		assertEquals("The current turn is 5", 5, baseSimulation.getCurrentTurn());
 	}
 
 	@Test
-	public void testGetCurrentTurn() {
+	public void testGetCurrentId() {
 		assertEquals("The current turn is 1", 1, baseSimulation.getCurrentTurn());
 	}
 
@@ -93,14 +140,41 @@ public class SimulationTest {
 	}
 
 	@Test
-	public void testGetCurrentId() {
-		assertEquals("The current turn is 1", 1, baseSimulation.getCurrentTurn());
+	public void testGetUsers() {
+		Producer p = new Producer(1, new PopularitySearch());
+		Consumer c = new Consumer(2, new PopularitySearch());
+		List<User> users = new ArrayList<User>();
+		users.add(p);
+		p.setTag(baseSimulation.getUsers().get(0).getTag());
+		users.add(c);
+		c.setTag(baseSimulation.getUsers().get(1).getTag());
+		assertEquals("There will one producer and one consumer", users, baseSimulation.getUsers());
 	}
 
 	@Test
 	public void testSetUsers() {
 		baseSimulation.setUsers(new ArrayList<User>());
 		assertNotNull("There are consumers", baseSimulation.getUsers());
+	}
+	
+	@Test
+	public void testGetUser() {
+		User p = baseSimulation.getUsers().get(0);
+		assertEquals("The first user is p", p, baseSimulation.getUser(0));
+	}
+
+	@Test
+	public void testSetUser() {
+		Consumer p = new Consumer(0, new PopularitySearch());
+		p.setTag("Test");
+		baseSimulation.setUser(0, p);
+		assertEquals("The first user is p", p, baseSimulation.getUsers().get(0));
+		
+	}
+
+	@Test
+	public void testGetDocuments() {
+		assertEquals("The documents list is empty", new ArrayList<Document>(), baseSimulation.getDocuments());
 	}
 
 	@Test
@@ -113,15 +187,19 @@ public class SimulationTest {
 	}
 
 	@Test
-	public void testGetDocuments() {
-		assertEquals("The documents list is empty", new ArrayList<Document>(), baseSimulation.getDocuments());
+	public void testSetDocumentIntDocument() {
+		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
+		baseSimulation.getDocuments().add(new Document(null, null, null));
+		baseSimulation.setDocument(0, testDoc);
+		assertEquals("The first doc is testDoc", testDoc, baseSimulation.getDocument(0));
 	}
 
 	@Test
-	public void testSetPayoffs() {
-		HashMap<User, ArrayList<Integer>> testPayoffs = new HashMap<User, ArrayList<Integer>>();
-		baseSimulation.setPayoffs(testPayoffs);
-		assertEquals("The payofss list is empty", testPayoffs, baseSimulation.getPayoffs());
+	public void testGetDocumentInt() {
+		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
+		baseSimulation.setDocuments(new ArrayList<Document>());
+		baseSimulation.getDocuments().add(testDoc);
+		assertEquals("The first doc is testDoc", testDoc, baseSimulation.getDocument(0));
 	}
 
 	@Test
@@ -144,6 +222,18 @@ public class SimulationTest {
 		List<String> testTags = new ArrayList<String>();
 		baseSimulation.setTags(testTags);
 		assertEquals("The tags list is set to testTags", testTags, baseSimulation.getTags());
+	}
+
+	@Test
+	public void testGetTagsInt() {
+		baseSimulation.setTag(0, "Test");
+		assertEquals("The first tag is Test", "Test", baseSimulation.getTag(0));
+	}
+
+	@Test
+	public void testSetTagsIntString() {
+		baseSimulation.setTag(0, "Test");
+		assertEquals("The first tag is Test", "Test", baseSimulation.getTag(0));
 	}
 
 	@Test
@@ -191,71 +281,17 @@ public class SimulationTest {
 	}
 	
 	@Test
-	public void testGetUser() {
-		User p = baseSimulation.getUsers().get(0);
-		assertEquals("The first user is p", p, baseSimulation.getUser(0));
-	}
-
-	@Test
-	public void testSetUser() {
-		Consumer p = new Consumer(0, new PopularitySearch());
-		p.setTag("Test");
-		baseSimulation.setUser(0, p);
-		assertEquals("The first user is p", p, baseSimulation.getUsers().get(0));
-		
-	}
-
-	@Test
-	public void testGetUsers() {
-		Producer p = new Producer(1, new PopularitySearch());
-		Consumer c = new Consumer(2, new PopularitySearch());
-		List<User> users = new ArrayList<User>();
-		users.add(p);
-		p.setTag(baseSimulation.getUsers().get(0).getTag());
-		users.add(c);
-		c.setTag(baseSimulation.getUsers().get(1).getTag());
-		assertEquals("There will one producer and one consumer", users, baseSimulation.getUsers());
-	}
-
-	@Test
-	public void testSetTagsIntString() {
-		baseSimulation.setTags(0, "Test");
-		assertEquals("The first tag is Test", "Test", baseSimulation.getTags(0));
-	}
-
-	@Test
-	public void testGetTagsInt() {
-		baseSimulation.setTags(0, "Test");
-		assertEquals("The first tag is Test", "Test", baseSimulation.getTags(0));
-	}
-
-	@Test
-	public void testSetDocumentsIntDocument() {
-		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
-		baseSimulation.getDocuments().add(testDoc);
-		assertEquals("The first doc is testDoc", testDoc, baseSimulation.getDocuments(0));
-	}
-
-	@Test
-	public void testGetDocumentsInt() {
-		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
-		baseSimulation.setDocuments(new ArrayList<Document>());
-		baseSimulation.getDocuments().add(testDoc);
-		assertEquals("The first doc is testDoc", testDoc, baseSimulation.getDocuments(0));
+	public void testGetMainWindow() {
+		MainWindow mw = new MainWindow(baseSimulation);
+		baseSimulation.setMainWindow(mw);
+		assertEquals("The main window is the same as a new maindow", mw, baseSimulation.getMainWindow());
 	}
 	
 	@Test
-	public void testEquals() {
-		Simulation sim = new Simulation();
-		sim.startGame(1, 1, 1, 1);
-		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
-	}
-	
-	@Test
-	public void testCopy() {
-		Simulation sim = new Simulation();
-		sim.copy(baseSimulation);
-		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
+	public void testSetMainWindow() {
+		MainWindow mw = new MainWindow(baseSimulation);
+		baseSimulation.setMainWindow(mw);
+		assertEquals("The main windows has been set to mw", mw, baseSimulation.getMainWindow());
 	}
 
 }

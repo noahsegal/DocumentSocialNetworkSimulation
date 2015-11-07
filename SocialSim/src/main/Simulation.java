@@ -132,7 +132,7 @@ public class Simulation {
 		
 	}
 	
-	private void reset()
+	public void reset()
 	{
 		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
@@ -318,7 +318,7 @@ public class Simulation {
 	 * @param i
 	 * @return
 	 */
-	public User getUser(int i)
+	public User getUser(int k)
 	{
 		return users.get(i);
 	}
@@ -329,7 +329,7 @@ public class Simulation {
 	 * @param i
 	 * @param c
 	 */
-	public void setUser(int i, User c)
+	public void setUser(int k, User c)
 	{
 		users.set(i, c);
 	}
@@ -396,7 +396,7 @@ public class Simulation {
 	 * @param i
 	 * @return
 	 */
-	public String getTag(int i)
+	public String getTag(int k)
 	{
 		return tags.get(i);
 	}
@@ -407,7 +407,7 @@ public class Simulation {
 	 * @param i
 	 * @param d
 	 */
-	public void setTag(int i, String t)
+	public void setTag(int k, String t)
 	{
 		tags.set(i, t);
 	}
