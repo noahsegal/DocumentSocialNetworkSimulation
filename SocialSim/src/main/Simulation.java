@@ -248,19 +248,9 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
-	public void setConsumers(List<User> users)
+	public void setUsers(List<User> users)
 	{
 		this.users = users;
-	}
-	
-	/**
-	 * Get the current ID
-	 * 
-	 * @return consumer
-	 */
-	public List<User> getConsumers()
-	{
-		return users;
 	}
 	
 	/**
@@ -326,6 +316,24 @@ public class Simulation {
 	 */
 	public void setNumberOfConsumers(int numberOfConsumers) {
 		this.numberOfConsumers = numberOfConsumers;
+	}
+	
+	/**
+	 * get the number of tags
+	 * 
+	 * @return
+	 */
+	public int getNumberOfTags() {
+		return numberOfTags;
+	}
+
+	/**
+	 * set the number of consumers
+	 * 
+	 * @param numberOfConsumers
+	 */
+	public void setNumberOfTags(int numberOfTags) {
+		this.numberOfTags = numberOfTags;
 	}
 
 	/**

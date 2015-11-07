@@ -2,6 +2,9 @@ package main;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,7 +37,7 @@ public class SimulationTest {
 	@Test
 	public void testStartGame() {
 		assertEquals("The game has one turn", 1, baseSimulation.getNumberOfTurns());
-		assertEquals("The game has one tag", 1, baseSimulation.getTags().size());
+		assertEquals("The game has one tag", 1, baseSimulation.getNumberOfTags());
 		assertEquals("The game has one consumer", 1, baseSimulation.getNumberOfConsumers());
 		assertEquals("The game has one producer", 1, baseSimulation.getNumberOfProducers());
 		assertEquals("The game has no documents", 0, baseSimulation.getDocuments().size());
@@ -44,15 +47,16 @@ public class SimulationTest {
 	public void testTakeTurn() {
 		int currentTurn = baseSimulation.getCurrentTurn();
 		HashMap<User, ArrayList<Integer>> currentPayoffs = baseSimulation.getPayoffs();
-		baseSimulation.takeTurn(5);
+		boolean gameOver = baseSimulation.takeTurn(5);
 		assertEquals("The turn has incremented by 1", currentTurn+1, baseSimulation.getCurrentTurn());
-		assertNotEquals("The payoffs have changed", currentPayoffs, baseSimulation.getPayoffs());
+		assertFalse("The game is over", gameOver);
 	}
 
 	@Test
 	public void testToString() {
 		String s = "Current Standing: \n\nCurrent Contributors:\n";
 		s += baseSimulation.getUsers().get(0) + "\n";
+		s += baseSimulation.getUsers().get(1) + "\n";
 		
 		s += "Current Documents:\n";
 		assertEquals("The game will print its current status", s, baseSimulation.toString());
@@ -88,14 +92,9 @@ public class SimulationTest {
 	}
 
 	@Test
-	public void testSetConsumers() {
-		baseSimulation.setConsumers(new ArrayList<User>());
-		assertNotNull("There are consumers", baseSimulation.getConsumers());
-	}
-
-	@Test
-	public void testGetConsumers() {
-		assertEquals("There is one consumer", baseSimulation.getConsumers().size(), 1);
+	public void testSetUsers() {
+		baseSimulation.setUsers(new ArrayList<User>());
+		assertNotNull("There are consumers", baseSimulation.getUsers());
 	}
 
 	@Test
@@ -104,7 +103,7 @@ public class SimulationTest {
 		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
 		testDocs.add(testDoc);
 		baseSimulation.setDocuments(testDocs);
-		assertEquals("The first document is testDoc", testDoc, baseSimulation.getDocuments().indexOf(0));
+		assertEquals("The first document is testDoc", testDocs, baseSimulation.getDocuments());
 	}
 
 	@Test
@@ -121,7 +120,17 @@ public class SimulationTest {
 
 	@Test
 	public void testGetTags() {
-		assertEquals("There should be 1 tag", 1, baseSimulation.getTags().size());
+		List<String> tags = new ArrayList<String>();
+		try {
+			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+				for (String tag : line.split(", ")) {
+				    tags.add(tag);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		assertEquals("The tag lists from the file are the same", tags, baseSimulation.getTags());
 	}
 
 	@Test
@@ -141,6 +150,17 @@ public class SimulationTest {
 		baseSimulation.setNumberOfConsumers(2);
 		assertEquals("There are 2 consumers", 2, baseSimulation.getNumberOfConsumers());
 	}
+	
+	@Test
+	public void testGetNumberOfTags() {
+		assertEquals("There is 1 tags", 1, baseSimulation.getNumberOfTags());
+	}
+	
+	@Test
+	public void testSetNumberOfTags() {
+		baseSimulation.setNumberOfTags(0);
+		assertEquals("There are 0 tags", 0, baseSimulation.getNumberOfTags());
+	}
 
 	@Test
 	public void testGetNumberOfProducers() {
@@ -149,7 +169,7 @@ public class SimulationTest {
 
 	@Test
 	public void testSetNumberOfProducers() {
-		baseSimulation.setNumberOfConsumers(2);
+		baseSimulation.setNumberOfProducers(2);
 		assertEquals("There are 2 producers", 2, baseSimulation.getNumberOfProducers());
 	}
 
@@ -167,18 +187,20 @@ public class SimulationTest {
 	@Test
 	public void testSetUser() {
 		Consumer p = new Consumer(0, new PopularitySearch());
-		baseSimulation.setUser(0, p);
-		assertEquals("The first user is p", p, baseSimulation.getUsers().indexOf(0));
+		baseSimulation.setUser(1, p);
+		assertEquals("The first user is p", p, baseSimulation.getUsers().get(0));
 		
 	}
 
 	@Test
 	public void testGetUsers() {
-		Producer p = new Producer(0, new PopularitySearch());
-		Consumer c = new Consumer(1, new PopularitySearch());
+		Producer p = new Producer(1, new PopularitySearch());
+		Consumer c = new Consumer(2, new PopularitySearch());
 		List<User> users = new ArrayList<User>();
 		users.add(p);
+		p.setTag(baseSimulation.getUsers().get(0).getTag());
 		users.add(c);
+		c.setTag(baseSimulation.getUsers().get(1).getTag());
 		assertEquals("There will one producer and one consumer", users, baseSimulation.getUsers());
 	}
 
