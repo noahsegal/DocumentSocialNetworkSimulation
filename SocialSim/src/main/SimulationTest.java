@@ -187,7 +187,8 @@ public class SimulationTest {
 	@Test
 	public void testSetUser() {
 		Consumer p = new Consumer(0, new PopularitySearch());
-		baseSimulation.setUser(1, p);
+		p.setTag("Test");
+		baseSimulation.setUser(0, p);
 		assertEquals("The first user is p", p, baseSimulation.getUsers().get(0));
 		
 	}
