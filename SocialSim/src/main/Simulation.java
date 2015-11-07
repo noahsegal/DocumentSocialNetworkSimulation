@@ -222,15 +222,34 @@ public class Simulation {
 	public HashMap<User, ArrayList<Integer>> getPayoffs() {
 		return payoffs;
 	}
-	
+
 	/**
-	 * Set the currentTurn
+	 * Set the list of payoffs
 	 * 
-	 * @param currentTurn
+	 * @param payoffs
 	 */
-	public void setCurrentTurn(int currentTurn)
+	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
+		this.payoffs = payoffs;
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public ArrayList<Integer> getPayoff(User u)
 	{
-		this.currentTurn = currentTurn;
+		return payoffs.get(u);
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public void setPayoff(User u, ArrayList<Integer> p)
+	{
+		payoffs.put(u, p);
 	}
 	
 	/**
@@ -244,13 +263,13 @@ public class Simulation {
 	}
 	
 	/**
-	 * Set the current ID 
+	 * Set the currentTurn
 	 * 
-	 * @param currentId
+	 * @param currentTurn
 	 */
-	public void setCurrentId(int currentId)
+	public void setCurrentTurn(int currentTurn)
 	{
-		this.currentId = currentId;
+		this.currentTurn = currentTurn;
 	}
 	
 	/**
@@ -268,31 +287,9 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
-	public void setUsers(List<User> users)
+	public void setCurrentId(int currentId)
 	{
-		this.users = users;
-	}
-	
-	/**
-	 * sets a consumer index
-	 * 
-	 * @param i
-	 * @param c
-	 */
-	public void setUser(int i, User c)
-	{
-		users.set(i, c);
-	}
-	
-	/**
-	 * get a specific consumer at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public User getUser(int i)
-	{
-		return users.get(i);
+		this.currentId = currentId;
 	}
 	
 	/**
@@ -310,9 +307,31 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
-	public void setDocuments(List<Document> documents)
+	public void setUsers(List<User> users)
 	{
-		this.documents = documents;
+		this.users = users;
+	}
+	
+	/**
+	 * get a specific consumer at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public User getUser(int i)
+	{
+		return users.get(i);
+	}
+	
+	/**
+	 * sets a consumer index
+	 * 
+	 * @param i
+	 * @param c
+	 */
+	public void setUser(int i, User c)
+	{
+		users.set(i, c);
 	}
 	
 	/**
@@ -324,14 +343,33 @@ public class Simulation {
 	{
 		return documents;
 	}
-
+	
 	/**
-	 * Set the list of payoffs
+	 * Set the current ID 
 	 * 
-	 * @param payoffs
+	 * @param currentId
 	 */
-	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
-		this.payoffs = payoffs;
+	public void setDocuments(List<Document> documents)
+	{
+		this.documents = documents;
+	}
+	
+	/**
+	 * get a document at a specific index
+	 * @param k the index
+	 * @return the document at that index
+	 */
+	public Document getDocument(int k) {
+		return documents.get(k);
+	}
+	
+	/**
+	 * set a document at a specified index
+	 * @param k the index
+	 * @param d the document
+	 */
+	public void setDocument(int k, Document d) {
+		documents.set(k, d);
 	}
 
 	/**
@@ -351,7 +389,29 @@ public class Simulation {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-
+	
+	/**
+	 * get a specific document at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public String getTag(int i)
+	{
+		return tags.get(i);
+	}
+	
+	/**
+	 * set a document in the list
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void setTag(int i, String t)
+	{
+		tags.set(i, t);
+	}
+	
 	/**
 	 * get the number of consumers
 	 * 
@@ -425,49 +485,17 @@ public class Simulation {
 	}
 	
 	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
+	 * get the main window
+	 * @return the main window
 	 */
-	public void setTags(int i, String t)
-	{
-		tags.set(i, t);
+	public MainWindow getMainWindow() {
+		return mw;
 	}
 	
 	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
+	 * set the main window
+	 * @param mw the main window
 	 */
-	public String getTags(int i)
-	{
-		return tags.get(i);
-	}
-	
-	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	public void setDocuments(int i, Document d)
-	{
-		documents.set(i, d);
-	}
-	
-	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public Document getDocuments(int i)
-	{
-		return documents.get(i);
-	}
-	
 	public void setMainWindow(MainWindow mw) {
 		this.mw = mw;
 	}
