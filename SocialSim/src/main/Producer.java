@@ -92,12 +92,11 @@ public class Producer extends User {
 	@Override
 	public boolean equals(Object obj) {
 		if (!super.equals(obj)) return false;
-		
 		if ( !(obj instanceof Producer) ) return false;
 
 		Producer producer = (Producer) obj;
 		
-		return uploadedDocuments.equals(producer.getUploadedDocuments());
+		return uploadedDocuments.equals(producer.getUploadedDocuments()) && super.equals(producer);
 	}
 	
 	

@@ -92,7 +92,7 @@ public abstract class User {
 	}
 	
 	/**
-	 * @return String of the list Users following this
+	 * @return String of the list of Users following this User
 	 */
 	public String followerString() {
 		String s = "";
@@ -103,7 +103,7 @@ public abstract class User {
 	}
 	
 	/**
-	 * @return String of the list of Users this follows
+	 * @return String of the list of Users this User follows
 	 */
 	public String followingString() {
 		String s = "";
@@ -115,12 +115,14 @@ public abstract class User {
 	
 	@Override
 	public boolean equals(Object obj) {
-		if (!(obj instanceof User))
-			return false;
+		if (null == obj) return false;
+		if ( !(obj instanceof User) ) return false;
 		
-		User u = (User)obj;
+		User user = (User) obj;
 		
-		return u.id == id;
+		return tag.equals(user.tag) && (id == user.id) && (payoff == user.payoff)
+				&& following.equals(user.following) && followers.equals(user.followers)
+				&& likedDocs.equals(user.likedDocs);
 	}
 
 	//////////////////////////
