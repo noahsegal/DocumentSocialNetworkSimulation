@@ -124,9 +124,29 @@ public class Simulation {
 		mw.updateTables(documents, users);
 		currentTurn++;
 		if (numberOfTurns+1 == currentTurn)
+		{
+			reset();
 			return false;
+		}
 		else return true;
 		
+	}
+	
+	public void reset()
+	{
+		users = new ArrayList<User>();
+		documents = new ArrayList<Document>();
+		tags = new ArrayList<String>();
+		payoffs = new HashMap<User, ArrayList<Integer>>();
+		try {
+			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+				for (String tag : line.split(", ")) {
+				    tags.add(tag);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -202,15 +222,34 @@ public class Simulation {
 	public HashMap<User, ArrayList<Integer>> getPayoffs() {
 		return payoffs;
 	}
-	
+
 	/**
-	 * Set the currentTurn
+	 * Set the list of payoffs
 	 * 
-	 * @param currentTurn
+	 * @param payoffs
 	 */
-	public void setCurrentTurn(int currentTurn)
+	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
+		this.payoffs = payoffs;
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public ArrayList<Integer> getPayoff(User u)
 	{
-		this.currentTurn = currentTurn;
+		return payoffs.get(u);
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public void setPayoff(User u, ArrayList<Integer> p)
+	{
+		payoffs.put(u, p);
 	}
 	
 	/**
@@ -224,13 +263,13 @@ public class Simulation {
 	}
 	
 	/**
-	 * Set the current ID 
+	 * Set the currentTurn
 	 * 
-	 * @param currentId
+	 * @param currentTurn
 	 */
-	public void setCurrentId(int currentId)
+	public void setCurrentTurn(int currentTurn)
 	{
-		this.currentId = currentId;
+		this.currentTurn = currentTurn;
 	}
 	
 	/**
@@ -248,9 +287,61 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
+	public void setCurrentId(int currentId)
+	{
+		this.currentId = currentId;
+	}
+	
+	/**
+	 * get all the users
+	 * 
+	 * @return the users in the simulation
+	 */
+	public List<User> getUsers()
+	{
+		return users;
+	}
+	
+	/**
+	 * Set the current ID 
+	 * 
+	 * @param currentId
+	 */
 	public void setUsers(List<User> users)
 	{
 		this.users = users;
+	}
+	
+	/**
+	 * get a specific consumer at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public User getUser(int k)
+	{
+		return users.get(i);
+	}
+	
+	/**
+	 * sets a consumer index
+	 * 
+	 * @param i
+	 * @param c
+	 */
+	public void setUser(int k, User c)
+	{
+		users.set(i, c);
+	}
+	
+	/**
+	 * Get the current ID
+	 * 
+	 * @return consumer
+	 */
+	public List<Document> getDocuments()
+	{
+		return documents;
 	}
 	
 	/**
@@ -264,22 +355,21 @@ public class Simulation {
 	}
 	
 	/**
-	 * Get the current ID
-	 * 
-	 * @return consumer
+	 * get a document at a specific index
+	 * @param k the index
+	 * @return the document at that index
 	 */
-	public List<Document> getDocuments()
-	{
-		return documents;
+	public Document getDocument(int k) {
+		return documents.get(k);
 	}
-
+	
 	/**
-	 * Set the list of payoffs
-	 * 
-	 * @param payoffs
+	 * set a document at a specified index
+	 * @param k the index
+	 * @param d the document
 	 */
-	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
-		this.payoffs = payoffs;
+	public void setDocument(int k, Document d) {
+		documents.set(k, d);
 	}
 
 	/**
@@ -299,7 +389,29 @@ public class Simulation {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-
+	
+	/**
+	 * get a specific document at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public String getTag(int k)
+	{
+		return tags.get(i);
+	}
+	
+	/**
+	 * set a document in the list
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void setTag(int k, String t)
+	{
+		tags.set(i, t);
+	}
+	
 	/**
 	 * get the number of consumers
 	 * 
@@ -373,81 +485,17 @@ public class Simulation {
 	}
 	
 	/**
-	 * sets a consumer index
-	 * 
-	 * @param i
-	 * @param c
+	 * get the main window
+	 * @return the main window
 	 */
-	public void setUser(int i, User c)
-	{
-		users.set(i, c);
+	public MainWindow getMainWindow() {
+		return mw;
 	}
 	
 	/**
-	 * get a specific consumer at an index
-	 * 
-	 * @param i
-	 * @return
+	 * set the main window
+	 * @param mw the main window
 	 */
-	public User getUsers(int i)
-	{
-		return users.get(i);
-	}
-	
-	/**
-	 * get all the users
-	 * 
-	 * @return the users in the simulation
-	 */
-	public List<User> getUsers()
-	{
-		return users;
-	}
-	
-	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	public void setTags(int i, String t)
-	{
-		tags.set(i, t);
-	}
-	
-	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public String getTags(int i)
-	{
-		return tags.get(i);
-	}
-	
-	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	public void setDocuments(int i, Document d)
-	{
-		documents.set(i, d);
-	}
-	
-	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public Document getDocuments(int i)
-	{
-		return documents.get(i);
-	}
-	
 	public void setMainWindow(MainWindow mw) {
 		this.mw = mw;
 	}
