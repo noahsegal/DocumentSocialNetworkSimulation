@@ -320,7 +320,7 @@ public class Simulation {
 	 */
 	public User getUser(int k)
 	{
-		return users.get(i);
+		return users.get(k);
 	}
 	
 	/**
@@ -331,7 +331,7 @@ public class Simulation {
 	 */
 	public void setUser(int k, User c)
 	{
-		users.set(i, c);
+		users.set(k, c);
 	}
 	
 	/**
@@ -398,7 +398,7 @@ public class Simulation {
 	 */
 	public String getTag(int k)
 	{
-		return tags.get(i);
+		return tags.get(k);
 	}
 	
 	/**
@@ -409,7 +409,7 @@ public class Simulation {
 	 */
 	public void setTag(int k, String t)
 	{
-		tags.set(i, t);
+		tags.set(k, t);
 	}
 	
 	/**
