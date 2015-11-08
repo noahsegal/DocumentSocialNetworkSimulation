@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -97,7 +98,7 @@ public abstract class User {
 	public String followerString() {
 		String s = "";
 		for (User u: followers) {
-			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
 		}
 		return s;
 	}
@@ -108,13 +109,13 @@ public abstract class User {
 	public String followingString() {
 		String s = "";
 		for (User u: following) {
-			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
 		}
 		return s;
 	}
 	
 	/**
-	 * @return String Description of the USER
+	 * @return String Description of the User
 	 */
 	@Override
 	public String toString() {
@@ -199,8 +200,8 @@ public abstract class User {
 	 * @param i Index of a specific user following this User
 	 * @param u User to follow this User's
 	 */
-	public void setFollowers(int i, Consumer u) {
-		if (i >= 0 && i < followers.size() && null != u) {
+	public void setFollowers(int i, User u) {
+		if (i >= 0 && i < followers.size() && null != u && !followers.contains(u)) {
 			followers.add(i, u);
 		}
 	}
@@ -229,7 +230,7 @@ public abstract class User {
 	 */
 	public User getFollowing(int i) {
 		if (i >= 0 && i < following.size()) {
-			return followers.get(i);
+			return following.get(i);
 		}
 		return null;
 	}
@@ -247,8 +248,8 @@ public abstract class User {
 	 * @param i Index of a new user to follow
 	 * @param u User you wish to follow
 	 */
-	public void setFollowing(int i, Consumer u) {
-		if (i >= 0 && i < following.size() && null != u) {
+	public void setFollowing(int i, User u) {
+		if (i >= 0 && i < following.size() && null != u && !following.contains(u)) {
 			following.add(i, u);
 		}
 	}
@@ -296,7 +297,7 @@ public abstract class User {
 	 * @param d Document to add to the list of liked documents
 	 */
 	public void setLikedDocs(int i, Document d) {
-		if (i >= 0 && i < likedDocs.size() && null != d) {
+		if (i >= 0 && i < likedDocs.size() && null != d && !likedDocs.contains(d)) {
 			likedDocs.add(i, d);
 		}
 	}
