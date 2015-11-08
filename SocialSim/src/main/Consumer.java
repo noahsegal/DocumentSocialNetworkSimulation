@@ -21,6 +21,7 @@ public class Consumer extends User {
 	public Consumer(int id, Search searchMethod) {
 		this.id = id;
 		this.tag = "NO_TAG";
+		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
