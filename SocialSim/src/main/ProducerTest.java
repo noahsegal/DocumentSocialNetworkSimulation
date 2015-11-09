@@ -8,6 +8,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing for Producer.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class ProducerTest {
 
 	private Producer p1;

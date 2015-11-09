@@ -8,7 +8,11 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
+/**
+ * Testing for PopularitySearch.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class PopularitySearchTest {
 
 	private Search s;

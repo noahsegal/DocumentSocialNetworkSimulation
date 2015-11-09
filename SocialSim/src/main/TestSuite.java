@@ -16,5 +16,11 @@ import org.junit.runners.Suite.SuiteClasses;
 	RandomSearchTest.class,
 	SimulationTest.class
 })
+
+/**
+ * Test Suite for Social Sim.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class TestSuite {
 }

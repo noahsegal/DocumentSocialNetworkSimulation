@@ -8,6 +8,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing for consumer
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class ConsumerTest {
 	
 	private Consumer consumer1;
