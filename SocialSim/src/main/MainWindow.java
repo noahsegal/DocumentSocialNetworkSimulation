@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -33,7 +34,7 @@ public class MainWindow extends JFrame {
 	private JTextField numberOfSearchResultsField; // text field to get # of search results returned each turn
 
 	private JPanel chartPanel;
-	
+
 	private JButton startButton;
 
 	private DefaultTableModel documentsTableModel;
@@ -85,27 +86,30 @@ public class MainWindow extends JFrame {
 				}
 				numberOfSearchResults = new Integer(numberOfSearchResultsField.getText());
 			}catch (Exception e) {
-				System.out.println("Invalid Field");
+				JOptionPane alertWindow = new JOptionPane();
+				alertWindow.showMessageDialog(this, "Cannot Enter Strings", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			if(!initialized) {
-				this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
-				startButton.setText("Step");
-				initialized = true;
-				setFieldEnabled(false);
-			}
-			initialized = this.sim.takeTurn(numberOfSearchResults);
-			numberOfTurnsField.setText( (Integer.parseInt(numberOfTurnsField.getText()) - 1) + "" );
-			plotData();
-			
-			if(!initialized) {
-				setFieldEnabled(true);
-				numberOfTurnsField.setText("");
-				numberOfProdsField.setText("");
-				numberOfConsField.setText("");
-				numberOfTagsField.setText("");
-				numberOfSearchResultsField.setText("");
-				startButton.setText("Start");
+			if(valuesValid()) {
+				if(!initialized) {
+					this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
+					startButton.setText("Step");
+					initialized = true;
+					setFieldEnabled(false);
+				}
+				initialized = this.sim.takeTurn(numberOfSearchResults);
+				numberOfTurnsField.setText( (Integer.parseInt(numberOfTurnsField.getText()) - 1) + "" );
+				plotData();
+
+				if(!initialized) {
+					setFieldEnabled(true);
+					numberOfTurnsField.setText("");
+					numberOfProdsField.setText("");
+					numberOfConsField.setText("");
+					numberOfTagsField.setText("");
+					numberOfSearchResultsField.setText("");
+					startButton.setText("Start");
+				}
 			}
 		});
 
@@ -233,7 +237,7 @@ public class MainWindow extends JFrame {
 		numberOfConsField.setEnabled(b);
 		numberOfTagsField.setEnabled(b);
 	}
-	
+
 	/**
 	 * add a row to the documents table
 	 * @param doc, the document to be added
@@ -274,6 +278,15 @@ public class MainWindow extends JFrame {
 		return labelField;
 	}
 
+	private boolean valuesValid() {
+		if(numberOfTurns < 0 || numberOfProds < 0 || numberOfCons < 0 || numberOfTags < 0 || numberOfSearchResults < 0){
+			JOptionPane alertWindow = new JOptionPane();
+			alertWindow.showMessageDialog(this, "Negative Number", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		else
+			return false;
+	}
 
 	/**
 	 * Creates a ScrollPane containing a JTable with tableModel and header
@@ -288,22 +301,22 @@ public class MainWindow extends JFrame {
 		pane.setMinimumSize(new Dimension(100,200));
 		return pane;
 	}
-	
+
 	/**
 	 * Plot data on a bar graph
 	 */
 	private void plotData() {
 		DefaultCategoryDataset data = buildData(producersTableModel, consumersTableModel);
 		JFreeChart chart = ChartFactory.createBarChart("User Payoffs",
-														"User (ID)",
-														"Payoff (int)",
-														data);
+				"User (ID)",
+				"Payoff (int)",
+				data);
 		ChartPanel myChart = new ChartPanel(chart);
 		chartPanel.removeAll();
 		chartPanel.add(myChart, BorderLayout.CENTER);
 		chartPanel.validate();
 	}
-	
+
 	/**
 	 * Build Data to plot for either the Consumer or Producer
 	 * @param model DefaultTableModel to build plot data from
