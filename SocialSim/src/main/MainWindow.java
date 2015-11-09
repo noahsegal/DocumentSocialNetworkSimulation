@@ -49,6 +49,7 @@ public class MainWindow extends JFrame {
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
+	private boolean onGoing;
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -58,6 +59,7 @@ public class MainWindow extends JFrame {
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
 		initialized = false;
+		onGoing = false;
 
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(20);
@@ -88,6 +90,7 @@ public class MainWindow extends JFrame {
 				alertWindow.showMessageDialog(this, "Cannot Enter Strings", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
+			System.out.println("Hi");
 			if(valuesValid()) {
 				if(!initialized) {
 					this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
@@ -283,7 +286,7 @@ public class MainWindow extends JFrame {
 			return false;
 		}
 		else
-			return false;
+			return true;
 	}
 
 	/**
