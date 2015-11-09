@@ -55,7 +55,7 @@ public class Producer extends User {
 	@Override
 	public void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(this.getTag())) {
+			if (doc.getProducer().equals(this)) {
 				payoff++;
 			}
 		}

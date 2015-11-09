@@ -310,18 +310,18 @@ public abstract class User {
 		return likedDocs.size();
 	}
 	
-	/* SearchType */
+	/* SearchMethod */
 	/**
-	 * Get the User's searchType
-	 * @return searchType
+	 * Get the User's Search method
+	 * @return searchMethod
 	 */
 	public Search getSearchMethod() {
 		return searchMethod;
 	}
 	
 	/**
-	 * Set the User's searchType
-	 * @param searchType New searchType value
+	 * Set the User's searchMethod
+	 * @param searchMethod New Search value
 	 */
 	public void setSearchMethod(Search searchMethod) {
 		this.searchMethod = searchMethod;
