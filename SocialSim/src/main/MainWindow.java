@@ -132,19 +132,19 @@ public class MainWindow extends JFrame {
 		con.weightx = 0.33;
 		con.gridwidth = 2;
 		panel.add(documentTableLabel, con);
-		panel.add(consumerTableLabel, con);
+		panel.add(producerTableLabel, con);
 
 		con.gridwidth = GridBagConstraints.REMAINDER;	// End of row
-		panel.add(producerTableLabel, con);
+		panel.add(consumerTableLabel, con);
 
 		//Build Tables 	-- Third to eighth rows
 		con.gridheight = 5;
 		con.gridwidth = 2;
 		panel.add(buildTable(documentsTableModel, documentTableHeader), con);
-		panel.add(buildTable(consumersTableModel, consumerTableHeader), con);
+		panel.add(buildTable(producersTableModel, producerTableHeader), con);
 
 		con.gridwidth = GridBagConstraints.REMAINDER;  // End of row
-		panel.add(buildTable(producersTableModel, producerTableHeader), con);
+		panel.add(buildTable(consumersTableModel, consumerTableHeader), con);
 
 		//Build Graph   -- Ninth to Thirteenth rows
 		con.gridheight = 4;
@@ -292,7 +292,7 @@ public class MainWindow extends JFrame {
 	 * Plot data on a bar graph
 	 */
 	private void plotData() {
-		DefaultCategoryDataset data = buildData(consumersTableModel, producersTableModel);
+		DefaultCategoryDataset data = buildData(producersTableModel, consumersTableModel);
 		JFreeChart chart = ChartFactory.createBarChart("User Payoffs",
 														"Users",
 														"Payoffs",
