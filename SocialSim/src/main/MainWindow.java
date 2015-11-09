@@ -296,7 +296,7 @@ public class MainWindow extends JFrame {
 		DefaultCategoryDataset data = buildData(producersTableModel, consumersTableModel);
 		JFreeChart chart = ChartFactory.createBarChart("User Payoffs",
 														"User (ID)",
-														"Payoffs",
+														"Payoff (int)",
 														data);
 		ChartPanel myChart = new ChartPanel(chart);
 		chartPanel.removeAll();
