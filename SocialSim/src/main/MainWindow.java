@@ -303,6 +303,7 @@ public class MainWindow extends JFrame {
 		ChartPanel myChart = new ChartPanel(chart);
 		chartPanel.removeAll();
 		chartPanel.add(myChart, BorderLayout.CENTER);
+		chartPanel.validate();
 	}
 	
 	/**

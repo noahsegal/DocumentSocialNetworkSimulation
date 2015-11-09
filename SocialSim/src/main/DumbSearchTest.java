@@ -9,6 +9,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing for DumbSearch
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class DumbSearchTest {
 	
 	private Search s;
@@ -40,19 +45,6 @@ public class DumbSearchTest {
 		listD.add(d4);
 	}
 
-	@After
-	public void teardown() {
-		s = null;
-		p = null; 
-		c = null;
-		d1 = null;
-		d2 = null;
-		d3 = null;
-		d4 = null;
-		listD = null;
-		list2 = null;
-	}
-
 	@Test
 	public void testSearch() {
 		assertEquals(listD,	s.search(c, listD, 5));
@@ -73,6 +65,12 @@ public class DumbSearchTest {
 		assertEquals(list2, s.search(p, listD, 2));
 		list2.add(d2);
 		assertEquals(list2, s.search(c, listD, 3));
+	}
+	
+	@Test
+	public void testEquals() {
+		assertTrue(s.equals(new DumbSearch()));
+		assertFalse(s.equals(new HipsterSearch()));
 	}
 	
 }
