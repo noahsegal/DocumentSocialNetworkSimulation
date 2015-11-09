@@ -39,7 +39,7 @@ public class SimulationTest {
 		Simulation simTest = new Simulation();
 		simTest.setMainWindow(new MainWindow(simTest));
 		simTest.startGame(1, 1, 1, 1);
-		assertEquals("simTest is the same as baseSimulation", simTest, baseSimulation);
+		assertEquals("simTest is the same as baseSimulation", baseSimulation, simTest);
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class SimulationTest {
 	public void testReset() {
 		baseSimulation.reset();
 		Simulation test = new Simulation();
-		assertEquals("A new instance of a simulation is the same as a reset one", test, baseSimulation);
+		assertEquals("A new instance of a simulation is the same as a reset one", baseSimulation, test);
 	}
 
 	@Test
@@ -79,20 +79,20 @@ public class SimulationTest {
 	public void testCopy() {
 		Simulation sim = new Simulation();
 		sim.copy(baseSimulation);
-		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
+		assertEquals("sim and baseSimulation are the same", baseSimulation, sim);
 	}
 	
 	@Test
 	public void testEquals() {
 		Simulation sim = new Simulation();
 		sim.startGame(1, 1, 1, 1);
-		assertEquals("sim and baseSimulation are the same", sim, baseSimulation);
+		assertEquals("sim and baseSimulation are the same", baseSimulation, sim);
 	}
 
 	@Test
 	public void testGetPayoffs() {
 		for(User u:baseSimulation.getUsers()){
-			assertEquals("Each payoff is 0", baseSimulation.getPayoffs().get(u).indexOf(0), 0);
+			assertEquals("Each payoff is 0", 0, baseSimulation.getPayoffs().get(u).indexOf(0));
 		}
 	}
 
