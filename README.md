@@ -40,7 +40,7 @@ To start the program run simulation.jar and follow the simulation instructions. 
 
 ## Known Issues
 
--  Two unused search methods are included, HipsterSearch.java and RandomSearch.java. To be ignored for Milenstone1.
+-  Milestone 3 will add capability to get detailed info about individual Consumers and Producers in the GUI.
 
 ##Social Sim Created By:
 
