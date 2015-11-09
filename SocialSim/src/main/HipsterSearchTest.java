@@ -40,18 +40,6 @@ public class HipsterSearchTest {
 		listD.add(d4);
 	}
 
-	@After
-	public void teardown() {
-		s = null;
-		p = null; 
-		c = null;
-		d1 = null;
-		d2 = null;
-		d3 = null;
-		d4 = null;
-		listD = null;
-		list2 = null;
-	}
 	
 	@Test
 	public void testSearch() {
@@ -70,6 +58,12 @@ public class HipsterSearchTest {
 		list2.set(0, d2);
 		list2.set(1, d3);
 		assertEquals(list2, s.search(p, listD, 2));
+	}
+	
+	@Test
+	public void testEquals() {
+		assertTrue(s.equals(new HipsterSearch()));
+		assertFalse(s.equals(new PopularitySearch()));
 	}
 
 }
