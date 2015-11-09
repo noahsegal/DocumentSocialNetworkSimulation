@@ -52,6 +52,10 @@ public class Simulation {
 	
 	/**
 	 * Logic to start the game and get the necessary information from the use
+	 * @param numberOfTurns the number of turns
+	 * @param numberOfTags the number of tags
+	 * @param numberOfProducers the number of producers
+	 * @param numberOfConsumers the number of consumers
 	 */
 	public void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
 	{
@@ -132,6 +136,9 @@ public class Simulation {
 		
 	}
 	
+	/**
+	 * reset the game to its original state
+	 */
 	public void reset()
 	{
 		users = new ArrayList<User>();
