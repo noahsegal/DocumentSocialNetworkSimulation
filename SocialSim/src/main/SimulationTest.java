@@ -21,10 +21,12 @@ import org.junit.Test;
 
 public class SimulationTest {
 	Simulation baseSimulation;
+	MainWindow mw;
 	@Before
 	public void setUp() throws Exception {
 		baseSimulation = new Simulation();
-		baseSimulation.setMainWindow(new MainWindow(baseSimulation));
+		mw = new MainWindow(baseSimulation);
+		baseSimulation.setMainWindow(mw);
 		baseSimulation.startGame(1, 1, 1, 1);
 	}
 
@@ -52,7 +54,6 @@ public class SimulationTest {
 	@Test
 	public void testTakeTurn() {
 		int currentTurn = baseSimulation.getCurrentTurn();
-		HashMap<User, ArrayList<Integer>> currentPayoffs = baseSimulation.getPayoffs();
 		boolean gameOver = baseSimulation.takeTurn(5);
 		assertEquals("The turn has incremented by 1", currentTurn+1, baseSimulation.getCurrentTurn());
 		assertFalse("The game is over", gameOver);
@@ -130,13 +131,13 @@ public class SimulationTest {
 
 	@Test
 	public void testGetCurrentId() {
-		assertEquals("The current turn is 1", 1, baseSimulation.getCurrentTurn());
+		assertEquals("The current Id is 3, since the next user would be the third user", 3, baseSimulation.getCurrentId());
 	}
 
 	@Test
 	public void testSetCurrentId() {
 		baseSimulation.setCurrentId(5);
-		assertEquals("The current id is 5", 5, baseSimulation.getCurrentId());
+		assertEquals("The current Id is 5", 5, baseSimulation.getCurrentId());
 	}
 
 	@Test
@@ -153,8 +154,9 @@ public class SimulationTest {
 
 	@Test
 	public void testSetUsers() {
-		baseSimulation.setUsers(new ArrayList<User>());
-		assertNotNull("There are consumers", baseSimulation.getUsers());
+		ArrayList<User> test = new ArrayList<User>();
+		baseSimulation.setUsers(test);
+		assertEquals("There is an empty user list", test, baseSimulation.getUsers());
 	}
 	
 	@Test
@@ -183,7 +185,7 @@ public class SimulationTest {
 		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
 		testDocs.add(testDoc);
 		baseSimulation.setDocuments(testDocs);
-		assertEquals("The first document is testDoc", testDocs, baseSimulation.getDocuments());
+		assertEquals("The documents list is testDocs", testDocs, baseSimulation.getDocuments());
 	}
 
 	@Test
@@ -197,7 +199,6 @@ public class SimulationTest {
 	@Test
 	public void testGetDocumentInt() {
 		Document testDoc = new Document("Test", "Test", new Producer(0, new PopularitySearch()));
-		baseSimulation.setDocuments(new ArrayList<Document>());
 		baseSimulation.getDocuments().add(testDoc);
 		assertEquals("The first doc is testDoc", testDoc, baseSimulation.getDocument(0));
 	}
@@ -282,16 +283,14 @@ public class SimulationTest {
 	
 	@Test
 	public void testGetMainWindow() {
-		MainWindow mw = new MainWindow(baseSimulation);
-		baseSimulation.setMainWindow(mw);
 		assertEquals("The main window is the same as a new maindow", mw, baseSimulation.getMainWindow());
 	}
 	
 	@Test
 	public void testSetMainWindow() {
-		MainWindow mw = new MainWindow(baseSimulation);
-		baseSimulation.setMainWindow(mw);
-		assertEquals("The main windows has been set to mw", mw, baseSimulation.getMainWindow());
+		MainWindow mw2 = new MainWindow(baseSimulation);
+		baseSimulation.setMainWindow(mw2);
+		assertEquals("The main windows has been set to mw2", mw2, baseSimulation.getMainWindow());
 	}
 
 }
