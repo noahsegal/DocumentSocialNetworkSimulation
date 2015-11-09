@@ -16,7 +16,6 @@ public class Simulation {
 	private List<User> users;
 	private List<Document> documents;
 	private HashMap<User, ArrayList<Integer>> payoffs;
-	private PopularitySearch searchMethod;
 	private int numberOfTags;
 	private int numberOfConsumers;
 	private int numberOfProducers;
@@ -40,7 +39,6 @@ public class Simulation {
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		searchMethod = new PopularitySearch();
 		try {
 			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
 				for (String tag : line.split(", ")) {
@@ -61,7 +59,9 @@ public class Simulation {
 		Random rand;
 		
 		this.numberOfTurns = numberOfTurns;
-		this.numberOfTags = numberOfTags;
+		if (numberOfTags > tags.size())
+			this.numberOfTags = tags.size();
+		else this.numberOfTags = numberOfTags;
 		this.numberOfProducers = numberOfProducers;
 		this.numberOfConsumers = numberOfConsumers;
 		
@@ -72,7 +72,7 @@ public class Simulation {
 		while (currentId <= numberOfProducers)
 		{
 			Producer p = new Producer(currentId, new PopularitySearch());
-			index = rand.nextInt(tags.size());
+			index = rand.nextInt(this.numberOfTags);
 			String s = tags.get(index);
 			p.setTag(s);
 			users.add(p);
@@ -84,7 +84,7 @@ public class Simulation {
 		while (currentId <= numberOfProducers+numberOfConsumers)
 		{
 			Consumer c = new Consumer(currentId, new PopularitySearch());
-			index = rand.nextInt(tags.size());
+			index = rand.nextInt(this.numberOfTags);
 			String s = tags.get(index);
 			c.setTag(s);
 			users.add(c);
@@ -99,6 +99,7 @@ public class Simulation {
 	 * The turn a consumer will take
 	 * 
 	 * @param k The number of documents to search for
+	 * @return if the simulation is over
 	 */
 	public boolean takeTurn(int k)
 	{
@@ -106,7 +107,7 @@ public class Simulation {
 		User c = users.get((int)(Math.random() * users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = c.searchMethod.search(c, documents, k);
+		List<Document> searchResults = new ArrayList<Document>(c.searchMethod.search(c, documents, k));
 		
 		Document d = c.takeTurn(searchResults);
 		if (d != null){
@@ -120,13 +121,32 @@ public class Simulation {
 			payoffs.get(c).add(c.getPayoff());
 		}
 		
-		
 		mw.updateTables(documents, users);
 		currentTurn++;
-		if (numberOfTurns == currentTurn)
+		if (numberOfTurns+1 == currentTurn)
+		{
+			reset();
 			return false;
+		}
 		else return true;
 		
+	}
+	
+	public void reset()
+	{
+		users = new ArrayList<User>();
+		documents = new ArrayList<Document>();
+		tags = new ArrayList<String>();
+		payoffs = new HashMap<User, ArrayList<Integer>>();
+		try {
+			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+				for (String tag : line.split(", ")) {
+				    tags.add(tag);
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -149,8 +169,7 @@ public class Simulation {
 	/**
 	 * The string providing the information of the current state of the simulation
 	 */
-	public String toString()
-	{
+	public String toString(){
 		String s = "Current Standing: \n\nCurrent Contributors:\n";
 		for (int i = 0; i < currentId-1; i++)
 		{
@@ -166,6 +185,30 @@ public class Simulation {
 		return s;
 	}
 	
+	public void copy(Simulation sim){
+		currentId = sim.currentId;
+		currentTurn = sim.currentTurn;
+		documents = new ArrayList<Document>(sim.documents);
+		users = new ArrayList<User>(sim.users);
+		numberOfConsumers = sim.numberOfConsumers;
+		numberOfProducers = sim.numberOfProducers;
+		numberOfTags = sim.numberOfTags;
+		numberOfTurns = sim.numberOfTurns;
+		tags = new ArrayList<String>(sim.tags);
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof Simulation))
+			return false;
+		
+		Simulation s = (Simulation)obj;
+		return s.currentId == currentId && s.currentTurn == currentTurn && s.documents.equals(documents) 
+				&& s.numberOfConsumers == numberOfConsumers && s.numberOfProducers == numberOfProducers 
+				&& s.numberOfTags == numberOfTags && s.numberOfTurns == numberOfTurns && s.tags.equals(tags)
+				&& s.users.equals(users);
+	}
+	
 	
 	//////////////////////////
 	//  Getters & Setters  ///
@@ -179,15 +222,34 @@ public class Simulation {
 	public HashMap<User, ArrayList<Integer>> getPayoffs() {
 		return payoffs;
 	}
-	
+
 	/**
-	 * Set the currentTurn
+	 * Set the list of payoffs
 	 * 
-	 * @param currentTurn
+	 * @param payoffs
 	 */
-	public void setCurrentTurn(int currentTurn)
+	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
+		this.payoffs = payoffs;
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public ArrayList<Integer> getPayoff(User u)
 	{
-		this.currentTurn = currentTurn;
+		return payoffs.get(u);
+	}
+
+	/**
+	 * Set the payoffs of a user
+	 * 
+	 * @param payoffs
+	 */	
+	public void setPayoff(User u, ArrayList<Integer> p)
+	{
+		payoffs.put(u, p);
 	}
 	
 	/**
@@ -201,13 +263,13 @@ public class Simulation {
 	}
 	
 	/**
-	 * Set the current ID 
+	 * Set the currentTurn
 	 * 
-	 * @param currentId
+	 * @param currentTurn
 	 */
-	public void setCurrentId(int currentId)
+	public void setCurrentTurn(int currentTurn)
 	{
-		this.currentId = currentId;
+		this.currentTurn = currentTurn;
 	}
 	
 	/**
@@ -225,9 +287,51 @@ public class Simulation {
 	 * 
 	 * @param currentId
 	 */
-	public void setConsumers(List<User> users)
+	public void setCurrentId(int currentId)
+	{
+		this.currentId = currentId;
+	}
+	
+	/**
+	 * get all the users
+	 * 
+	 * @return the users in the simulation
+	 */
+	public List<User> getUsers()
+	{
+		return users;
+	}
+	
+	/**
+	 * Set the current ID 
+	 * 
+	 * @param currentId
+	 */
+	public void setUsers(List<User> users)
 	{
 		this.users = users;
+	}
+	
+	/**
+	 * get a specific consumer at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public User getUser(int k)
+	{
+		return users.get(k);
+	}
+	
+	/**
+	 * sets a consumer index
+	 * 
+	 * @param i
+	 * @param c
+	 */
+	public void setUser(int k, User c)
+	{
+		users.set(k, c);
 	}
 	
 	/**
@@ -235,9 +339,9 @@ public class Simulation {
 	 * 
 	 * @return consumer
 	 */
-	public List<User> getConsumers()
+	public List<Document> getDocuments()
 	{
-		return users;
+		return documents;
 	}
 	
 	/**
@@ -251,40 +355,21 @@ public class Simulation {
 	}
 	
 	/**
-	 * Get the current ID
-	 * 
-	 * @return consumer
+	 * get a document at a specific index
+	 * @param k the index
+	 * @return the document at that index
 	 */
-	public List<Document> getDocuments()
-	{
-		return documents;
+	public Document getDocument(int k) {
+		return documents.get(k);
 	}
-
+	
 	/**
-	 * Set the list of payoffs
-	 * 
-	 * @param payoffs
+	 * set a document at a specified index
+	 * @param k the index
+	 * @param d the document
 	 */
-	public void setPayoffs(HashMap<User, ArrayList<Integer>> payoffs) {
-		this.payoffs = payoffs;
-	}
-
-	/**
-	 * Get the search method function
-	 * 
-	 * @return
-	 */
-	public PopularitySearch getSearchMethod() {
-		return searchMethod;
-	}
-
-	/**
-	 * get the search method
-	 * 
-	 * @param searchMethod
-	 */
-	public void setSearchMethod(PopularitySearch searchMethod) {
-		this.searchMethod = searchMethod;
+	public void setDocument(int k, Document d) {
+		documents.set(k, d);
 	}
 
 	/**
@@ -304,7 +389,29 @@ public class Simulation {
 	public void setTags(List<String> tags) {
 		this.tags = tags;
 	}
-
+	
+	/**
+	 * get a specific document at an index
+	 * 
+	 * @param i
+	 * @return
+	 */
+	public String getTag(int k)
+	{
+		return tags.get(k);
+	}
+	
+	/**
+	 * set a document in the list
+	 * 
+	 * @param i
+	 * @param d
+	 */
+	public void setTag(int k, String t)
+	{
+		tags.set(k, t);
+	}
+	
 	/**
 	 * get the number of consumers
 	 * 
@@ -321,6 +428,24 @@ public class Simulation {
 	 */
 	public void setNumberOfConsumers(int numberOfConsumers) {
 		this.numberOfConsumers = numberOfConsumers;
+	}
+	
+	/**
+	 * get the number of tags
+	 * 
+	 * @return
+	 */
+	public int getNumberOfTags() {
+		return numberOfTags;
+	}
+
+	/**
+	 * set the number of consumers
+	 * 
+	 * @param numberOfConsumers
+	 */
+	public void setNumberOfTags(int numberOfTags) {
+		this.numberOfTags = numberOfTags;
 	}
 
 	/**
@@ -360,68 +485,18 @@ public class Simulation {
 	}
 	
 	/**
-	 * sets a consumer index
-	 * 
-	 * @param i
-	 * @param c
+	 * get the main window
+	 * @return the main window
 	 */
-	public void setUser(int i, User c)
-	{
-		users.set(i, c);
+	public MainWindow getMainWindow() {
+		return mw;
 	}
 	
 	/**
-	 * get a specific consumer at an index
-	 * 
-	 * @param i
-	 * @return
+	 * set the main window
+	 * @param mw the main window
 	 */
-	public User getUsers(int i)
-	{
-		return users.get(i);
-	}
-	
-	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	public void setTags(int i, String t)
-	{
-		tags.set(i, t);
-	}
-	
-	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public String getTags(int i)
-	{
-		return tags.get(i);
-	}
-	
-	/**
-	 * set a document in the list
-	 * 
-	 * @param i
-	 * @param d
-	 */
-	public void setDocuments(int i, Document d)
-	{
-		documents.set(i, d);
-	}
-	
-	/**
-	 * get a specific document at an index
-	 * 
-	 * @param i
-	 * @return
-	 */
-	public Document getDocuments(int i)
-	{
-		return documents.get(i);
+	public void setMainWindow(MainWindow mw) {
+		this.mw = mw;
 	}
 }

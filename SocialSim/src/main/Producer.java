@@ -20,6 +20,8 @@ public class Producer extends User {
 	 */
 	public Producer(int id, Search searchMethod) {
 		this.id = id;
+		this.tag = "NO_TAG";
+		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
@@ -53,7 +55,7 @@ public class Producer extends User {
 	@Override
 	public void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(this.getTag())) {
+			if (doc.getProducer().equals(this)) {
 				payoff++;
 			}
 		}
@@ -91,12 +93,11 @@ public class Producer extends User {
 	@Override
 	public boolean equals(Object obj) {
 		if (!super.equals(obj)) return false;
-		
 		if ( !(obj instanceof Producer) ) return false;
 
 		Producer producer = (Producer) obj;
 		
-		return uploadedDocuments.equals(producer.getUploadedDocuments());
+		return uploadedDocuments.equals(producer.getUploadedDocuments()) && super.equals(producer);
 	}
 	
 	

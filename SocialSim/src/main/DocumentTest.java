@@ -6,6 +6,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Testing for document.
+ * @author Reid Cain-Mondoux
+ * @version 0.0.1
+ */
 public class DocumentTest {
 
 	private Producer p;
@@ -23,14 +28,6 @@ public class DocumentTest {
 		d2 = new Document("apple","apple",p);
 	}
 	
-	@After
-	public void tearDown(){
-		p = null;
-		c = null;
-		d = null;
-		d2 = null;
-	}
-	
 	@Test
 	public void testDocument() {
 		assertEquals(d,new Document("test","test",p));
@@ -40,30 +37,30 @@ public class DocumentTest {
 	@Test
 	public void testLikeDocument() {
 		d.likeDocument(p);
-		assertEquals(d.getLikers(0),p);
+		assertEquals(p, d.getLikers(0));
 		d.likeDocument(p);
-		assertEquals(d.getLikers().size(),1);
+		assertEquals(1, d.getLikers().size());
 		d.likeDocument(c);
-		assertEquals(d.getLikers(1),c);
+		assertEquals(c, d.getLikers(1));
 		d2.likeDocument(c);
-		assertEquals(d2.getLikers(0),c);
+		assertEquals(c, d2.getLikers(0));
 	}
 
 	@Test
 	public void testToString() {
-		assertEquals(d.toString(),"Name: test ProducerID: 1 Tag: test Number of likes: 0");
+		assertEquals("Name: test ProducerID: 1 Tag: test Number of likes: 0", d.toString());
 		d.likeDocument(p);
-		assertEquals(d.toString(),"Name: test ProducerID: 1 Tag: test Number of likes: 1");
+		assertEquals("Name: test ProducerID: 1 Tag: test Number of likes: 1", d.toString());
 	}
 
 	@Test
 	public void testCompareTo() {
-		assertEquals(d.compareTo(d), 0);
-		assertEquals(d.compareTo(d2), 0);
+		assertEquals(0, d.compareTo(d));
+		assertEquals(0, d.compareTo(d2));
 		d.likeDocument(p);
-		assertEquals(d.compareTo(d), 0);
-		assertEquals(d.compareTo(d2), 1);
-		assertEquals(d2.compareTo(d), -1);
+		assertEquals(0, d.compareTo(d));
+		assertEquals(1, d.compareTo(d2));
+		assertEquals(-1, d2.compareTo(d));
 	}
 
 	@Test
@@ -92,9 +89,9 @@ public class DocumentTest {
 	public void testGetLikersInt() {
 		assertNull(d.getLikers(0));
 		d.likeDocument(c);
-		assertEquals(d.getLikers(0),c);
+		assertEquals(c, d.getLikers(0));
 		d.likeDocument(p);
-		assertEquals(d.getLikers(1),p);
+		assertEquals(p, d.getLikers(1));
 		assertNull(d.getLikers(2));
 	}
 
@@ -110,32 +107,36 @@ public class DocumentTest {
 	@Test
 	public void testSetLikersIntUser() {
 		d.likeDocument(c);
-		d.setLikers(2,c);
+		d.setLikers(0, p);
+		assertEquals(1, d.getLikers().size());
+		assertEquals(p, d.getLikers(0));
+		d.likeDocument(c);
+		assertEquals(c, d.getLikers(1));
+		d.setLikers(1, p);
 		assertEquals(2, d.getLikers().size());
-		d.setLikers(1,p);
-		assertEquals(3, d.getLikers().size());
+		assertEquals(p, d.getLikers(1));
 	}
 
 	@Test
 	public void testGetTag() {
-		assertEquals("test",d.getTag());
-		assertEquals("apple",d2.getTag());
+		assertEquals("test", d.getTag());
+		assertEquals("apple", d2.getTag());
 	}
 
 	@Test
 	public void testSetTag() {
-		assertEquals("test",d.getTag());
+		assertEquals("test", d.getTag());
 		d.setTag(null);
 		assertNull(d.getTag());
 		d.setTag("testing");
-		assertEquals("testing",d.getTag());
+		assertEquals("testing", d.getTag());
 		
 	}
 
 	@Test
 	public void testGetName() {
-		assertEquals("test",d.getName());
-		assertEquals("apple",d2.getName());
+		assertEquals("test", d.getName());
+		assertEquals("apple", d2.getName());
 	}
 
 	@Test
@@ -143,13 +144,13 @@ public class DocumentTest {
 		d.setName(null);
 		assertNull(d.getName());
 		d.setName("Timmy");
-		assertEquals("Timmy",d.getName());
+		assertEquals("Timmy", d.getName());
 	}
 
 	@Test
 	public void testGetProducer() {
-		assertEquals(p,d.getProducer());
-		assertEquals(p,d2.getProducer());
+		assertEquals(p, d.getProducer());
+		assertEquals(p, d2.getProducer());
 	}
 
 	@Test
@@ -158,7 +159,7 @@ public class DocumentTest {
 		d.setProducerID(null);
 		assertNull(d.getProducer());
 		d.setProducerID(p2);
-		assertEquals(p2,d.getProducer());
+		assertEquals(p2, d.getProducer());
 	}
 
 }

@@ -20,6 +20,8 @@ public class Consumer extends User {
 	 */
 	public Consumer(int id, Search searchMethod) {
 		this.id = id;
+		this.tag = "NO_TAG";
+		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
@@ -57,25 +59,6 @@ public class Consumer extends User {
 	}
 	
 	/**
-	 * @return String Description of the Consumer
-	 */
-	@Override
-	public String toString() {
-		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
-		
-		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
-		else s += "\nFollowing " + following.size() + " people";
-		
-		if (followers.size() == 1) s += "\nFollowed by " + followers.size() + " person";
-		else s += "\nFollowed By " + followers.size() + " people";
-		
-		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
-		else s += "\nLikes " + likedDocs.size() + " documents\n";
-		
-		return s;
-	}
-	
-	/**
 	 * Check if two Consumers are the same
 	 * 
 	 * @param obj Object to check equality
@@ -88,8 +71,7 @@ public class Consumer extends User {
 
 		Consumer consumer = (Consumer) obj;
 		
-		return tag.equals(consumer.tag) && (id == consumer.id) && followers.equals(consumer.followers) 
-				&& following.equals(consumer.following) && likedDocs.equals(consumer.likedDocs);
+		return super.equals(consumer);
 	}
 	
 

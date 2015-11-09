@@ -1,5 +1,6 @@
 package main;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -92,25 +93,56 @@ public abstract class User {
 	}
 	
 	/**
-	 * @return String of the list Users following this
+	 * @return String of the list of Users following this User
 	 */
 	public String followerString() {
 		String s = "";
 		for (User u: followers) {
-			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
 		}
 		return s;
 	}
 	
 	/**
-	 * @return String of the list of Users this follows
+	 * @return String of the list of Users this User follows
 	 */
 	public String followingString() {
 		String s = "";
 		for (User u: following) {
-			s += u.getClass().getSimpleName() + " " + getID() + "\n";
+			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
 		}
 		return s;
+	}
+	
+	/**
+	 * @return String Description of the User
+	 */
+	@Override
+	public String toString() {
+		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
+		
+		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";
+		else s += "\nFollowing " + following.size() + " people";
+		
+		if (followers.size() == 1) s += "\nFollowed by " + followers.size() + " person";
+		else s += "\nFollowed By " + followers.size() + " people";
+		
+		if (likedDocs.size() == 1) s += "\nLikes " + likedDocs.size() + " document\n";
+		else s += "\nLikes " + likedDocs.size() + " documents\n";
+		
+		return s;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (null == obj) return false;
+		if ( !(obj instanceof User) ) return false;
+		
+		User user = (User) obj;
+		
+		return tag.equals(user.tag) && (id == user.id) && (payoff == user.payoff)
+				&& following.equals(user.following) && followers.equals(user.followers)
+				&& likedDocs.equals(user.likedDocs);
 	}
 
 	//////////////////////////
@@ -168,8 +200,8 @@ public abstract class User {
 	 * @param i Index of a specific user following this User
 	 * @param u User to follow this User's
 	 */
-	public void setFollowers(int i, Consumer u) {
-		if (i >= 0 && i < followers.size() && null != u) {
+	public void setFollowers(int i, User u) {
+		if (i >= 0 && i < followers.size() && null != u && !followers.contains(u)) {
 			followers.add(i, u);
 		}
 	}
@@ -198,7 +230,7 @@ public abstract class User {
 	 */
 	public User getFollowing(int i) {
 		if (i >= 0 && i < following.size()) {
-			return followers.get(i);
+			return following.get(i);
 		}
 		return null;
 	}
@@ -216,8 +248,8 @@ public abstract class User {
 	 * @param i Index of a new user to follow
 	 * @param u User you wish to follow
 	 */
-	public void setFollowing(int i, Consumer u) {
-		if (i >= 0 && i < following.size() && null != u) {
+	public void setFollowing(int i, User u) {
+		if (i >= 0 && i < following.size() && null != u && !following.contains(u)) {
 			following.add(i, u);
 		}
 	}
@@ -265,7 +297,7 @@ public abstract class User {
 	 * @param d Document to add to the list of liked documents
 	 */
 	public void setLikedDocs(int i, Document d) {
-		if (i >= 0 && i < likedDocs.size() && null != d) {
+		if (i >= 0 && i < likedDocs.size() && null != d && !likedDocs.contains(d)) {
 			likedDocs.add(i, d);
 		}
 	}
@@ -278,18 +310,18 @@ public abstract class User {
 		return likedDocs.size();
 	}
 	
-	/* SearchType */
+	/* SearchMethod */
 	/**
-	 * Get the User's searchType
-	 * @return searchType
+	 * Get the User's Search method
+	 * @return searchMethod
 	 */
 	public Search getSearchMethod() {
 		return searchMethod;
 	}
 	
 	/**
-	 * Set the User's searchType
-	 * @param searchType New searchType value
+	 * Set the User's searchMethod
+	 * @param searchMethod New Search value
 	 */
 	public void setSearchMethod(Search searchMethod) {
 		this.searchMethod = searchMethod;
