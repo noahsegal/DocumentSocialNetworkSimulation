@@ -95,6 +95,7 @@ public class MainWindow extends JFrame {
 				setFieldEnabled(false);
 			}
 			initialized = this.sim.takeTurn(numberOfSearchResults);
+			numberOfTurnsField.setText( (Integer.parseInt(numberOfTurnsField.getText()) - 1) + "" );
 			plotData();
 			
 			if(!initialized) {
@@ -294,7 +295,7 @@ public class MainWindow extends JFrame {
 	private void plotData() {
 		DefaultCategoryDataset data = buildData(consumersTableModel, producersTableModel);
 		JFreeChart chart = ChartFactory.createBarChart("User Payoffs",
-														"Users",
+														"User (ID)",
 														"Payoffs",
 														data);
 		ChartPanel myChart = new ChartPanel(chart);
