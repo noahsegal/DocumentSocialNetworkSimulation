@@ -6,7 +6,7 @@ allows you to define the number of comsumer and producers, the number of tags an
 
 ## Usage
 
-To start the program run simulation.jar and follow the simulation instructions. Ensure you have access to jfreechart-1.0.19.jar and jcommon-1.0.23.jar.
+To start the program run simulation.jar and follow the simulation instructions. Ensure you have access to jfreechart-1.0.19.jar and jcommon-1.0.23.jar. http://www.jfree.org/jfreechart/download.html
 
 ## History
 
