@@ -72,7 +72,6 @@ public class MainWindow extends JFrame {
 		producersTableModel			= new DefaultTableModel();
 		chartPanel 					= new JPanel(new BorderLayout());
 		chartPanel.setMinimumSize(new Dimension(200, 200));
-		chartPanel.setMaximumSize(new Dimension(300, 300));
 
 		// Setting up ActionListioner
 		startButton.addActionListener(ae -> {
@@ -154,7 +153,6 @@ public class MainWindow extends JFrame {
 
 		getContentPane().add(panel);
 		setSize(600,400);
-		this.setMaximumSize(new Dimension(1100,700));
 		pack();
 		setVisible(true);
 	}
@@ -287,7 +285,6 @@ public class MainWindow extends JFrame {
 		JTable table = new JTable(tableModel);
 		JScrollPane pane = new JScrollPane(table);
 		pane.setMinimumSize(new Dimension(100,200));
-		pane.setMaximumSize(new Dimension(100,200));
 		return pane;
 	}
 	
