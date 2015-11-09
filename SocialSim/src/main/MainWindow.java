@@ -49,7 +49,6 @@ public class MainWindow extends JFrame {
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
-	private boolean onGoing;			// is the simulation still running
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -59,7 +58,6 @@ public class MainWindow extends JFrame {
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
 		initialized = false;
-		onGoing = false;
 
 		// Initialize Components
 		numberOfTurnsField 			= new JTextField(20);
