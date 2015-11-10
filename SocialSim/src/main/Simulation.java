@@ -11,7 +11,7 @@ import java.util.*;
  * Class responsible for iteration of turns and setting up the system
  */
 public class Simulation {
-
+	
 	private List<String> tags;
 	private List<User> users;
 	private List<Document> documents;
@@ -30,6 +30,29 @@ public class Simulation {
 		sim.mw = new MainWindow(sim);
 	}
 	
+	// We know this is VERY SMELLY code, but we will fix it for Milestone 3
+	private void buildTags() {
+		tags.add("sushi");
+		tags.add("pie");
+		tags.add("starWars");
+		tags.add("robots");
+		tags.add("chineseFood");
+		tags.add("indianFood");
+		tags.add("pizza");
+		tags.add("salmonTeriyaki");
+		tags.add("sole");
+		tags.add("jazz");
+		tags.add("flute");
+		tags.add("starTrek");
+		tags.add("LOTR");
+		tags.add("elves");
+		tags.add("goblins");
+		tags.add("cosplay");
+		tags.add("batman");
+		tags.add("deadpool");
+		tags.add("goku");
+	}
+	
 	/**
 	 * Initialize the Simulation, creating the list of consumers, documents and tags
 	 */
@@ -39,15 +62,17 @@ public class Simulation {
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		try {
-			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-				for (String tag : line.split(", ")) {
-				    tags.add(tag);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		buildTags();
+//		try {
+//			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+//				for (String tag : line.split(", ")) {
+//				    tags.add(tag);
+//				}
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	/**
