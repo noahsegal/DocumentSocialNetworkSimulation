@@ -90,7 +90,6 @@ public class MainWindow extends JFrame {
 				alertWindow.showMessageDialog(this, "Cannot Enter Strings", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
-			System.out.println("Hi");
 			if(valuesValid()) {
 				if(!initialized) {
 					this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);

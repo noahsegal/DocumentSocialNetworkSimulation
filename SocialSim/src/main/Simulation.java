@@ -170,15 +170,16 @@ public class Simulation {
 		documents = new ArrayList<Document>();
 		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		try {
-			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-				for (String tag : line.split(", ")) {
-				    tags.add(tag);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
+//				for (String tag : line.split(", ")) {
+//				    tags.add(tag);
+//				}
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		buildTags();
 	}
 	
 	/**
