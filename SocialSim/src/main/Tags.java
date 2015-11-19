@@ -6,7 +6,8 @@ import java.util.Random;
 
 /**
  * Group: MyNiftyJavaRepo
- * @author Justin Fleming & Noah Segal
+ * @author Justin Fleming 
+ * @author Noah Segal
  * Responsible for getting a list of Tags
  */
 

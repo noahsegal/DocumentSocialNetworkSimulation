@@ -4,6 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -169,7 +172,6 @@ public class MainWindow extends JFrame {
 	 */
 	public void updateTables (List<Document> docs, List<User> users) {
 		clearTableModels();
-		System.out.println(docs.size());
 
 		for(int i = 0; i < users.size(); i ++) {
 			if(users.get(i) instanceof Producer) {
@@ -231,6 +233,10 @@ public class MainWindow extends JFrame {
 		consumersTableModel.addRow(rowData);
 	}
 
+	/**
+	 * Set the fields to be enabled or not
+	 * @param b, enable fields true/false
+	 */
 	private void setFieldEnabled(boolean b) {
 		numberOfTurnsField.setEnabled(b);
 		numberOfProdsField.setEnabled(b);
@@ -278,6 +284,10 @@ public class MainWindow extends JFrame {
 		return labelField;
 	}
 
+	/**
+	 * Check to see if the current values are valid for a simulation
+	 * @return true if valid false if invalid
+	 */
 	private boolean valuesValid() {
 		if(numberOfTurns < 0 || numberOfProds < 0 || numberOfCons < 0 || numberOfTags < 0 || numberOfSearchResults < 0){
 			JOptionPane alertWindow = new JOptionPane();
@@ -297,9 +307,43 @@ public class MainWindow extends JFrame {
 	private JScrollPane buildTable(DefaultTableModel tableModel, String[] header) {
 		tableModel.setColumnIdentifiers(header);
 		JTable table = new JTable(tableModel);
+		addDoubleClickListener(table);
 		JScrollPane pane = new JScrollPane(table);
 		pane.setMinimumSize(new Dimension(100,200));
 		return pane;
+	}
+
+	/**
+	 * Attach the mouse listener to each JTable
+	 * @param table, to have listener attach
+	 */
+	private void addDoubleClickListener(JTable table) {
+		table.addMouseListener(new MouseAdapter () {
+			public void mousePressed(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				Point p = me.getPoint();
+				int row = table.rowAtPoint(p);
+				if (me.getClickCount() == 2 && row != -1) {
+					
+					int id = -1;
+					String name = "";
+					Object o = table.getValueAt(row, 0);
+					if(o instanceof Integer){
+						id = (Integer) o;
+					}
+					else if(o instanceof String){
+						name = (String) o;
+					}
+					
+					if(table.getModel() == documentsTableModel){
+						new DoubleClickWindow(sim.getDocument(name));
+					}
+					else {
+						new DoubleClickWindow(sim.getUserById(id));
+					}
+				}
+			}
+		});
 	}
 
 	/**
