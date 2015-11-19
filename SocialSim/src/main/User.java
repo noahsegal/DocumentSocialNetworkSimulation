@@ -82,14 +82,10 @@ public abstract class User {
 	 */
 	public void likeDocsFollowUsers(List<Document> documents, String tag) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(tag)) {
+			if (doc.getTag().equals(this.getTag())) {
 				likeDoc(doc);
 				followUser(doc.getProducer());
-				
-				// Follow users who like articles you like
-				doc.getLikers().forEach( (newUser) -> {
-					followUser(newUser);
-					});
+				doc.getLikers().forEach( (newUser) -> {followUser(newUser);});	// Follow users who like articles you like
 				}
 			}
 	}

@@ -126,21 +126,21 @@ public class Simulation {
 	public boolean takeTurn(int k)
 	{
 		//select random consumer or producer
-		User c = users.get((int)(Math.random() * users.size()));
+		User u = users.get((int)(Math.random() * users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = new ArrayList<Document>(c.searchMethod.search(c, documents, k));
+		List<Document> searchResults = new ArrayList<Document>(u.searchMethod.search(u, documents, k));
 		
-		Document d = c.takeTurn(searchResults);
+		Document d = u.takeTurn(searchResults);
 		if (d != null){
 			documents.add(d);
 			searchResults.add(d);
 		}
 		
 		calculateProducerPayoff(searchResults);
-		if (!(c instanceof Producer))
+		if (!(u instanceof Producer))
 		{
-			payoffs.get(c).add(c.getPayoff());
+			payoffs.get(u).add(u.getPayoff());
 		}
 		
 		mw.updateTables(documents, users);
@@ -182,10 +182,10 @@ public class Simulation {
 	 */
 	private void calculateProducerPayoff(List<Document> docs)
 	{
-		for (User c : users) {
-			if (c instanceof Producer)
+		for (User u : users) {
+			if (u instanceof Producer)
 			{
-				Producer p = (Producer)c;
+				Producer p = (Producer)u;
 				p.calculatePayoff(docs);
 				payoffs.get(p).add(p.getPayoff());
 			}

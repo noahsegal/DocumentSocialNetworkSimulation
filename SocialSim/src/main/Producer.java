@@ -49,7 +49,7 @@ public class Producer extends User {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
 		
-		if (this.actAsConsumer) likeDocsFollowUsers(documents, tag);
+		if (actAsConsumer) likeDocsFollowUsers(documents, tag);
 		else likeDocsFollowUsers(documents, altTag);
 		
 		return newDoc;
