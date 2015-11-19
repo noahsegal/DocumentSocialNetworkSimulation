@@ -236,7 +236,7 @@ public class UserTest {
 		assertEquals("Document List dList contains three documents", 3, dList.size() );
 		
 		// Producer
-		p1.likeDocsFollowUsers(dList);
+		p1.likeDocsFollowUsers(dList, p1.getTag());
 		assertEquals("Producer p1 likes two of the three documents", 2, p1.getNumberOfLikedDocs());
 		assertEquals("Producer p1 follows two Users", 2, p1.getNumberOfFollowing());
 		
@@ -248,7 +248,7 @@ public class UserTest {
 		
 		
 		// Consumer
-		c1.likeDocsFollowUsers(dList);
+		c1.likeDocsFollowUsers(dList, c1.getTag());
 		assertEquals("Consumer c1 likes one of the three documents", 1, c1.getNumberOfLikedDocs());
 		assertEquals("Consumer c1 follows two Users", 2, c1.getNumberOfFollowing());
 		

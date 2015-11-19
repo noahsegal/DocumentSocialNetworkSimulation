@@ -13,6 +13,8 @@ import Search.Search;
 
 public class Producer extends User {
 
+	private String altTag;
+	private boolean actAsConsumer;
 	private List<Document> uploadedDocuments;
 	
 	/**
@@ -23,12 +25,15 @@ public class Producer extends User {
 	public Producer(int id, Search searchMethod) {
 		this.id = id;
 		this.tag = "NO_TAG";
+		this.altTag = "NO_TAG";
 		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
 		uploadedDocuments = new ArrayList<>();
+		
+		actAsConsumer = false;
 	}
 	
 	/**
@@ -44,10 +49,20 @@ public class Producer extends User {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
 		
-		likeDocsFollowUsers(documents);
+		if (this.actAsConsumer) likeDocsFollowUsers(documents, tag);
+		else likeDocsFollowUsers(documents, altTag);
 		
 		return newDoc;
 	}
+	
+	/**
+	 * Toggle whether the Producer acts a Consumer
+	 */
+	public void toggleActAsConsumer() {
+		if (actAsConsumer) actAsConsumer = false;
+		else actAsConsumer = true;
+	}
+
 	
 	/**
 	 * Update payoff based on documents with same tag (interest)
@@ -107,6 +122,37 @@ public class Producer extends User {
 	//  Getters & Setters  ///
 	//////////////////////////
 	
+	/**
+	 * Get the Producer's alternative tag
+	 * @return String
+	 */
+	public String getAltTag() {
+		return altTag;
+	}
+	
+	/**
+	 * Set the Producer's alternative tag
+	 * @param altTag
+	 */
+	public void setAltTag(String altTag) {
+		this.altTag = altTag;
+	}
+	
+	/**
+	 * Get the Producer's actAsConsumer value
+	 * @return boolean
+	 */
+	public boolean getActAsConsumer() {
+		return actAsConsumer;
+	}
+	
+	/**
+	 * Set whether the Producer acts as a Consumer
+	 * @param actAsConsumer
+	 */
+	public void setActAsConsumer(boolean actAsConsumer) {
+		this.actAsConsumer = actAsConsumer;
+	}
 	/**
 	 * Get the list of documents this Producer has uploaded
 	 * @return List Uploaded documents

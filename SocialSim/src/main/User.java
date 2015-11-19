@@ -80,9 +80,9 @@ public abstract class User {
 	 * 
 	 * @param documents List of documents
 	 */
-	public void likeDocsFollowUsers(List<Document> documents) {
+	public void likeDocsFollowUsers(List<Document> documents, String tag) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(this.tag)) {
+			if (doc.getTag().equals(tag)) {
 				likeDoc(doc);
 				followUser(doc.getProducer());
 				

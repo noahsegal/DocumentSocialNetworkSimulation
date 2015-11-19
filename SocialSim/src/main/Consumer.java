@@ -41,7 +41,7 @@ public class Consumer extends User {
 	@Override
 	public Document takeTurn(List<Document> documents) {
 		calculatePayoff(documents);
-		likeDocsFollowUsers(documents);
+		likeDocsFollowUsers(documents, tag);
 		return null;		
 	}
 
