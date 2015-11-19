@@ -1,6 +1,14 @@
 package main;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Group: MyNiftyJavaRepo
+ * @author Justin Fleming & Noah Segal
+ * Responsible for getting a list of Tags
+ */
 
 public class Tags {
 	private static ArrayList<String> tags = new ArrayList<String>();
@@ -35,5 +43,37 @@ public class Tags {
 		tags.add("Chevy");
 		tags.add("Ford");
 		tags.add("GMC");
+		tags.add("Marvel");
+		tags.add("DC");
+		tags.add("Transformers");
+		tags.add("Katelyn");
+		tags.add("Bruce");
 	}
+	
+	/**
+	 * Get a specific number of tags
+	 * @param n Number of desired tags
+	 * @return List containing tags
+	 */
+	public static List getTags(int n) {
+		if (n < 0) return new ArrayList<String>();
+		else if (n > tags.size()) return tags;
+		
+		else {
+			int size = tags.size();
+			String tag;
+			Random randy = new Random();
+			ArrayList<String> returnTags = new ArrayList<String>();
+			
+			while (n > 0) {
+				tag = tags.get(randy.nextInt(size));
+				while (returnTags.contains(tag)) tag = tags.get(randy.nextInt(size));
+				returnTags.add(tag);
+				n--;
+			}
+			
+			return returnTags;
+		}
+	}
+	
 }

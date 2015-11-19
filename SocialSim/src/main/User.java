@@ -117,10 +117,18 @@ public abstract class User {
 	}
 	
 	/**
-	 * @return String Description of the User
+	 * Return the User's ID as a String
+	 * @return String of User's ID
 	 */
 	@Override
 	public String toString() {
+		return id + "";
+	}
+	
+	/**
+	 * @return String Description of the User
+	 */
+	public String getUserInfo() {
 		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
 		
 		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";

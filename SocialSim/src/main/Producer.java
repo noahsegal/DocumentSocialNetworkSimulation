@@ -94,13 +94,12 @@ public class Producer extends User {
 	/**
 	 * @return String description of the Producer
 	 */
-	@Override
-	public String toString() {
+	public String getUserInfo() {
 		int docSize = uploadedDocuments.size();
 		if (docSize == 1) {
-			return super.toString() + "Uploaded " + docSize + " document\n";
+			return super.toString() + "Uploaded " + docSize + " document\n" + "Alternate Tag: " + altTag;
 		}
-		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n";
+		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n" + "Alternate Tag: " + altTag;
 	}
 	
 	/**
