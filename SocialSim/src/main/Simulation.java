@@ -66,15 +66,6 @@ public class Simulation {
 		payoffs = new HashMap<User, ArrayList<Integer>>();
 		
 		buildTags();
-//		try {
-//			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-//				for (String tag : line.split(", ")) {
-//				    tags.add(tag);
-//				}
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
 	}
 	
 	/**
@@ -370,6 +361,18 @@ public class Simulation {
 	}
 	
 	/**
+	 * get a user from a specified id
+	 * @param the specified id of the user
+	 * @return the user with the corresponding id
+	 */
+	public User getUserById(int id) {
+		for (User u: users)
+			if (u.getID() == id)
+				return u;
+		return null;
+	}
+	
+	/**
 	 * Get the current ID
 	 * 
 	 * @return consumer
@@ -405,6 +408,19 @@ public class Simulation {
 	 */
 	public void setDocument(int k, Document d) {
 		documents.set(k, d);
+	}
+	
+	/**
+	 * Get the document with the corresponding name
+	 * @param The name of the desired document
+	 * @return The document with the requested name
+	 */
+	public Document getDocument(String name) {
+		for (Document d: documents) {
+			if (d.getName() == name)
+				return d;
+		}
+		return null;
 	}
 
 	/**
