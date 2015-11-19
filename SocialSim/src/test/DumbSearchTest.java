@@ -1,20 +1,28 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Consumer;
+import main.Document;
+import main.DumbSearch;
+import main.HipsterSearch;
+import main.Producer;
+import main.Search;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
 /**
- * Testing for PopularitySearch.
+ * Testing for DumbSearch
  * @author Reid Cain-Mondoux
  * @version 0.0.1
  */
-public class PopularitySearchTest {
-
+public class DumbSearchTest {
+	
 	private Search s;
 	private Producer p; 
 	private Consumer c;
@@ -27,10 +35,10 @@ public class PopularitySearchTest {
 	
 	@Before
 	public void setUp(){
-		s = new PopularitySearch();
-		p = new Producer(1, new PopularitySearch());
+		s = new DumbSearch();
+		p = new Producer(1, new DumbSearch());
 		p.setTag("test");
-		c = new Consumer(2, new PopularitySearch());
+		c = new Consumer(2, new DumbSearch());
 		c.setTag("test");
 		listD = new ArrayList<>();
 		list2 = new ArrayList<>();
@@ -48,16 +56,17 @@ public class PopularitySearchTest {
 	public void testSearch() {
 		assertEquals(listD,	s.search(c, listD, 5));
 		assertEquals(4,s.search(c, listD, 5).size());
-		list2.add(d1);
 		list2.add(d4);
+		list2.add(d3);
 		assertEquals(list2, s.search(c, listD, 2));
-		d2.likeDocument(c);
+		d1.likeDocument(c);
 		list2.remove(d4);
-		list2.add(d2);
+		list2.add(d4);
+		list2.set(0,d1);
 		assertEquals(list2, s.search(p, listD, 2));
 		d1.likeDocument(p);
 		d3.likeDocument(c);
-		d3.likeDocument(p);
+		d2.likeDocument(c);
 		list2.set(0, d1);
 		list2.set(1, d3);
 		assertEquals(list2, s.search(p, listD, 2));
@@ -67,7 +76,8 @@ public class PopularitySearchTest {
 	
 	@Test
 	public void testEquals() {
-		assertTrue(s.equals(new PopularitySearch()));
+		assertTrue(s.equals(new DumbSearch()));
 		assertFalse(s.equals(new HipsterSearch()));
 	}
+	
 }

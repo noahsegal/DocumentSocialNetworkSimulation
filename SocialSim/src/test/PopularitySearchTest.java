@@ -1,20 +1,26 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Consumer;
+import main.Document;
+import main.HipsterSearch;
+import main.PopularitySearch;
+import main.Producer;
+import main.Search;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 /**
- * Testing for RandomSearch.
+ * Testing for PopularitySearch.
  * @author Reid Cain-Mondoux
  * @version 0.0.1
  */
-public class RandomSearchTest {
+public class PopularitySearchTest {
 
 	private Search s;
 	private Producer p; 
@@ -24,15 +30,17 @@ public class RandomSearchTest {
 	private Document d3;
 	private Document d4;
 	private List<Document> listD;
+	private List<Document> list2;
 	
 	@Before
 	public void setUp(){
-		s = new RandomSearch();
-		p = new Producer(1, new RandomSearch());
+		s = new PopularitySearch();
+		p = new Producer(1, new PopularitySearch());
 		p.setTag("test");
-		c = new Consumer(2, new RandomSearch());
+		c = new Consumer(2, new PopularitySearch());
 		c.setTag("test");
 		listD = new ArrayList<>();
+		list2 = new ArrayList<>();
 		d1 = new Document("1","test",p);
 		d2 = new Document("2","test2",p);
 		d3 = new Document("3","test3",p);
@@ -47,14 +55,26 @@ public class RandomSearchTest {
 	public void testSearch() {
 		assertEquals(listD,	s.search(c, listD, 5));
 		assertEquals(4,s.search(c, listD, 5).size());
-		assertEquals(2, s.search(c, listD, 2).size());
-		assertEquals(3, s.search(p, listD, 3).size());
-		assertEquals(1, s.search(c, listD, 1).size());
+		list2.add(d1);
+		list2.add(d4);
+		assertEquals(list2, s.search(c, listD, 2));
+		d2.likeDocument(c);
+		list2.remove(d4);
+		list2.add(d2);
+		assertEquals(list2, s.search(p, listD, 2));
+		d1.likeDocument(p);
+		d3.likeDocument(c);
+		d3.likeDocument(p);
+		list2.set(0, d1);
+		list2.set(1, d3);
+		assertEquals(list2, s.search(p, listD, 2));
+		list2.add(d2);
+		assertEquals(list2, s.search(c, listD, 3));
 	}
 	
 	@Test
 	public void testEquals() {
-		assertTrue(s.equals(new RandomSearch()));
+		assertTrue(s.equals(new PopularitySearch()));
 		assertFalse(s.equals(new HipsterSearch()));
 	}
 }

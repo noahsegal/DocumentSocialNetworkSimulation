@@ -1,6 +1,12 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
+import main.Consumer;
+import main.Document;
+import main.DumbSearch;
+import main.HipsterSearch;
+import main.PopularitySearch;
+import main.Producer;
 
 import org.junit.After;
 import org.junit.Before;

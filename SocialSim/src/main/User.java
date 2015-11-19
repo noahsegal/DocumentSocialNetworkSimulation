@@ -78,7 +78,7 @@ public abstract class User {
 	 * 
 	 * @param documents List of documents
 	 */
-	protected void likeDocsFollowUsers(List<Document> documents) {
+	public void likeDocsFollowUsers(List<Document> documents) {
 		for (Document doc: documents) {
 			if (doc.getTag().equals(this.tag)) {
 				likeDoc(doc);

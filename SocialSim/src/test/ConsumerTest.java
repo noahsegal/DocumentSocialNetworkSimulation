@@ -1,9 +1,17 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import main.Consumer;
+import main.Document;
+import main.DumbSearch;
+import main.HipsterSearch;
+import main.PopularitySearch;
+import main.Producer;
+import main.RandomSearch;
 
 import org.junit.Before;
 import org.junit.Test;
