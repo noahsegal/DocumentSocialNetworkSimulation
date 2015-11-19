@@ -95,40 +95,31 @@ public abstract class User {
 	}
 	
 	/**
-	 * @return String of the list of Users following this User
+	 * @return List<String> of a User's followers
 	 */
-	public String followerString() {
-		String s = "";
+	public List<String> listOfFollowers() {
+		ArrayList<String> followerList = new ArrayList<String>();
 		for (User u: followers) {
-			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
+			followerList.add(u.getClass().getSimpleName() + ": " + u.getID());
 		}
-		return s;
+		return followerList;
 	}
 	
 	/**
-	 * @return String of the list of Users this User follows
+	 * @return List<String> of who a User is following
 	 */
-	public String followingString() {
-		String s = "";
+	public List<String> listOfFollowing() {
+		ArrayList<String> followingList = new ArrayList<String>();
 		for (User u: following) {
-			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
+			followingList.add(u.getClass().getSimpleName() + ": " + u.getID());
 		}
-		return s;
-	}
-	
-	/**
-	 * Return the User's ID as a String
-	 * @return String of User's ID
-	 */
-	@Override
-	public String toString() {
-		return id + "";
+		return followingList;
 	}
 	
 	/**
 	 * @return String Description of the User
 	 */
-	public String getUserInfo() {
+	public String toString() {
 		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
 		
 		if (following.size() == 1) s += "\nFollowing " + following.size() + " person";

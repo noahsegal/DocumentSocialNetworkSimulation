@@ -45,9 +45,11 @@ public class Tags {
 		tags.add("GMC");
 		tags.add("Marvel");
 		tags.add("DC");
-		tags.add("Transformers");
-		tags.add("Katelyn");
 		tags.add("Bruce");
+		tags.add("Katelyn");
+		tags.add("Babak");
+		tags.add("Leeeeeroy");
+		tags.add("theBeatles");
 	}
 	
 	/**

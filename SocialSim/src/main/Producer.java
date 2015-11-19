@@ -94,7 +94,7 @@ public class Producer extends User {
 	/**
 	 * @return String description of the Producer
 	 */
-	public String getUserInfo() {
+	public String toString() {
 		int docSize = uploadedDocuments.size();
 		if (docSize == 1) {
 			return super.toString() + "Uploaded " + docSize + " document\n" + "Alternate Tag: " + altTag;
