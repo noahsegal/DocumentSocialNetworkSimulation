@@ -260,31 +260,44 @@ public class UserTest {
 	}
 
 	@Test
-	public void testFollowerString() {
+	public void testListOfFollowers() {
 		// Producer
 		c1.followUser(p1);
 		p2.followUser(p1);
 		c2.followUser(p1);
 		
-		assertEquals("Producer p1's list of Followers", "Consumer 2\nProducer 1\nConsumer 3\n", p1.followerString());
+		ArrayList<String> followers = p1.listOfFollowers();
+		
+		assertTrue("Producer p1's list of Followers contains Consumer c1", followers.contains("Consumer: 2"));
+		assertTrue("Producer p1's list of Followers contains Producer p2", followers.contains("Producer: 1"));
+		assertTrue("Producer p1's list of Followers contains Consumer c2", followers.contains("Consumer: 3"));
 		
 		// Consumer
 		p1.followUser(c1);
 		c2.followUser(c1);
 		p2.followUser(c1);
 		
-		assertEquals("Consumer c1's list of Followers", "Producer 0\nConsumer 3\nProducer 1\n", c1.followerString());
+		followers = c1.listOfFollowers();
+		
+		assertTrue("Consumer c1's list of Followers contains Producer p1", followers.contains("Producer: 0"));
+		assertTrue("Consumer c1's list of Followers contains Consumer c2", followers.contains("Consumer: 3"));
+		assertTrue("Consumer c1's list of Followers contains Producer p2", followers.contains("Producer: 1"));
 	}
 
 	@Test
-	public void testFollowingString() {
+	public void testListOfFollowing() {
 		// Producer
 		p1.followUser(c1);
 		p1.followUser(c2);
 		p1.followUser(p1);
 		p1.followUser(p2);
 		
-		assertEquals("Producer p1 follows these Users", "Consumer 2\nConsumer 3\nProducer 1\n", p1.followingString());
+		ArrayList<String> following = p1.listOfFollowing();
+		
+		assertTrue("Producer p1's list of Following contains Consumer c1", following.contains("Consumer: 2"));
+		assertTrue("Producer p1's list of Following contains Consumer c2", following.contains("Consumer: 3"));
+		assertFalse("Producer p1's list of Following doesn't contain Producer p1", following.contains("Producer: 0"));
+		assertTrue("Producer p1's list of Following contains Producer p2", following.contains("Producer: 1"));
 		
 		// Consumer	
 		c1.followUser(p1);
@@ -292,7 +305,13 @@ public class UserTest {
 		c1.followUser(c1);
 		c1.followUser(c2);
 		
-		assertEquals("Consumer c1 follows these Users", "Producer 0\nProducer 1\nConsumer 3\n", c1.followingString());
+		following = c1.listOfFollowing();
+		
+		assertTrue("Consumer c1's list of Following contains Producer p1", following.contains("Producer: 0"));
+		assertTrue("Consumer c1's list of Following contains Producer p2", following.contains("Producer: 1"));
+		assertFalse("Consumer c1's list of Following doesn't contains Consumer c1", following.contains("Consumer: 2"));
+		assertTrue("Consumer c1's list of Following contains Consumer c2", following.contains("Consumer: 3"));
+		
 	}
 
 	@Test

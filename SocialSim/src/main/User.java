@@ -97,7 +97,7 @@ public abstract class User {
 	/**
 	 * @return List<String> of a User's followers
 	 */
-	public List<String> listOfFollowers() {
+	public ArrayList<String> listOfFollowers() {
 		ArrayList<String> followerList = new ArrayList<String>();
 		for (User u: followers) {
 			followerList.add(u.getClass().getSimpleName() + ": " + u.getID());
@@ -108,7 +108,7 @@ public abstract class User {
 	/**
 	 * @return List<String> of who a User is following
 	 */
-	public List<String> listOfFollowing() {
+	public ArrayList<String> listOfFollowing() {
 		ArrayList<String> followingList = new ArrayList<String>();
 		for (User u: following) {
 			followingList.add(u.getClass().getSimpleName() + ": " + u.getID());
