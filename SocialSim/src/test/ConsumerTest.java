@@ -7,14 +7,15 @@ import java.util.List;
 
 import main.Consumer;
 import main.Document;
-import main.DumbSearch;
-import main.HipsterSearch;
-import main.PopularitySearch;
 import main.Producer;
-import main.RandomSearch;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.DumbSearch;
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.RandomSearch;
 
 /**
  * Testing for consumer

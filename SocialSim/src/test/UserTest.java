@@ -7,15 +7,16 @@ import java.util.List;
 
 import main.Consumer;
 import main.Document;
-import main.HipsterSearch;
-import main.PopularitySearch;
 import main.Producer;
-import main.Search;
 import main.User;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.Search;
 
 /**
  * Group: MyNiftyJavaRepo

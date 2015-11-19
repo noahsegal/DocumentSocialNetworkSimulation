@@ -12,7 +12,6 @@ import java.util.List;
 import main.Consumer;
 import main.Document;
 import main.MainWindow;
-import main.PopularitySearch;
 import main.Producer;
 import main.Simulation;
 import main.User;
@@ -20,6 +19,8 @@ import main.User;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.PopularitySearch;
 
 /**
  * Group: MyNiftyJavaRepo

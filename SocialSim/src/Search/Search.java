@@ -1,7 +1,10 @@
 
-package main;
+package Search;
 
 import java.util.List;
+
+import main.Document;
+import main.User;
 
 /**
  * Search 

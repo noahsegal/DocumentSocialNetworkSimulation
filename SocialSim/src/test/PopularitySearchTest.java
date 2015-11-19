@@ -7,14 +7,15 @@ import java.util.List;
 
 import main.Consumer;
 import main.Document;
-import main.HipsterSearch;
-import main.PopularitySearch;
 import main.Producer;
-import main.Search;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.Search;
 /**
  * Testing for PopularitySearch.
  * @author Reid Cain-Mondoux

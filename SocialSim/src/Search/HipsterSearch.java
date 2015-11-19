@@ -1,8 +1,11 @@
-package main;
+package Search;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import main.Document;
+import main.User;
 /**
  * This is a searching algorithm that will always return the least popular k documents for consumer c.
  * @author Reid Cain-Mondoux

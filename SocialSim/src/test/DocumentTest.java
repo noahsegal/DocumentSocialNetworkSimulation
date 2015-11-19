@@ -3,14 +3,15 @@ package test;
 import static org.junit.Assert.*;
 import main.Consumer;
 import main.Document;
-import main.DumbSearch;
-import main.HipsterSearch;
-import main.PopularitySearch;
 import main.Producer;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.DumbSearch;
+import Search.HipsterSearch;
+import Search.PopularitySearch;
 
 /**
  * Testing for document.

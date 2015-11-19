@@ -6,13 +6,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import main.Document;
-import main.DumbSearch;
-import main.HipsterSearch;
-import main.PopularitySearch;
 import main.Producer;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.DumbSearch;
+import Search.HipsterSearch;
+import Search.PopularitySearch;
 
 /**
  * Testing for Producer.
