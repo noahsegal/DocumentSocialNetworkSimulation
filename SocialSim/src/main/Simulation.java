@@ -32,29 +32,6 @@ public class Simulation {
 		sim.mw = new MainWindow(sim);
 	}
 	
-	// We know this is VERY SMELLY code, but we will fix it for Milestone 3
-	private void buildTags() {
-		tags.add("sushi");
-		tags.add("pie");
-		tags.add("starWars");
-		tags.add("robots");
-		tags.add("chineseFood");
-		tags.add("indianFood");
-		tags.add("pizza");
-		tags.add("salmonTeriyaki");
-		tags.add("sole");
-		tags.add("jazz");
-		tags.add("flute");
-		tags.add("starTrek");
-		tags.add("LOTR");
-		tags.add("elves");
-		tags.add("goblins");
-		tags.add("cosplay");
-		tags.add("batman");
-		tags.add("deadpool");
-		tags.add("goku");
-	}
-	
 	/**
 	 * Initialize the Simulation, creating the list of consumers, documents and tags
 	 */
@@ -62,10 +39,7 @@ public class Simulation {
 	{
 		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
-		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		
-		buildTags();
 	}
 	
 	/**
@@ -81,11 +55,13 @@ public class Simulation {
 		Random rand;
 		
 		this.numberOfTurns = numberOfTurns;
-		if (numberOfTags > tags.size())
-			this.numberOfTags = tags.size();
-		else this.numberOfTags = numberOfTags;
+		this.numberOfTags = numberOfTags;
 		this.numberOfProducers = numberOfProducers;
 		this.numberOfConsumers = numberOfConsumers;
+		
+		tags = new ArrayList<String>(Tags.getTags(numberOfTags));
+		if (tags.size() < numberOfTags)
+			this.numberOfTags = tags.size();
 		
 		currentTurn = 1;
 		currentId = 1;
@@ -144,13 +120,14 @@ public class Simulation {
 		}
 		
 		mw.updateTables(documents, users);
-		currentTurn++;
-		if (numberOfTurns+1 == currentTurn)
+		if (currentTurn == numberOfTurns)
 		{
 			reset();
 			return false;
+		} else {
+			currentTurn++;
+			return true;
 		}
-		else return true;
 		
 	}
 	
@@ -161,18 +138,7 @@ public class Simulation {
 	{
 		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
-		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-//		try {
-//			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-//				for (String tag : line.split(", ")) {
-//				    tags.add(tag);
-//				}
-//			}
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-		buildTags();
 	}
 	
 	/**

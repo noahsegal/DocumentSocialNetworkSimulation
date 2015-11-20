@@ -90,7 +90,7 @@ public class MainWindow extends JFrame {
 				numberOfSearchResults = new Integer(numberOfSearchResultsField.getText());
 			}catch (Exception e) {
 				JOptionPane alertWindow = new JOptionPane();
-				alertWindow.showMessageDialog(this, "Cannot Enter Strings", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+				alertWindow.showMessageDialog(this, "All fields must contain a number", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			if(valuesValid()) {
