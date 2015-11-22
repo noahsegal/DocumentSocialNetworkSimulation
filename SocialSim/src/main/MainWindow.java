@@ -71,7 +71,15 @@ public class MainWindow extends JFrame {
 		numberOfTagsField 			= new JTextField(20);
 		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
-		documentsTableModel			= new DefaultTableModel(5, 4);
+		
+		documentsTableModel			= new DefaultTableModel(5, 4){
+
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		consumersTableModel			= new DefaultTableModel();
 		producersTableModel			= new DefaultTableModel();
 		chartPanel 					= new JPanel(new BorderLayout());
