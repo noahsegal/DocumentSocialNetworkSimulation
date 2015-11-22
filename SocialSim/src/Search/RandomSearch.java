@@ -40,4 +40,9 @@ public class RandomSearch implements Search {
 		return true;
 	}
 	
+	@Override
+	public String toString(){
+		return this.getClass().getName();
+	}
+	
 }

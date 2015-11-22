@@ -336,10 +336,14 @@ public class MainWindow extends JFrame {
 					int id = -1;
 					String name = "";
 					Object o = table.getValueAt(row, 0);
+					System.out.println(o);
+					System.out.println(o.getClass().getName());
 					if(o instanceof Integer){
+						System.out.println("in integer");
 						id = (Integer) o;
 					}
 					else if(o instanceof String){
+						System.out.println("in String");
 						name = (String) o;
 					}
 					
@@ -347,6 +351,7 @@ public class MainWindow extends JFrame {
 						new DoubleClickWindow(sim.getDocument(name));
 					}
 					else {
+						System.out.println(id+"");
 						new DoubleClickWindow(sim.getUserById(id));
 					}
 				}

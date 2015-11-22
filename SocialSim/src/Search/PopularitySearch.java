@@ -63,5 +63,10 @@ public class PopularitySearch implements Search {
 		if ( !(obj instanceof PopularitySearch ) ) return false;
 		return true;
 	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getName();
+	}
 
 }

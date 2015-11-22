@@ -30,5 +30,9 @@ public class DumbSearch implements Search {
 		return true;
 	}
 
+	@Override
+	public String toString(){
+		return this.getClass().getName();
+	}
 	
 }
