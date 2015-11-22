@@ -58,17 +58,18 @@ public class DoubleClickWindow extends JFrame {
 		followerList	= new JList<String>(followerModel);
 		followerPane	= new JScrollPane(followerList);
 		followingPane	= new JScrollPane(followingList);
+		searches = new Search[] {
+				new DumbSearch(),
+				new HipsterSearch(),
+				new PopularitySearch(),
+				new RandomSearch(),
+			};
+		comboPanel = new JPanel(new GridLayout(1,2));
+		strategiesBox = new JComboBox<Search>(searches);
 		JSplitPane leftCenterPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, comboPanel, buildPanel(followerPane,"Followers"));
 		JSplitPane rightPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftCenterPanel, buildPanel(followingPane, "Following"));
 
-		searches = new Search[] {
-					new DumbSearch(),
-					new HipsterSearch(),
-					new PopularitySearch(),
-					new RandomSearch(),
-				};
-		comboPanel = new JPanel(new GridLayout(1,2));
-		strategiesBox = new JComboBox<Search>(searches);
+
 		System.out.println(user);
 		strategiesBox.setSelectedItem(user.getSearchMethod());
 		strategiesBox.addActionListener(ae -> {
