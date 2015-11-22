@@ -25,4 +25,7 @@ public interface Search {
 	
 	@Override
 	public boolean equals(Object obj);
+	
+	@Override
+	public String toString();
 }

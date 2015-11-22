@@ -5,15 +5,20 @@
 package main;
 
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
 import java.util.ArrayList;
 
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+
+import Search.*;
 
 public class DoubleClickWindow extends JFrame {
 	private Document doc;
@@ -27,14 +32,17 @@ public class DoubleClickWindow extends JFrame {
 	private JScrollPane followerPane;
 	private JScrollPane followingPane;
 	private JScrollPane documentPane;
-	private JPanel reidsPanel; // Put all your stuff in this panel and rename
+	private JPanel comboPanel; // Put all your stuff in this panel and rename
+	private JComboBox<Search> strategiesBox;
+	private JButton setButton;
+	private Search[] searches;
 	
 	public DoubleClickWindow(Document doc) {
 		this.doc = doc;
 		documentModel 	= new DefaultListModel<String>();
 		documentList 	= new JList<String>(documentModel);
 		documentPane	= new JScrollPane(documentList);
-		JSplitPane split	= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,reidsPanel, buildPanel(documentPane,"Like This"));
+		JSplitPane split	= new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,comboPanel, buildPanel(documentPane,"Like This"));
 		this.populateDocModel();
 		getContentPane().add(split);
 		setSize(400,400);
@@ -50,8 +58,25 @@ public class DoubleClickWindow extends JFrame {
 		followerList	= new JList<String>(followerModel);
 		followerPane	= new JScrollPane(followerList);
 		followingPane	= new JScrollPane(followingList);
-		JSplitPane leftCenterPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, reidsPanel, buildPanel(followerPane,"Followers"));
+		JSplitPane leftCenterPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, comboPanel, buildPanel(followerPane,"Followers"));
 		JSplitPane rightPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftCenterPanel, buildPanel(followingPane, "Following"));
+
+		searches = new Search[] {
+					new DumbSearch(),
+					new HipsterSearch(),
+					new PopularitySearch(),
+					new RandomSearch(),
+				};
+		comboPanel = new JPanel(new GridLayout(1,2));
+		strategiesBox = new JComboBox<Search>(searches);
+		System.out.println(user);
+		strategiesBox.setSelectedItem(user.getSearchMethod());
+		strategiesBox.addActionListener(ae -> {
+				JComboBox<Search> cb = (JComboBox<Search>) ae.getSource();
+				user.setSearchMethod((Search)cb.getSelectedItem());
+				System.out.println(user.getSearchMethod().toString());
+			});
+		comboPanel.add(strategiesBox);
 		
 		this.populateUserModels();
 		getContentPane().add(rightPanel);
