@@ -97,12 +97,10 @@ public class DoubleClickWindow extends JFrame {
 		JSplitPane rightPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftCenterPanel, buildPanel(followingPane, "Following"));
 
 
-		System.out.println(user);
 		strategiesBox.setSelectedItem(user.getSearchMethod());
 		strategiesBox.addActionListener(ae -> {
 				JComboBox<Search> cb = (JComboBox<Search>) ae.getSource();
 				user.setSearchMethod((Search)cb.getSelectedItem());
-				System.out.println(user.getSearchMethod().toString());
 			});
 		comboPanel.add(selectSearch);
 		comboPanel.add(strategiesBox);
@@ -179,11 +177,9 @@ public class DoubleClickWindow extends JFrame {
 		
 		actAsConsRadio.addActionListener(ae -> {
 			if (!prod.getActAsConsumer()) prod.toggleActAsConsumer();
-			System.out.println("Producer-" + prod.getID() + " actAsConsumer: " + prod.getActAsConsumer());
 		});
 		actAsProdRadio.addActionListener(ae -> {
 			if (prod.getActAsConsumer()) prod.toggleActAsConsumer();
-			System.out.println("Producer-" + prod.getID() + " actAsConsumer: " + prod.getActAsConsumer());
 			
 		});
 		radioGroup = new ButtonGroup();
@@ -196,7 +192,6 @@ public class DoubleClickWindow extends JFrame {
 		tagsBox.addActionListener(ae -> {
 			JComboBox<String> cb = (JComboBox<String>) ae.getSource();
 			prod.setAltTag( (String)cb.getSelectedItem() );
-			System.out.println(prod.getAltTag());
 		});
 		
 		comboPanel.add(actAsConsRadio);
