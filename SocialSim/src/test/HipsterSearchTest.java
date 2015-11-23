@@ -1,20 +1,29 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Consumer;
+import main.Document;
+import main.Producer;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.Search;
+
 /**
- * Testing for PopularitySearch.
+ * Testing for HipsterSearch.
  * @author Reid Cain-Mondoux
  * @version 0.0.1
  */
-public class PopularitySearchTest {
-
+public class HipsterSearchTest {
+	
 	private Search s;
 	private Producer p; 
 	private Consumer c;
@@ -27,10 +36,10 @@ public class PopularitySearchTest {
 	
 	@Before
 	public void setUp(){
-		s = new PopularitySearch();
-		p = new Producer(1, new PopularitySearch());
+		s = new HipsterSearch();
+		p = new Producer(1, new HipsterSearch());
 		p.setTag("test");
-		c = new Consumer(2, new PopularitySearch());
+		c = new Consumer(2, new HipsterSearch());
 		c.setTag("test");
 		listD = new ArrayList<>();
 		list2 = new ArrayList<>();
@@ -44,30 +53,30 @@ public class PopularitySearchTest {
 		listD.add(d4);
 	}
 
+	
 	@Test
 	public void testSearch() {
 		assertEquals(listD,	s.search(c, listD, 5));
 		assertEquals(4,s.search(c, listD, 5).size());
 		list2.add(d1);
-		list2.add(d4);
-		assertEquals(list2, s.search(c, listD, 2));
-		d2.likeDocument(c);
-		list2.remove(d4);
 		list2.add(d2);
+		assertEquals(list2, s.search(c, listD, 2));
+		d1.likeDocument(c);
+		list2.remove(d1);
+		list2.add(d3);
 		assertEquals(list2, s.search(p, listD, 2));
 		d1.likeDocument(p);
 		d3.likeDocument(c);
-		d3.likeDocument(p);
-		list2.set(0, d1);
+		d4.likeDocument(c);
+		list2.set(0, d2);
 		list2.set(1, d3);
 		assertEquals(list2, s.search(p, listD, 2));
-		list2.add(d2);
-		assertEquals(list2, s.search(c, listD, 3));
 	}
 	
 	@Test
 	public void testEquals() {
-		assertTrue(s.equals(new PopularitySearch()));
-		assertFalse(s.equals(new HipsterSearch()));
+		assertTrue(s.equals(new HipsterSearch()));
+		assertFalse(s.equals(new PopularitySearch()));
 	}
+
 }

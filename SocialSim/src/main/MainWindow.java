@@ -4,6 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -49,6 +53,7 @@ public class MainWindow extends JFrame {
 	private int numberOfTags;   		// number of Tags in sim
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
+	private boolean onGoing;
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -57,18 +62,39 @@ public class MainWindow extends JFrame {
 		con.fill = GridBagConstraints.BOTH;
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
+		this.setTitle("SocialSim: A File-Sharing Simulation");
 		initialized = false;
+		onGoing = false;
 
 		// Initialize Components
-		numberOfTurnsField 			= new JTextField(20);
+ 		numberOfTurnsField 			= new JTextField(20);
 		numberOfProdsField 			= new JTextField(20);
 		numberOfConsField 			= new JTextField(20);
 		numberOfTagsField 			= new JTextField(20);
 		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
-		documentsTableModel			= new DefaultTableModel(5, 4);
-		consumersTableModel			= new DefaultTableModel();
-		producersTableModel			= new DefaultTableModel();
+
+		documentsTableModel			= new DefaultTableModel(5, 4) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		consumersTableModel			= new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		producersTableModel			= new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		chartPanel 					= new JPanel(new BorderLayout());
 		chartPanel.setMinimumSize(new Dimension(200, 200));
 
@@ -85,7 +111,7 @@ public class MainWindow extends JFrame {
 				numberOfSearchResults = new Integer(numberOfSearchResultsField.getText());
 			}catch (Exception e) {
 				JOptionPane alertWindow = new JOptionPane();
-				alertWindow.showMessageDialog(this, "Cannot Enter Strings", "Invalid Input", JOptionPane.WARNING_MESSAGE);
+				alertWindow.showMessageDialog(this, "All fields must contain a number", "Invalid Input", JOptionPane.WARNING_MESSAGE);
 				return;
 			}
 			if(valuesValid()) {
@@ -121,15 +147,16 @@ public class MainWindow extends JFrame {
 
 		// Build Top Display Bar -- First Row
 		con.weightx = 0.0;
-		con.gridwidth = 1;
-		panel.add(buildLabelField("Turns:", numberOfTurnsField), con);
-		panel.add(buildLabelField("Tags:", numberOfTagsField), con);
-		panel.add(buildLabelField("Producers:", numberOfProdsField), con);
-		panel.add(buildLabelField("Consumers:", numberOfConsField), con);
-		panel.add(buildLabelField("Search Results:", numberOfSearchResultsField), con);
+		JPanel compPanel = new JPanel(new GridLayout(1,6));
+		compPanel.add(buildLabelField("Turns:", numberOfTurnsField));
+		compPanel.add(buildLabelField("Tags:", numberOfTagsField));
+		compPanel.add(buildLabelField("Producers:", numberOfProdsField));
+		compPanel.add(buildLabelField("Consumers:", numberOfConsField));
+		compPanel.add(buildLabelField("Search Results:", numberOfSearchResultsField));
 
 		con.gridwidth = GridBagConstraints.REMAINDER;	// End of Row
-		panel.add(startButton, con);
+		compPanel.add(startButton);
+		panel.add(compPanel, con);
 
 		// Build Table Headers -- Second Row
 		con.weightx = 0.33;
@@ -155,8 +182,10 @@ public class MainWindow extends JFrame {
 		panel.add(chartPanel, con);
 
 		getContentPane().add(panel);
-		setSize(600,400);
 		pack();
+		setSize(1000,470);
+		//pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
@@ -167,7 +196,6 @@ public class MainWindow extends JFrame {
 	 */
 	public void updateTables (List<Document> docs, List<User> users) {
 		clearTableModels();
-		System.out.println(docs.size());
 
 		for(int i = 0; i < users.size(); i ++) {
 			if(users.get(i) instanceof Producer) {
@@ -189,7 +217,7 @@ public class MainWindow extends JFrame {
 		while(producersTableModel.getRowCount() > 0)
 			producersTableModel.removeRow(0);
 
-		while(consumersTableModel.getRowCount() > 0) 
+		while(consumersTableModel.getRowCount() > 0)
 			consumersTableModel.removeRow(0);
 
 		while(documentsTableModel.getRowCount() > 0)
@@ -229,6 +257,10 @@ public class MainWindow extends JFrame {
 		consumersTableModel.addRow(rowData);
 	}
 
+	/**
+	 * Set the fields to be enabled or not
+	 * @param b, enable fields true/false
+	 */
 	private void setFieldEnabled(boolean b) {
 		numberOfTurnsField.setEnabled(b);
 		numberOfProdsField.setEnabled(b);
@@ -270,12 +302,16 @@ public class MainWindow extends JFrame {
 		JPanel labelField = new JPanel(layout);
 		labelField.add(new JLabel(label), con);
 
-		con.weighty = 1.0;
+		con.weightx = 1.0;
 		labelField.add(field, con);
 
 		return labelField;
 	}
 
+	/**
+	 * Check to see if the current values are valid for a simulation
+	 * @return true if valid false if invalid
+	 */
 	private boolean valuesValid() {
 		if(numberOfTurns < 0 || numberOfProds < 0 || numberOfCons < 0 || numberOfTags < 0 || numberOfSearchResults < 0){
 			JOptionPane alertWindow = new JOptionPane();
@@ -283,7 +319,7 @@ public class MainWindow extends JFrame {
 			return false;
 		}
 		else
-			return false;
+			return true;
 	}
 
 	/**
@@ -295,9 +331,43 @@ public class MainWindow extends JFrame {
 	private JScrollPane buildTable(DefaultTableModel tableModel, String[] header) {
 		tableModel.setColumnIdentifiers(header);
 		JTable table = new JTable(tableModel);
+		addDoubleClickListener(table);
 		JScrollPane pane = new JScrollPane(table);
 		pane.setMinimumSize(new Dimension(100,200));
 		return pane;
+	}
+
+	/**
+	 * Attach the mouse listener to each JTable
+	 * @param table, to have listener attach
+	 */
+	private void addDoubleClickListener(JTable table) {
+		table.addMouseListener(new MouseAdapter () {
+			public void mousePressed(MouseEvent me) {
+				JTable table = (JTable) me.getSource();
+				Point p = me.getPoint();
+				int row = table.rowAtPoint(p);
+				if (me.getClickCount() == 2 && row != -1) {
+
+					int id = -1;
+					String name = "";
+					Object o = table.getValueAt(row, 0);
+					if(o instanceof Integer){
+						id = (Integer) o;
+					}
+					else if(o instanceof String){
+						name = (String) o;
+					}
+
+					if(table.getModel() == documentsTableModel){
+						new DoubleClickWindow(sim.getDocument(name));
+					}
+					else {
+						new DoubleClickWindow(sim.getUserById(id), sim.getTags().toArray(new String[sim.getTags().size()]));
+					}
+				}
+			}
+		});
 	}
 
 	/**
@@ -322,11 +392,11 @@ public class MainWindow extends JFrame {
 	 */
 	private DefaultCategoryDataset buildData(DefaultTableModel model, DefaultTableModel model2) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(int i = 0; i < model.getRowCount(); i++) 
+		for(int i = 0; i < model.getRowCount(); i++)
 		{
 			dataset.addValue(new Double((Integer)model.getValueAt(i, 4)), "", (Integer)model.getValueAt(i, 0));
 		}
-		for(int i = 0; i < model2.getRowCount(); i++) 
+		for(int i = 0; i < model2.getRowCount(); i++)
 		{
 			dataset.addValue(new Double((Integer)model2.getValueAt(i, 4)), "", (Integer)model2.getValueAt(i, 0));
 		}

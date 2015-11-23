@@ -1,12 +1,21 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Consumer;
+import main.Document;
+import main.Producer;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.DumbSearch;
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.RandomSearch;
 
 /**
  * Testing for consumer

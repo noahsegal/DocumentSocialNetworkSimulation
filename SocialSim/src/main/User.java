@@ -3,6 +3,8 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import Search.Search;
+
 /**
  * Group: MyNiftyJavaRepo
  * @author Noah Segal
@@ -78,46 +80,41 @@ public abstract class User {
 	 * 
 	 * @param documents List of documents
 	 */
-	protected void likeDocsFollowUsers(List<Document> documents) {
+	public void likeDocsFollowUsers(List<Document> documents, String tag) {
 		for (Document doc: documents) {
-			if (doc.getTag().equals(this.tag)) {
+			if (doc.getTag().equals(this.getTag())) {
 				likeDoc(doc);
 				followUser(doc.getProducer());
-				
-				// Follow users who like articles you like
-				doc.getLikers().forEach( (newUser) -> {
-					followUser(newUser);
-					});
+				doc.getLikers().forEach( (newUser) -> {followUser(newUser);});	// Follow users who like articles you like
 				}
 			}
 	}
 	
 	/**
-	 * @return String of the list of Users following this User
+	 * @return List<String> of a User's followers
 	 */
-	public String followerString() {
-		String s = "";
+	public ArrayList<String> listOfFollowers() {
+		ArrayList<String> followerList = new ArrayList<String>();
 		for (User u: followers) {
-			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
+			followerList.add(u.getClass().getSimpleName() + ": " + u.getID());
 		}
-		return s;
+		return followerList;
 	}
 	
 	/**
-	 * @return String of the list of Users this User follows
+	 * @return List<String> of who a User is following
 	 */
-	public String followingString() {
-		String s = "";
+	public ArrayList<String> listOfFollowing() {
+		ArrayList<String> followingList = new ArrayList<String>();
 		for (User u: following) {
-			s += u.getClass().getSimpleName() + " " + u.getID() + "\n";
+			followingList.add(u.getClass().getSimpleName() + ": " + u.getID());
 		}
-		return s;
+		return followingList;
 	}
 	
 	/**
 	 * @return String Description of the User
 	 */
-	@Override
 	public String toString() {
 		String s = this.getClass().getSimpleName() + " with ID: " + id + " and tag: " + tag;
 		

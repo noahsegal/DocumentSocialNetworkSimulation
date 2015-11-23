@@ -1,13 +1,22 @@
-package main;
+package test;
 
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Consumer;
+import main.Document;
+import main.Producer;
+import main.User;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+
+import Search.HipsterSearch;
+import Search.PopularitySearch;
+import Search.Search;
 
 /**
  * Group: MyNiftyJavaRepo
@@ -92,18 +101,18 @@ public class UserTest {
 		// Producer
 		p1.addFollower(c1);
 		assertEquals("Producer p1 followed by one User", 1, p1.getNumberOfFollowers());
-		assertTrue("Producer p1 followed by Consumer c1", p1.followers.contains(c1));
-		assertTrue("Consumer c1 is following Producer p1", c1.following.contains(p1));
+		assertTrue("Producer p1 followed by Consumer c1", p1.getFollowers().contains(c1));
+		assertTrue("Consumer c1 is following Producer p1", c1.getFollowing().contains(p1));
 		
 		p1.addFollower(p2);
 		assertEquals("Producer p1 followed by two Users", 2, p1.getNumberOfFollowers());
-		assertTrue("Producer p1 followed by Producer p2", p1.followers.contains(p2));
-		assertTrue("Producer p2 is following Producer p1", p2.following.contains(p1));
+		assertTrue("Producer p1 followed by Producer p2", p1.getFollowers().contains(p2));
+		assertTrue("Producer p2 is following Producer p1", p2.getFollowing().contains(p1));
 		
 		p1.addFollower(p1);
 		assertEquals("Producer p1 cannot follow itself", 2, p1.getNumberOfFollowers());
-		assertFalse("Producer p1 isn't followed by itself", p1.followers.contains(p1));
-		assertFalse("Producer p1 isn't following itself", p1.following.contains(p1));
+		assertFalse("Producer p1 isn't followed by itself", p1.getFollowers().contains(p1));
+		assertFalse("Producer p1 isn't following itself", p1.getFollowing().contains(p1));
 		
 		p1.addFollower(c1);
 		assertEquals("Consumer c1 cannot follow Producer p1 again", 2, p1.getNumberOfFollowers());
@@ -114,18 +123,18 @@ public class UserTest {
 		// Consumer
 		c2.addFollower(c1);
 		assertEquals("Consumer c2 followed by one User", 1, c2.getNumberOfFollowers());
-		assertTrue("Consumer c2 followed by Consumer c1", c2.followers.contains(c1));
-		assertTrue("Consumer c1 is following Consumer c2", c1.following.contains(c2));
+		assertTrue("Consumer c2 followed by Consumer c1", c2.getFollowers().contains(c1));
+		assertTrue("Consumer c1 is following Consumer c2", c1.getFollowing().contains(c2));
 		
 		c2.addFollower(p1);
 		assertEquals("Consumer c2 followed by two Users", 2, c2.getNumberOfFollowers());
-		assertTrue("Consumer c2 followed by Producer p1", c2.followers.contains(p1));
-		assertTrue("Producer p2 is following Consumer c2", p1.following.contains(c2));
+		assertTrue("Consumer c2 followed by Producer p1", c2.getFollowers().contains(p1));
+		assertTrue("Producer p2 is following Consumer c2", p1.getFollowing().contains(c2));
 		
 		c2.addFollower(c2);
 		assertEquals("Consumer c1 cannot follow itself", 2, c2.getNumberOfFollowers());
-		assertFalse("Consumer c2 isn't followed by itself", c2.followers.contains(c2));
-		assertFalse("Consumer c2 isn't following itself", c2.following.contains(c2));
+		assertFalse("Consumer c2 isn't followed by itself", c2.getFollowers().contains(c2));
+		assertFalse("Consumer c2 isn't following itself", c2.getFollowing().contains(c2));
 		
 		c2.addFollower(c1);
 		assertEquals("Consumer c1 cannot follow Consumer c2 again", 2, c2.getNumberOfFollowers());
@@ -139,18 +148,18 @@ public class UserTest {
 		// Producer
 		p1.followUser(c1);
 		assertEquals("Producer p1 following one User", 1, p1.getNumberOfFollowing());
-		assertTrue("Producer p1 is following Consumer c1", p1.following.contains(c1));
-		assertTrue("Consumer c1 followed byProducer p1", c1.followers.contains(p1));
+		assertTrue("Producer p1 is following Consumer c1", p1.getFollowing().contains(c1));
+		assertTrue("Consumer c1 followed byProducer p1", c1.getFollowers().contains(p1));
 		
 		p1.followUser(p2);
 		assertEquals("Producer p1 following two Users", 2, p1.getNumberOfFollowing());
-		assertTrue("Producer p1 is following Producer p2", p1.following.contains(p2));
-		assertTrue("Producer p2 followed by Producer p1", p2.followers.contains(p1));
+		assertTrue("Producer p1 is following Producer p2", p1.getFollowing().contains(p2));
+		assertTrue("Producer p2 followed by Producer p1", p2.getFollowers().contains(p1));
 		
 		p1.followUser(p1);
 		assertEquals("Producer p1 cannot follow itself", 2, p1.getNumberOfFollowing());
-		assertFalse("Producer p1 isn't following itself", p1.followers.contains(p1));
-		assertFalse("Producer p1 isn't followed by itself", p1.following.contains(p1));
+		assertFalse("Producer p1 isn't following itself", p1.getFollowers().contains(p1));
+		assertFalse("Producer p1 isn't followed by itself", p1.getFollowing().contains(p1));
 		
 		p1.followUser(c1);
 		assertEquals("Producer p1 cannot follow Consumer c1 again", 2, p1.getNumberOfFollowing());
@@ -161,18 +170,18 @@ public class UserTest {
 		// Consumer
 		c2.followUser(c1);
 		assertEquals("Consumer c2 following one User", 1, c2.getNumberOfFollowing());
-		assertTrue("Consumer c2 is following Consumer c1", c2.following.contains(c1));
-		assertTrue("Consumer c1 followed by Consumer c2", c1.followers.contains(c2));
+		assertTrue("Consumer c2 is following Consumer c1", c2.getFollowing().contains(c1));
+		assertTrue("Consumer c1 followed by Consumer c2", c1.getFollowers().contains(c2));
 		
 		c2.followUser(p1);
 		assertEquals("Consumer c2 following two Users", 2, c2.getNumberOfFollowing());
-		assertTrue("Consumer c2 is following Producer p1", c2.following.contains(p1));
-		assertTrue("Producer p2 followed by Consumer c2", p1.followers.contains(c2));
+		assertTrue("Consumer c2 is following Producer p1", c2.getFollowing().contains(p1));
+		assertTrue("Producer p2 followed by Consumer c2", p1.getFollowers().contains(c2));
 		
 		c2.followUser(c2);
 		assertEquals("Consumer c1 cannot follow itself", 2, c2.getNumberOfFollowing());
-		assertFalse("Consumer c2 isn't following itself", c2.following.contains(c2));
-		assertFalse("Consumer c2 isn't followed by itself", c2.followers.contains(c2));
+		assertFalse("Consumer c2 isn't following itself", c2.getFollowing().contains(c2));
+		assertFalse("Consumer c2 isn't followed by itself", c2.getFollowers().contains(c2));
 		
 		c2.followUser(c1);
 		assertEquals("Consumer c2 cannot follow Consumer c1 again", 2, c2.getNumberOfFollowing());
@@ -186,11 +195,11 @@ public class UserTest {
 		// Producer
 		p1.likeDoc(d1);
 		assertEquals("Producer p1 likes one Document", 1, p1.getNumberOfLikedDocs());
-		assertTrue("Producer p1 likes Document d1, which it created", p1.likedDocs.contains(d1));
+		assertTrue("Producer p1 likes Document d1, which it created", p1.getLikedDocs().contains(d1));
 		
 		p1.likeDoc(d2);
 		assertEquals("Producer p1 likes two Documents", 2, p1.getNumberOfLikedDocs());
-		assertTrue("Producer p1 likes Document d2, which it didn't create", p1.likedDocs.contains(d2));
+		assertTrue("Producer p1 likes Document d2, which it didn't create", p1.getLikedDocs().contains(d2));
 		
 		p1.likeDoc(d1);
 		assertEquals("Producer p1 cannot like previously liked Document d1", 2, p1.getNumberOfLikedDocs());
@@ -201,11 +210,11 @@ public class UserTest {
 		// Consumer
 		c1.likeDoc(d1);
 		assertEquals("Consumer c1 likes one Document", 1, c1.getNumberOfLikedDocs());
-		assertTrue("Consumer c1 likes Document d1", c1.likedDocs.contains(d1));
+		assertTrue("Consumer c1 likes Document d1", c1.getLikedDocs().contains(d1));
 		
 		c1.likeDoc(d2);
 		assertEquals("Consumer c1 likes two Documents", 2, c1.getNumberOfLikedDocs());
-		assertTrue("Consumer c1 likes Document d2", c1.likedDocs.contains(d2));
+		assertTrue("Consumer c1 likes Document d2", c1.getLikedDocs().contains(d2));
 		
 		c1.likeDoc(d1);
 		assertEquals("Consumer c1 cannot like previously liked Document d1", 2, c1.getNumberOfLikedDocs());
@@ -227,55 +236,68 @@ public class UserTest {
 		assertEquals("Document List dList contains three documents", 3, dList.size() );
 		
 		// Producer
-		p1.likeDocsFollowUsers(dList);
+		p1.likeDocsFollowUsers(dList, p1.getTag());
 		assertEquals("Producer p1 likes two of the three documents", 2, p1.getNumberOfLikedDocs());
 		assertEquals("Producer p1 follows two Users", 2, p1.getNumberOfFollowing());
 		
-		assertTrue("Producer p1 follows Consumer c1", p1.following.contains(c2));
-		assertTrue("Producer p1 follows Producer p2", p1.following.contains(p2));
+		assertTrue("Producer p1 follows Consumer c1", p1.getFollowing().contains(c2));
+		assertTrue("Producer p1 follows Producer p2", p1.getFollowing().contains(p2));
 		
-		assertTrue("Consumer c2 followed by Producer p1", c2.followers.contains(p1));
-		assertTrue("Producer p2 followed by Producer p1", p2.followers.contains(p1));
+		assertTrue("Consumer c2 followed by Producer p1", c2.getFollowers().contains(p1));
+		assertTrue("Producer p2 followed by Producer p1", p2.getFollowers().contains(p1));
 		
 		
 		// Consumer
-		c1.likeDocsFollowUsers(dList);
+		c1.likeDocsFollowUsers(dList, c1.getTag());
 		assertEquals("Consumer c1 likes one of the three documents", 1, c1.getNumberOfLikedDocs());
 		assertEquals("Consumer c1 follows two Users", 2, c1.getNumberOfFollowing());
 		
-		assertTrue("Consumer c1 follows Producer p2", c1.following.contains(p2));
-		assertTrue("Consumer c1 follows Consumer c3", c1.following.contains(c3));
+		assertTrue("Consumer c1 follows Producer p2", c1.getFollowing().contains(p2));
+		assertTrue("Consumer c1 follows Consumer c3", c1.getFollowing().contains(c3));
 		
-		assertTrue("Producer p2 followed by Consumer c1", p2.followers.contains(c1));
-		assertTrue("Consumer c3 followed by Consumer c1", c3.followers.contains(c1));
+		assertTrue("Producer p2 followed by Consumer c1", p2.getFollowers().contains(c1));
+		assertTrue("Consumer c3 followed by Consumer c1", c3.getFollowers().contains(c1));
 	}
 
 	@Test
-	public void testFollowerString() {
+	public void testListOfFollowers() {
 		// Producer
 		c1.followUser(p1);
 		p2.followUser(p1);
 		c2.followUser(p1);
 		
-		assertEquals("Producer p1's list of Followers", "Consumer 2\nProducer 1\nConsumer 3\n", p1.followerString());
+		ArrayList<String> followers = p1.listOfFollowers();
+		
+		assertTrue("Producer p1's list of Followers contains Consumer c1", followers.contains("Consumer: 2"));
+		assertTrue("Producer p1's list of Followers contains Producer p2", followers.contains("Producer: 1"));
+		assertTrue("Producer p1's list of Followers contains Consumer c2", followers.contains("Consumer: 3"));
 		
 		// Consumer
 		p1.followUser(c1);
 		c2.followUser(c1);
 		p2.followUser(c1);
 		
-		assertEquals("Consumer c1's list of Followers", "Producer 0\nConsumer 3\nProducer 1\n", c1.followerString());
+		followers = c1.listOfFollowers();
+		
+		assertTrue("Consumer c1's list of Followers contains Producer p1", followers.contains("Producer: 0"));
+		assertTrue("Consumer c1's list of Followers contains Consumer c2", followers.contains("Consumer: 3"));
+		assertTrue("Consumer c1's list of Followers contains Producer p2", followers.contains("Producer: 1"));
 	}
 
 	@Test
-	public void testFollowingString() {
+	public void testListOfFollowing() {
 		// Producer
 		p1.followUser(c1);
 		p1.followUser(c2);
 		p1.followUser(p1);
 		p1.followUser(p2);
 		
-		assertEquals("Producer p1 follows these Users", "Consumer 2\nConsumer 3\nProducer 1\n", p1.followingString());
+		ArrayList<String> following = p1.listOfFollowing();
+		
+		assertTrue("Producer p1's list of Following contains Consumer c1", following.contains("Consumer: 2"));
+		assertTrue("Producer p1's list of Following contains Consumer c2", following.contains("Consumer: 3"));
+		assertFalse("Producer p1's list of Following doesn't contain Producer p1", following.contains("Producer: 0"));
+		assertTrue("Producer p1's list of Following contains Producer p2", following.contains("Producer: 1"));
 		
 		// Consumer	
 		c1.followUser(p1);
@@ -283,7 +305,13 @@ public class UserTest {
 		c1.followUser(c1);
 		c1.followUser(c2);
 		
-		assertEquals("Consumer c1 follows these Users", "Producer 0\nProducer 1\nConsumer 3\n", c1.followingString());
+		following = c1.listOfFollowing();
+		
+		assertTrue("Consumer c1's list of Following contains Producer p1", following.contains("Producer: 0"));
+		assertTrue("Consumer c1's list of Following contains Producer p2", following.contains("Producer: 1"));
+		assertFalse("Consumer c1's list of Following doesn't contains Consumer c1", following.contains("Consumer: 2"));
+		assertTrue("Consumer c1's list of Following contains Consumer c2", following.contains("Consumer: 3"));
+		
 	}
 
 	@Test
@@ -381,9 +409,9 @@ public class UserTest {
 		
 		p1.setFollowers(uList1);
 		assertEquals("Producer p1 followed by three Users", 3, p1.getNumberOfFollowers());
-		assertTrue("Producer p1 followed by Producer p2", p1.followers.contains(p2));
-		assertTrue("Producer p1 followed by Consumer c2", p1.followers.contains(c2));
-		assertTrue("Producer p1 followed by Consumer c3", p1.followers.contains(c3));
+		assertTrue("Producer p1 followed by Producer p2", p1.getFollowers().contains(p2));
+		assertTrue("Producer p1 followed by Consumer c2", p1.getFollowers().contains(c2));
+		assertTrue("Producer p1 followed by Consumer c3", p1.getFollowers().contains(c3));
 		
 		// Consumer
 		uList2.add(p2);
@@ -392,9 +420,9 @@ public class UserTest {
 		
 		c1.setFollowers(uList2);
 		assertEquals("Consumer c1 followed by three Users", 3, c1.getNumberOfFollowers());
-		assertTrue("Consumer c1 followed by Producer p2", c1.followers.contains(p2));
-		assertTrue("Consumer c1 followed by Consumer c2", c1.followers.contains(c2));
-		assertTrue("Consumer c1 followed by Consumer c3", c1.followers.contains(c3));
+		assertTrue("Consumer c1 followed by Producer p2", c1.getFollowers().contains(p2));
+		assertTrue("Consumer c1 followed by Consumer c2", c1.getFollowers().contains(c2));
+		assertTrue("Consumer c1 followed by Consumer c3", c1.getFollowers().contains(c3));
 	}
 
 	@Test
@@ -406,12 +434,12 @@ public class UserTest {
 		p1.setFollowers(uList1);
 		p1.setFollowers(1, c3);
 		assertEquals("Producer p1 followed by three Users", 3, p1.getNumberOfFollowers());
-		assertEquals("Producer p1 followed by Consumer c3 at index 1", c3, p1.followers.get(1));
-		assertEquals("Producer p1 followed by Consumer c2, moved to index 2", c2, p1.followers.get(2));
+		assertEquals("Producer p1 followed by Consumer c3 at index 1", c3, p1.getFollowers().get(1));
+		assertEquals("Producer p1 followed by Consumer c2, moved to index 2", c2, p1.getFollowers().get(2));
 		
 		p1.setFollowers(2, c3);
-		assertEquals("Producer p1 still followed by Consumer c3 at index 1", c3, p1.followers.get(1));
-		assertEquals("Producer p1 still followed by Consumer c2 at index 2", c2, p1.followers.get(2));
+		assertEquals("Producer p1 still followed by Consumer c3 at index 1", c3, p1.getFollowers().get(1));
+		assertEquals("Producer p1 still followed by Consumer c2 at index 2", c2, p1.getFollowers().get(2));
 		
 		
 		p1.setFollowers(1, null);
@@ -419,11 +447,11 @@ public class UserTest {
 		
 		p1.setFollowers(-1, c1);
 		assertEquals("Producer p1 still followed by three Users", 3, p1.getNumberOfFollowers());
-		assertFalse("Producer p1 not followed by Consumer c1", p1.followers.contains(c1));
+		assertFalse("Producer p1 not followed by Consumer c1", p1.getFollowers().contains(c1));
 		
 		p1.setFollowers(3, c1);
 		assertEquals("Producer p1 still followed by three Users", 3, p1.getNumberOfFollowers());
-		assertFalse("Producer p1 not followed by Consumer c1", p1.followers.contains(c1));
+		assertFalse("Producer p1 not followed by Consumer c1", p1.getFollowers().contains(c1));
 		
 		// Consumer	
 		uList2.add(p2);
@@ -432,12 +460,12 @@ public class UserTest {
 		c1.setFollowers(uList2);
 		c1.setFollowers(1, c3);
 		assertEquals("Consumer c1 followed by three Users", 3, c1.getNumberOfFollowers());
-		assertEquals("Consumer c1 followed by Consumer c3 at index 1", c3, c1.followers.get(1));
-		assertEquals("Consumer c1 followed by Consumer c2, moved to index 2", c2, c1.followers.get(2));
+		assertEquals("Consumer c1 followed by Consumer c3 at index 1", c3, c1.getFollowers().get(1));
+		assertEquals("Consumer c1 followed by Consumer c2, moved to index 2", c2, c1.getFollowers().get(2));
 		
 		c1.setFollowers(2, c3);
-		assertEquals("Consumer c1 still followed by Consumer c3 at index 1", c3, c1.followers.get(1));
-		assertEquals("Consumer c1 still followed by Consumer c2 at index 2", c2, c1.followers.get(2));
+		assertEquals("Consumer c1 still followed by Consumer c3 at index 1", c3, c1.getFollowers().get(1));
+		assertEquals("Consumer c1 still followed by Consumer c2 at index 2", c2, c1.getFollowers().get(2));
 
 		
 		c1.setFollowers(1, null);
@@ -445,11 +473,11 @@ public class UserTest {
 		
 		c1.setFollowers(-1, p1);
 		assertEquals("Consumer c1 still followed by three Users", 3, c1.getNumberOfFollowers());
-		assertFalse("Consumer c1 not followed by Producer p1", c1.followers.contains(p1));
+		assertFalse("Consumer c1 not followed by Producer p1", c1.getFollowers().contains(p1));
 		
 		c1.setFollowers(3, p1);
 		assertEquals("Consumer c1 still followed by three Users", 3, c1.getNumberOfFollowers());
-		assertFalse("Consumer c1 not followed by Producer p1", c1.followers.contains(p1));
+		assertFalse("Consumer c1 not followed by Producer p1", c1.getFollowers().contains(p1));
 	}
 
 	@Test
@@ -527,9 +555,9 @@ public class UserTest {
 		
 		p1.setFollowing(uList1);
 		assertEquals("Producer p1 following three Users", 3, p1.getNumberOfFollowing());
-		assertTrue("Producer p1 following Producer p2", p1.following.contains(p2));
-		assertTrue("Producer p1 following Consumer c2", p1.following.contains(c2));
-		assertTrue("Producer p1 following Consumer c3", p1.following.contains(c3));
+		assertTrue("Producer p1 following Producer p2", p1.getFollowing().contains(p2));
+		assertTrue("Producer p1 following Consumer c2", p1.getFollowing().contains(c2));
+		assertTrue("Producer p1 following Consumer c3", p1.getFollowing().contains(c3));
 		
 		// Consumer
 		uList2.add(p2);
@@ -538,9 +566,9 @@ public class UserTest {
 		
 		c1.setFollowing(uList2);
 		assertEquals("Consumer c1 following three Users", 3, c1.getNumberOfFollowing());
-		assertTrue("Consumer c2 following Producer p2", c1.following.contains(p2));
-		assertTrue("Consumer c2 following Consumer c2", c1.following.contains(c2));
-		assertTrue("Consumer c2 following Consumer c3", c1.following.contains(c3));
+		assertTrue("Consumer c2 following Producer p2", c1.getFollowing().contains(p2));
+		assertTrue("Consumer c2 following Consumer c2", c1.getFollowing().contains(c2));
+		assertTrue("Consumer c2 following Consumer c3", c1.getFollowing().contains(c3));
 	}
 
 	@Test
@@ -552,18 +580,18 @@ public class UserTest {
 		p1.setFollowing(uList1);
 		p1.setFollowing(1, c3);
 		assertEquals("Producer p1 following three Users", 3, p1.getNumberOfFollowing());
-		assertEquals("Producer p1 following Consumer c3 at index 1", c3, p1.following.get(1));
+		assertEquals("Producer p1 following Consumer c3 at index 1", c3, p1.getFollowing().get(1));
 		
 		p1.setFollowing(1, null);
 		assertEquals("Producer p1 still followed by three Users", 3, p1.getNumberOfFollowing());
 		
 		p1.setFollowing(-1, c1);
 		assertEquals("Producer p1 still followed by three Users", 3, p1.getNumberOfFollowing());
-		assertFalse("Producer p1 not following Consumer c1", p1.following.contains(c1));
+		assertFalse("Producer p1 not following Consumer c1", p1.getFollowing().contains(c1));
 		
 		p1.setFollowing(3, c1);
 		assertEquals("Producer p1 still following three Users", 3, p1.getNumberOfFollowing());
-		assertFalse("Producer p1 not following Consumer c1", p1.following.contains(c1));
+		assertFalse("Producer p1 not following Consumer c1", p1.getFollowing().contains(c1));
 		
 		// Consumer
 		uList2.add(p2);
@@ -572,18 +600,18 @@ public class UserTest {
 		c1.setFollowing(uList2);
 		c1.setFollowing(1, c3);
 		assertEquals("Consumer c1 following three Users", 3, c1.getNumberOfFollowing());
-		assertEquals("Consumer c1 following Consumer c3 at index 1", c3, c1.following.get(1));
+		assertEquals("Consumer c1 following Consumer c3 at index 1", c3, c1.getFollowing().get(1));
 		
 		c1.setFollowing(1, null);
 		assertEquals("Consumer c1 still following three Users", 3, c1.getNumberOfFollowing());
 		
 		c1.setFollowing(-1, p1);
 		assertEquals("Consumer c1 still following three Users", 3, c1.getNumberOfFollowing());
-		assertFalse("Consumer c1 not following Producer p1", c1.following.contains(p1));
+		assertFalse("Consumer c1 not following Producer p1", c1.getFollowing().contains(p1));
 		
 		c1.setFollowing(3, p1);
 		assertEquals("Consumer c1 still following three Users", 3, c1.getNumberOfFollowing());
-		assertFalse("Consumer c1 not following Producer p1", c1.following.contains(p1));
+		assertFalse("Consumer c1 not following Producer p1", c1.getFollowing().contains(p1));
 	}
 
 	@Test
@@ -652,16 +680,16 @@ public class UserTest {
 		// Producer
 		p1.setLikedDocs(dList);
 		assertEquals("Producer p1 likes three Documents", 3, p1.getNumberOfLikedDocs());
-		assertTrue("Producer p1 likes Document d1", p1.likedDocs.contains(d1));
-		assertTrue("Producer p1 likes Document d2", p1.likedDocs.contains(d2));
-		assertTrue("Producer p1 likes Document d3", p1.likedDocs.contains(d3));	
+		assertTrue("Producer p1 likes Document d1", p1.getLikedDocs().contains(d1));
+		assertTrue("Producer p1 likes Document d2", p1.getLikedDocs().contains(d2));
+		assertTrue("Producer p1 likes Document d3", p1.getLikedDocs().contains(d3));	
 		
 		// Consumer
 		c1.setLikedDocs(dList);
 		assertEquals("Consumer c1 likes three Documents", 3, c1.getNumberOfLikedDocs());
-		assertTrue("Consumer c1 likes Document d1", c1.likedDocs.contains(d1));
-		assertTrue("Consumer c1 likes Document d2", c1.likedDocs.contains(d2));
-		assertTrue("Consumer c1 likes Document d3", c1.likedDocs.contains(d3));
+		assertTrue("Consumer c1 likes Document d1", c1.getLikedDocs().contains(d1));
+		assertTrue("Consumer c1 likes Document d2", c1.getLikedDocs().contains(d2));
+		assertTrue("Consumer c1 likes Document d3", c1.getLikedDocs().contains(d3));
 	}
 
 	@Test
@@ -670,35 +698,35 @@ public class UserTest {
 		p1.setLikedDocs(dList);
 		p1.setLikedDocs(1, d4);
 		assertEquals("Producer p1 likes four Documents", 4, p1.getNumberOfLikedDocs());
-		assertEquals("Producer p1 likes Document d4 at index 1", d4, p1.likedDocs.get(1));
+		assertEquals("Producer p1 likes Document d4 at index 1", d4, p1.getLikedDocs().get(1));
 		
 		p1.setLikedDocs(1, null);
 		assertEquals("Producer p1 still likes four Documents", 4, p1.getNumberOfLikedDocs());
 		
 		p1.setLikedDocs(-1, d5);
 		assertEquals("Producer p1 still likes four Documents", 4, p1.getNumberOfLikedDocs());
-		assertFalse("Producer p1 doesn't like Document d5", p1.likedDocs.contains(d5));
+		assertFalse("Producer p1 doesn't like Document d5", p1.getLikedDocs().contains(d5));
 		
 		p1.setLikedDocs(4, d5);
 		assertEquals("Producer p1 still likes four Documents", 4, p1.getNumberOfLikedDocs());
-		assertFalse("Producer p1 doesn't like Document d5", p1.likedDocs.contains(d5));
+		assertFalse("Producer p1 doesn't like Document d5", p1.getLikedDocs().contains(d5));
 		
 		// Consumer
 		c1.setLikedDocs(dList);
 		c1.setLikedDocs(1, d4);
 		assertEquals("Consumer c1 likes four Documents", 4, c1.getNumberOfLikedDocs());
-		assertEquals("Consumer c1 likes Document d4 at index 1", d4, c1.likedDocs.get(1));
+		assertEquals("Consumer c1 likes Document d4 at index 1", d4, c1.getLikedDocs().get(1));
 		
 		p1.setLikedDocs(1, null);
 		assertEquals("Consumer c1 still likes four Documents", 4, c1.getNumberOfLikedDocs());
 		
 		p1.setLikedDocs(-1, d5);
 		assertEquals("Consumer c1 still likes four Documents", 4, c1.getNumberOfLikedDocs());
-		assertFalse("Consumer c1 doesn't like Document d5", c1.likedDocs.contains(d5));
+		assertFalse("Consumer c1 doesn't like Document d5", c1.getLikedDocs().contains(d5));
 		
 		p1.setLikedDocs(4, d5);
 		assertEquals("Consumer c1 still likes four Documents", 4, c1.getNumberOfLikedDocs());
-		assertFalse("Consumer c1 doesn't like Document d5", c1.likedDocs.contains(d5));
+		assertFalse("Consumer c1 doesn't like Document d5", c1.getLikedDocs().contains(d5));
 		
 	}
 

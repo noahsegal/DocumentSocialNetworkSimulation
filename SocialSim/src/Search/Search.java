@@ -1,7 +1,10 @@
 
-package main;
+package Search;
 
 import java.util.List;
+
+import main.Document;
+import main.User;
 
 /**
  * Search 
@@ -22,4 +25,7 @@ public interface Search {
 	
 	@Override
 	public boolean equals(Object obj);
+	
+	@Override
+	public String toString();
 }

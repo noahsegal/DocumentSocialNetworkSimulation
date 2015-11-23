@@ -1,9 +1,12 @@
-package main;
+package Search;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+
+import main.Document;
+import main.User;
 
 
 /**
@@ -35,6 +38,11 @@ public class RandomSearch implements Search {
 		if (null == obj) return false;
 		if ( !(obj instanceof RandomSearch ) ) return false;
 		return true;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getName();
 	}
 	
 }

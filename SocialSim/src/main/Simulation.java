@@ -5,13 +5,15 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
+import Search.PopularitySearch;
+
 /**
  * Group: MyNiftyJavaRepo
  * Author: Monica Ruttle
  * Class responsible for iteration of turns and setting up the system
  */
 public class Simulation {
-
+	
 	private List<String> tags;
 	private List<User> users;
 	private List<Document> documents;
@@ -37,17 +39,7 @@ public class Simulation {
 	{
 		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
-		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		try {
-			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-				for (String tag : line.split(", ")) {
-				    tags.add(tag);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -59,15 +51,18 @@ public class Simulation {
 	 */
 	public void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
 	{
+		reset();
 		int index;
 		Random rand;
 		
 		this.numberOfTurns = numberOfTurns;
-		if (numberOfTags > tags.size())
-			this.numberOfTags = tags.size();
-		else this.numberOfTags = numberOfTags;
+		this.numberOfTags = numberOfTags;
 		this.numberOfProducers = numberOfProducers;
 		this.numberOfConsumers = numberOfConsumers;
+		
+		tags = new ArrayList<String>(Tags.getTags(numberOfTags));
+		if (tags.size() < numberOfTags)
+			this.numberOfTags = tags.size();
 		
 		currentTurn = 1;
 		currentId = 1;
@@ -108,31 +103,31 @@ public class Simulation {
 	public boolean takeTurn(int k)
 	{
 		//select random consumer or producer
-		User c = users.get((int)(Math.random() * users.size()));
+		User u = users.get((int)(Math.random() * users.size()));
 		
 		//search the documents and calls the take turn method for either a consumer or a producer
-		List<Document> searchResults = new ArrayList<Document>(c.searchMethod.search(c, documents, k));
+		List<Document> searchResults = new ArrayList<Document>(u.searchMethod.search(u, documents, k));
 		
-		Document d = c.takeTurn(searchResults);
+		Document d = u.takeTurn(searchResults);
 		if (d != null){
 			documents.add(d);
 			searchResults.add(d);
 		}
 		
 		calculateProducerPayoff(searchResults);
-		if (!(c instanceof Producer))
+		if (!(u instanceof Producer))
 		{
-			payoffs.get(c).add(c.getPayoff());
+			payoffs.get(u).add(u.getPayoff());
 		}
 		
 		mw.updateTables(documents, users);
-		currentTurn++;
-		if (numberOfTurns+1 == currentTurn)
+		if (currentTurn == numberOfTurns)
 		{
-			reset();
 			return false;
+		} else {
+			currentTurn++;
+			return true;
 		}
-		else return true;
 		
 	}
 	
@@ -143,17 +138,7 @@ public class Simulation {
 	{
 		users = new ArrayList<User>();
 		documents = new ArrayList<Document>();
-		tags = new ArrayList<String>();
 		payoffs = new HashMap<User, ArrayList<Integer>>();
-		try {
-			for (String line : Files.readAllLines(Paths.get("Tags.txt"))) {
-				for (String tag : line.split(", ")) {
-				    tags.add(tag);
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -163,10 +148,10 @@ public class Simulation {
 	 */
 	private void calculateProducerPayoff(List<Document> docs)
 	{
-		for (User c : users) {
-			if (c instanceof Producer)
+		for (User u : users) {
+			if (u instanceof Producer)
 			{
-				Producer p = (Producer)c;
+				Producer p = (Producer)u;
 				p.calculatePayoff(docs);
 				payoffs.get(p).add(p.getPayoff());
 			}
@@ -342,6 +327,18 @@ public class Simulation {
 	}
 	
 	/**
+	 * get a user from a specified id
+	 * @param the specified id of the user
+	 * @return the user with the corresponding id
+	 */
+	public User getUserById(int id) {
+		for (User u: users)
+			if (u.getID() == id)
+				return u;
+		return null;
+	}
+	
+	/**
 	 * Get the current ID
 	 * 
 	 * @return consumer
@@ -377,6 +374,19 @@ public class Simulation {
 	 */
 	public void setDocument(int k, Document d) {
 		documents.set(k, d);
+	}
+	
+	/**
+	 * Get the document with the corresponding name
+	 * @param The name of the desired document
+	 * @return The document with the requested name
+	 */
+	public Document getDocument(String name) {
+		for (Document d: documents) {
+			if (d.getName() == name)
+				return d;
+		}
+		return null;
 	}
 
 	/**

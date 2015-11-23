@@ -3,6 +3,8 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import Search.Search;
+
 /**
  * Group: MyNiftyJavaRepo
  * @author Noah Segal
@@ -39,7 +41,7 @@ public class Consumer extends User {
 	@Override
 	public Document takeTurn(List<Document> documents) {
 		calculatePayoff(documents);
-		likeDocsFollowUsers(documents);
+		likeDocsFollowUsers(documents, tag);
 		return null;		
 	}
 
@@ -50,7 +52,7 @@ public class Consumer extends User {
 	 * @param documents List of documents returned from search
 	 */
 	@Override
-	protected void calculatePayoff(List<Document> documents) {
+	public void calculatePayoff(List<Document> documents) {
 		for (Document doc: documents) {
 			if (!likedDocs.contains(doc) && doc.getTag().equals(this.tag)) {
 				payoff++;

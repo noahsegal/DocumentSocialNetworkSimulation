@@ -3,6 +3,8 @@ package main;
 import java.util.ArrayList;
 import java.util.List;
 
+import Search.Search;
+
 /**
  * Group: MyNiftyJavaRepo
  * @author Noah Segal
@@ -11,6 +13,8 @@ import java.util.List;
 
 public class Producer extends User {
 
+	private String altTag;
+	private boolean actAsConsumer;
 	private List<Document> uploadedDocuments;
 	
 	/**
@@ -21,12 +25,15 @@ public class Producer extends User {
 	public Producer(int id, Search searchMethod) {
 		this.id = id;
 		this.tag = "NO_TAG";
+		this.altTag = "Set Alt Tag";
 		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
 		followers = new ArrayList<>();
 		likedDocs = new ArrayList<>();
 		uploadedDocuments = new ArrayList<>();
+		
+		actAsConsumer = true;
 	}
 	
 	/**
@@ -42,10 +49,20 @@ public class Producer extends User {
 		String docName = this.getID() + "-" + this.getUploadedDocumentSize();
 		Document newDoc = produceDocument(docName);
 		
-		likeDocsFollowUsers(documents);
+		if (actAsConsumer) likeDocsFollowUsers(documents, tag);
+		else likeDocsFollowUsers(documents, altTag);
 		
 		return newDoc;
 	}
+	
+	/**
+	 * Toggle whether the Producer acts a Consumer
+	 */
+	public void toggleActAsConsumer() {
+		if (actAsConsumer) actAsConsumer = false;
+		else actAsConsumer = true;
+	}
+
 	
 	/**
 	 * Update payoff based on documents with same tag (interest)
@@ -77,13 +94,12 @@ public class Producer extends User {
 	/**
 	 * @return String description of the Producer
 	 */
-	@Override
 	public String toString() {
 		int docSize = uploadedDocuments.size();
 		if (docSize == 1) {
-			return super.toString() + "Uploaded " + docSize + " document\n";
+			return super.toString() + "Uploaded " + docSize + " document\n" + "Alternate Tag: " + altTag;
 		}
-		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n";
+		return super.toString()  + "Uploaded " + uploadedDocuments.size() + " documents\n" + "Alternate Tag: " + altTag;
 	}
 	
 	/**
@@ -105,6 +121,37 @@ public class Producer extends User {
 	//  Getters & Setters  ///
 	//////////////////////////
 	
+	/**
+	 * Get the Producer's alternative tag
+	 * @return String
+	 */
+	public String getAltTag() {
+		return altTag;
+	}
+	
+	/**
+	 * Set the Producer's alternative tag
+	 * @param altTag
+	 */
+	public void setAltTag(String altTag) {
+		this.altTag = altTag;
+	}
+	
+	/**
+	 * Get the Producer's actAsConsumer value
+	 * @return boolean
+	 */
+	public boolean getActAsConsumer() {
+		return actAsConsumer;
+	}
+	
+	/**
+	 * Set whether the Producer acts as a Consumer
+	 * @param actAsConsumer
+	 */
+	public void setActAsConsumer(boolean actAsConsumer) {
+		this.actAsConsumer = actAsConsumer;
+	}
 	/**
 	 * Get the list of documents this Producer has uploaded
 	 * @return List Uploaded documents

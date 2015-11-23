@@ -29,6 +29,14 @@ public class Document implements Comparable<Document> {
 			likers.add(u);
 	}
 	
+	public ArrayList<String> listOfLikers() {
+		ArrayList<String> likerList = new ArrayList<String>();
+		for (User u: likers) {
+			likerList.add(u.getClass().getSimpleName() + ": " + u.getID());
+		}
+		return likerList;
+	}
+	
 	/**
 	 * Return a String representation of this object
 	 * @return the string representation of this object

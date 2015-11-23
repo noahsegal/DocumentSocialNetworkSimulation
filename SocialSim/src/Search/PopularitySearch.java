@@ -1,8 +1,11 @@
-package main;
+package Search;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import main.Document;
+import main.User;
 
 /**
  * PopularitySearch implements search and returns the most popular search results matching a users tag.
@@ -59,6 +62,11 @@ public class PopularitySearch implements Search {
 		if (null == obj) return false;
 		if ( !(obj instanceof PopularitySearch ) ) return false;
 		return true;
+	}
+	
+	@Override
+	public String toString(){
+		return this.getClass().getName();
 	}
 
 }
