@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -66,13 +67,13 @@ public class MainWindow extends JFrame {
 		onGoing = false;
 
 		// Initialize Components
-		numberOfTurnsField 			= new JTextField(20);
+ 		numberOfTurnsField 			= new JTextField(20);
 		numberOfProdsField 			= new JTextField(20);
 		numberOfConsField 			= new JTextField(20);
 		numberOfTagsField 			= new JTextField(20);
 		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
-		
+
 		documentsTableModel			= new DefaultTableModel(5, 4) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
@@ -146,15 +147,16 @@ public class MainWindow extends JFrame {
 
 		// Build Top Display Bar -- First Row
 		con.weightx = 0.0;
-		con.gridwidth = 1;
-		panel.add(buildLabelField("Turns:", numberOfTurnsField), con);
-		panel.add(buildLabelField("Tags:", numberOfTagsField), con);
-		panel.add(buildLabelField("Producers:", numberOfProdsField), con);
-		panel.add(buildLabelField("Consumers:", numberOfConsField), con);
-		panel.add(buildLabelField("Search Results:", numberOfSearchResultsField), con);
+		JPanel compPanel = new JPanel(new GridLayout(1,6));
+		compPanel.add(buildLabelField("Turns:", numberOfTurnsField));
+		compPanel.add(buildLabelField("Tags:", numberOfTagsField));
+		compPanel.add(buildLabelField("Producers:", numberOfProdsField));
+		compPanel.add(buildLabelField("Consumers:", numberOfConsField));
+		compPanel.add(buildLabelField("Search Results:", numberOfSearchResultsField));
 
 		con.gridwidth = GridBagConstraints.REMAINDER;	// End of Row
-		panel.add(startButton, con);
+		compPanel.add(startButton);
+		panel.add(compPanel, con);
 
 		// Build Table Headers -- Second Row
 		con.weightx = 0.33;
@@ -215,7 +217,7 @@ public class MainWindow extends JFrame {
 		while(producersTableModel.getRowCount() > 0)
 			producersTableModel.removeRow(0);
 
-		while(consumersTableModel.getRowCount() > 0) 
+		while(consumersTableModel.getRowCount() > 0)
 			consumersTableModel.removeRow(0);
 
 		while(documentsTableModel.getRowCount() > 0)
@@ -300,7 +302,7 @@ public class MainWindow extends JFrame {
 		JPanel labelField = new JPanel(layout);
 		labelField.add(new JLabel(label), con);
 
-		con.weighty = 1.0;
+		con.weightx = 1.0;
 		labelField.add(field, con);
 
 		return labelField;
@@ -346,26 +348,21 @@ public class MainWindow extends JFrame {
 				Point p = me.getPoint();
 				int row = table.rowAtPoint(p);
 				if (me.getClickCount() == 2 && row != -1) {
-					
+
 					int id = -1;
 					String name = "";
 					Object o = table.getValueAt(row, 0);
-					System.out.println(o);
-					System.out.println(o.getClass().getName());
 					if(o instanceof Integer){
-						System.out.println("in integer");
 						id = (Integer) o;
 					}
 					else if(o instanceof String){
-						System.out.println("in String");
 						name = (String) o;
 					}
-					
+
 					if(table.getModel() == documentsTableModel){
 						new DoubleClickWindow(sim.getDocument(name));
 					}
 					else {
-						System.out.println(id+"");
 						new DoubleClickWindow(sim.getUserById(id), sim.getTags().toArray(new String[sim.getTags().size()]));
 					}
 				}
@@ -395,11 +392,11 @@ public class MainWindow extends JFrame {
 	 */
 	private DefaultCategoryDataset buildData(DefaultTableModel model, DefaultTableModel model2) {
 		DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-		for(int i = 0; i < model.getRowCount(); i++) 
+		for(int i = 0; i < model.getRowCount(); i++)
 		{
 			dataset.addValue(new Double((Integer)model.getValueAt(i, 4)), "", (Integer)model.getValueAt(i, 0));
 		}
-		for(int i = 0; i < model2.getRowCount(); i++) 
+		for(int i = 0; i < model2.getRowCount(); i++)
 		{
 			dataset.addValue(new Double((Integer)model2.getValueAt(i, 4)), "", (Integer)model2.getValueAt(i, 0));
 		}
