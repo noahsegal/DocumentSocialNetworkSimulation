@@ -53,5 +53,5 @@ To start the program run simulation.jar and follow the simulation instructions. 
 
 - Reid Cain-Mondoux
 
-README by: Reid Cain-Mondoux
+README by: Reid Cain-Mondoux and Monica Ruttle
 
