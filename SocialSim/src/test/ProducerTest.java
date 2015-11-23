@@ -107,11 +107,11 @@ public class ProducerTest {
 
 	@Test
 	public void testToString() {
-		assertEquals("Producer with ID: 2 and tag: table\nFollowing 0 people\nFollowed By 0 people\nLikes 0 documents\nUploaded 0 documents\n",p2.toString());
-		assertEquals("Producer with ID: 1 and tag: test\nFollowing 0 people\nFollowed By 0 people\nLikes 3 documents\nUploaded 3 documents\n",p1.toString());
+		assertEquals("Producer with ID: 2 and tag: table\nFollowing 0 people\nFollowed By 0 people\nLikes 0 documents\nUploaded 0 documents\nAlternate Tag: Set Alt Tag",p2.toString());
+		assertEquals("Producer with ID: 1 and tag: test\nFollowing 0 people\nFollowed By 0 people\nLikes 3 documents\nUploaded 3 documents\nAlternate Tag: Set Alt Tag",p1.toString());
 		p1.produceDocument("test5");
 		p1.likeDoc(d1);
-		assertEquals("Producer with ID: 1 and tag: test\nFollowing 0 people\nFollowed By 0 people\nLikes 5 documents\nUploaded 4 documents\n",p1.toString());
+		assertEquals("Producer with ID: 1 and tag: test\nFollowing 0 people\nFollowed By 0 people\nLikes 5 documents\nUploaded 4 documents\nAlternate Tag: Set Alt Tag",p1.toString());
 	}
 
 	@Test
