@@ -51,6 +51,7 @@ public class Simulation {
 	 */
 	public void startGame(int numberOfTurns, int numberOfTags, int numberOfProducers, int numberOfConsumers)
 	{
+		reset();
 		int index;
 		Random rand;
 		
@@ -122,7 +123,6 @@ public class Simulation {
 		mw.updateTables(documents, users);
 		if (currentTurn == numberOfTurns)
 		{
-			reset();
 			return false;
 		} else {
 			currentTurn++;
