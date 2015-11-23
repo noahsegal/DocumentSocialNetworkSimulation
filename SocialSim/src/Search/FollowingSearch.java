@@ -37,7 +37,6 @@ public class FollowingSearch implements Search {
 			    docs.put(doc, 1);
 			}
 		});
-		System.out.println(docs);
 		List<Document> sorteddocs = sortByValues(docs);	
 		if(k>sorteddocs.size())
 			return sorteddocs;
