@@ -53,7 +53,7 @@ public class DoubleClickWindow extends JFrame {
 	private JLabel selectSearch;
 	private JRadioButton actAsConsRadio;
 	private JRadioButton actAsProdRadio;
-	private ButtonGroup prodActRadioGroup;
+	private ButtonGroup radioGroup;
 	private JComboBox<String> tagsBox;
 	
 	public DoubleClickWindow(Document doc) {
@@ -186,9 +186,9 @@ public class DoubleClickWindow extends JFrame {
 			System.out.println("Producer-" + prod.getID() + " actAsConsumer: " + prod.getActAsConsumer());
 			
 		});
-		prodActRadioGroup = new ButtonGroup();
-		prodActRadioGroup.add(actAsConsRadio);
-		prodActRadioGroup.add(actAsProdRadio);
+		radioGroup = new ButtonGroup();
+		radioGroup.add(actAsConsRadio);
+		radioGroup.add(actAsProdRadio);
 		
 		tagsBox = new JComboBox<String>(tags);
 		tagsBox.addItem(prod.getAltTag());

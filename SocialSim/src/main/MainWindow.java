@@ -180,8 +180,10 @@ public class MainWindow extends JFrame {
 		panel.add(chartPanel, con);
 
 		getContentPane().add(panel);
-		setSize(600,400);
 		pack();
+		setSize(1000,470);
+		//pack();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
