@@ -64,7 +64,7 @@ public class DoubleClickWindow extends JFrame {
 		setVisible(true);
 	}
 	
-	public DoubleClickWindow(User user) {
+	public DoubleClickWindow(User user, String[] tags) {
 		this.user = user;
 		this.setTitle(user.getClass().getSimpleName() + " " + user.getID());
 		
@@ -101,7 +101,7 @@ public class DoubleClickWindow extends JFrame {
 		// Set whether Producer acts as a Consumer or Producer
 		if (user instanceof Producer) {
 			Producer prod = (Producer) user;
-			buildProducerSpecificGUI(prod);
+			buildProducerSpecificGUI(prod, tags);
 		}
 		
 		this.populateUserModels();
@@ -112,7 +112,7 @@ public class DoubleClickWindow extends JFrame {
 	}
 	
 	/**
-	 * populate the user models with the appropiate data
+	 * populate the user models with the appropriate data
 	 */
 	private void populateUserModels(){
 		if(user == null) 
@@ -163,10 +163,10 @@ public class DoubleClickWindow extends JFrame {
 	 * Change Producer's altTag 
 	 * @param prod Producer that was double-clicked in the MainWindow
 	 */
-	private void buildProducerSpecificGUI(Producer prod) {
+	private void buildProducerSpecificGUI(Producer prod, String[] tags) {
 		actAsConsRadio = new JRadioButton("Act as Consumer");
-		actAsProdRadio = new JRadioButton("Act as Producer");
-		actAsProdRadio.setSelected(true);
+		actAsConsRadio.setSelected(true);
+		actAsProdRadio = new JRadioButton("Act as Producer (Select Tag)");
 		
 		actAsConsRadio.addActionListener(ae -> {
 			if (!prod.getActAsConsumer()) prod.toggleActAsConsumer();
@@ -181,8 +181,9 @@ public class DoubleClickWindow extends JFrame {
 		prodActRadioGroup.add(actAsConsRadio);
 		prodActRadioGroup.add(actAsProdRadio);
 		
-		tagsBox = new JComboBox<String>();
-		tagsBox.addItem("To Do: Get Tags Array");
+		tagsBox = new JComboBox<String>(tags);
+		tagsBox.addItem(prod.getAltTag());
+		tagsBox.setSelectedItem(prod.getAltTag());
 		tagsBox.addActionListener(ae -> {
 			JComboBox<String> cb = (JComboBox<String>) ae.getSource();
 			prod.setAltTag( (String)cb.getSelectedItem() );

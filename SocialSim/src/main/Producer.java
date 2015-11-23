@@ -25,7 +25,7 @@ public class Producer extends User {
 	public Producer(int id, Search searchMethod) {
 		this.id = id;
 		this.tag = "NO_TAG";
-		this.altTag = "NO_TAG";
+		this.altTag = "Set Alt Tag";
 		this.payoff = 0;
 		this.searchMethod = searchMethod;
 		following = new ArrayList<>();
@@ -33,7 +33,7 @@ public class Producer extends User {
 		likedDocs = new ArrayList<>();
 		uploadedDocuments = new ArrayList<>();
 		
-		actAsConsumer = false;
+		actAsConsumer = true;
 	}
 	
 	/**

@@ -364,7 +364,7 @@ public class MainWindow extends JFrame {
 					}
 					else {
 						System.out.println(id+"");
-						new DoubleClickWindow(sim.getUserById(id));
+						new DoubleClickWindow(sim.getUserById(id), sim.getTags().toArray(new String[sim.getTags().size()]));
 					}
 				}
 			}
