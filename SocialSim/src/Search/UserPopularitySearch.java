@@ -11,20 +11,19 @@ import java.util.Map;
 import main.Document;
 import main.User;
 
-public class FollowingSearch implements Search {
-
+public class UserPopularitySearch implements Search {
+	
 	@Override
 	public List<Document> search(User u, List<Document> d, int k) {
-		List<User> following = u.getFollowing();
 		Map<Document, Integer> docs = new HashMap<Document, Integer>();
-		following.forEach(follower -> {
-			follower.getLikedDocs().forEach(doc -> {
+		d.forEach(doc -> {
+			doc.getLikers().forEach(liker -> {
 				if(docs.containsKey(doc)){
-				     docs.put(doc, docs.get(doc)+1);
+				     docs.put(doc, docs.get(doc)+liker.getNumberOfFollowers());
 				}
 				else
 				{
-				    docs.put(doc, 1);
+				    docs.put(doc, liker.getNumberOfFollowers());
 				}
 			});
 		});
@@ -61,12 +60,11 @@ public class FollowingSearch implements Search {
 		Collections.reverse(sortedList);
 		return sortedList;
 	}
-
 	
 	@Override
 	public boolean equals(Object obj){
 		if (null == obj) return false;
-		if ( !(obj instanceof FollowingSearch ) ) return false;
+		if ( !(obj instanceof UserPopularitySearch ) ) return false;
 		return true;
 	}
 	
@@ -74,5 +72,4 @@ public class FollowingSearch implements Search {
 	public String toString(){
 		return this.getClass().getName();
 	}
-
 }

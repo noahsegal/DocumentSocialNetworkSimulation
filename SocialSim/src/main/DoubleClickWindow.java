@@ -22,10 +22,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import Search.DumbSearch;
+import Search.FollowingSearch;
 import Search.HipsterSearch;
 import Search.PopularitySearch;
 import Search.RandomSearch;
 import Search.Search;
+import Search.UserPopularitySearch;
 
 public class DoubleClickWindow extends JFrame {
 	private Document doc;
@@ -41,7 +43,6 @@ public class DoubleClickWindow extends JFrame {
 	private JScrollPane documentPane;
 	private JPanel comboPanel; // Put all your stuff in this panel and rename
 	private JComboBox<Search> strategiesBox;
-	private JButton setButton;
 	private Search[] searches;
 	
 	private JLabel selectSearch;
@@ -81,6 +82,8 @@ public class DoubleClickWindow extends JFrame {
 				new HipsterSearch(),
 				new PopularitySearch(),
 				new RandomSearch(),
+				new FollowingSearch(),
+				new UserPopularitySearch(),
 			};
 		comboPanel = new JPanel(new GridLayout(5,1));
 		strategiesBox = new JComboBox<Search>(searches);
