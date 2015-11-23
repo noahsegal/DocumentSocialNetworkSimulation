@@ -61,6 +61,7 @@ public class MainWindow extends JFrame {
 		con.fill = GridBagConstraints.BOTH;
 		JPanel panel = new JPanel(layout);
 		this.sim = sim;
+		this.setTitle("SocialSim: A File-Sharing Simulation");
 		initialized = false;
 		onGoing = false;
 
@@ -72,16 +73,27 @@ public class MainWindow extends JFrame {
 		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
 		
-		documentsTableModel			= new DefaultTableModel(5, 4){
-
+		documentsTableModel			= new DefaultTableModel(5, 4) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
 		    }
 		};
-		consumersTableModel			= new DefaultTableModel();
-		producersTableModel			= new DefaultTableModel();
+		consumersTableModel			= new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		producersTableModel			= new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		chartPanel 					= new JPanel(new BorderLayout());
 		chartPanel.setMinimumSize(new Dimension(200, 200));
 
