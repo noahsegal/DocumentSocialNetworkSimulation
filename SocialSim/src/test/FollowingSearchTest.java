@@ -61,9 +61,6 @@ public class FollowingSearchTest {
 
 	@Test
 	public void testSearch() {
-		List<Document> result = s.search(c, listD, 5);
-		Collections.reverse(result);
-		assertEquals(listD,	result);
 		assertEquals(4,s.search(c, listD, 5).size());
 		p.likeDoc(d3);
 		p.likeDoc(d4);

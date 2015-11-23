@@ -14,7 +14,10 @@ import org.junit.runners.Suite.SuiteClasses;
 	HipsterSearchTest.class,
 	PopularitySearchTest.class,
 	RandomSearchTest.class,
-	SimulationTest.class
+	UserPopularitySearchTest.class,
+	FollowingSearchTest.class,
+	SimulationTest.class,
+	
 })
 
 /**

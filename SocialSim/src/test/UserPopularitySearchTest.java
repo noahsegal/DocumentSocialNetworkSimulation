@@ -62,21 +62,18 @@ public class UserPopularitySearchTest {
 
 	@Test
 	public void testSearch() {
-		List<Document> result = s.search(c, listD, 5);
-		Collections.reverse(result);
-		listD.remove(0);
-		listD.add(d1);
-		assertEquals(listD,	result);
 		assertEquals(4,s.search(c, listD, 5).size());
 		p.likeDoc(d3);
 		p.likeDoc(d4);
+		p2.likeDoc(d4);
 		c.followUser(p);
+		c.followUser(p2);
 		list2.add(d4);
 		list2.add(d3);
 		assertEquals(list2, s.search(c, listD, 2));
 		p2.likeDoc(d1);
 		p.likeDoc(d1);
-		c.followUser(p2);
+		p.followUser(p2);
 		list2.add(0,d1);
 		assertEquals(list2, s.search(c, listD, 3));
 	}
