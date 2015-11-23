@@ -19,14 +19,14 @@ import Search.FollowingSearch;
 import Search.HipsterSearch;
 import Search.RandomSearch;
 import Search.Search;
-import Search.UserPopularitySearch;
+import Search.SimilarLikeSearch;
 
 /**
- * Testing for UserPopularitySearch.
+ * Testing for SimilarLikeSearch.
  * @author Reid Cain-Mondoux
  * @version 0.0.1
  */
-public class UserPopularitySearchTest {
+public class SimilarLikeSearchTest {
 
 	private Search s;
 	private Producer p;
@@ -41,12 +41,12 @@ public class UserPopularitySearchTest {
 	
 	@Before
 	public void setUp(){
-		s = new UserPopularitySearch();
-		p = new Producer(1, new UserPopularitySearch());
-		p2 = new Producer(3, new UserPopularitySearch());
+		s = new SimilarLikeSearch();
+		p = new Producer(1, new SimilarLikeSearch());
+		p2 = new Producer(3, new SimilarLikeSearch());
 		p.setTag("test");
 		p2.setTag("test");
-		c = new Consumer(2, new UserPopularitySearch());
+		c = new Consumer(2, new SimilarLikeSearch());
 		c.setTag("test");
 		listD = new ArrayList<>();
 		list2 = new ArrayList<>();
@@ -63,24 +63,21 @@ public class UserPopularitySearchTest {
 	@Test
 	public void testSearch() {
 		assertEquals(4,s.search(c, listD, 5).size());
-		p.likeDoc(d3);
 		p.likeDoc(d4);
-		p2.likeDoc(d4);
-		c.followUser(p);
-		c.followUser(p2);
+		c.likeDoc(d4);
+		c.likeDoc(d1);
 		list2.add(d4);
-		list2.add(d3);
-		assertEquals(list2, s.search(c, listD, 2));
+		assertEquals(list2, s.search(c, listD, 1));
 		p2.likeDoc(d1);
 		p.likeDoc(d1);
-		p.followUser(p2);
+		c.followUser(p2);
 		list2.add(0,d1);
-		assertEquals(list2, s.search(c, listD, 3));
+		assertEquals(list2, s.search(c, listD, 2));
 	}
 	
 	@Test
 	public void testEquals() {
-		assertTrue(s.equals(new UserPopularitySearch()));
+		assertTrue(s.equals(new SimilarLikeSearch()));
 		assertFalse(s.equals(new HipsterSearch()));
 	}
 }

@@ -7,22 +7,23 @@ import java.util.Map;
 import main.Document;
 import main.User;
 /**
- * UserPopularitySearch finds the documents where the user liking it are the most popular.
- * @author Reid Cain-Mondoux 
+ * SimilarLikeSearch Checks the users to see if they have similar likes to you.
+ * @author Reid Cain-Mondoux
+ *
  */
-public class UserPopularitySearch extends HashMapSearch {
-	
+public class SimilarLikeSearch extends HashMapSearch {
+
 	@Override
 	public List<Document> search(User u, List<Document> d, int k) {
 		Map<Document, Integer> docs = new HashMap<Document, Integer>();
 		d.forEach(doc -> {
 			doc.getLikers().forEach(liker -> {
 				if(docs.containsKey(doc)){
-				     docs.put(doc, docs.get(doc)+liker.getNumberOfFollowers());
+				     docs.put(doc, docs.get(doc)+compatibilityScore(u,liker));
 				}
 				else
 				{
-				    docs.put(doc, liker.getNumberOfFollowers());
+				    docs.put(doc, compatibilityScore(u,liker));
 				}
 			});
 		});
@@ -42,10 +43,19 @@ public class UserPopularitySearch extends HashMapSearch {
 			return sorteddocs.subList(0, k);
 	}
 	
+	private int compatibilityScore(User user,User liker){
+		int score = 0;
+		for(Document doc: user.getLikedDocs()){
+			if(liker.getLikedDocs().contains(doc)) score++;
+		}
+		return score;
+	}
+	
 	@Override
 	public boolean equals(Object obj) {
 		if (null == obj) return false;
-		if ( !(obj instanceof UserPopularitySearch ) ) return false;
+		if ( !(obj instanceof SimilarLikeSearch ) ) return false;
 		return true;
 	}
+
 }

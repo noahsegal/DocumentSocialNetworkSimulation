@@ -1,17 +1,17 @@
 package Search;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
 import main.Document;
 import main.User;
-
-public class FollowingSearch implements Search {
+/**
+ * FollowingSearch finds the documents that has the most similar people following you.
+ * @author Reid Cain-Mondoux
+ *
+ */
+public class FollowingSearch extends HashMapSearch {
 
 	@Override
 	public List<Document> search(User u, List<Document> d, int k) {
@@ -43,35 +43,11 @@ public class FollowingSearch implements Search {
 		else
 			return sorteddocs.subList(0, k);
 	}
-	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private List<Document> sortByValues(Map<Document, Integer> map) { 
-		List sortedEntryList = new LinkedList<>(map.entrySet());
-		Collections.sort(sortedEntryList, new Comparator() {
-			public int compare(Object o1, Object o2) {
-               return ((Comparable) ((Map.Entry) (o1)).getValue()).compareTo(((Map.Entry) (o2)).getValue());
-            }
-		});
-		List sortedList = new ArrayList<Document>();
-		for (Iterator it = sortedEntryList.iterator(); it.hasNext();) {
-            Map.Entry entry = (Map.Entry) it.next();
-            sortedList.add(entry.getKey());
-		} 
-		Collections.reverse(sortedList);
-		return sortedList;
-	}
 
-	
 	@Override
-	public boolean equals(Object obj){
+	public boolean equals(Object obj) {
 		if (null == obj) return false;
 		if ( !(obj instanceof FollowingSearch ) ) return false;
 		return true;
 	}
-	
-	@Override
-	public String toString(){
-		return this.getClass().getName();
-	}
-
 }

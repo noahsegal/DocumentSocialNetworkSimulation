@@ -1,8 +1,3 @@
-/**
- * @author Justin Fleming
- * @author Reid Cain-Mondoux
- * @author Noah Segal
- */
 package main;
 
 import java.awt.BorderLayout;
@@ -27,8 +22,18 @@ import Search.HipsterSearch;
 import Search.PopularitySearch;
 import Search.RandomSearch;
 import Search.Search;
+import Search.SimilarLikeSearch;
 import Search.UserPopularitySearch;
-
+/**
+ *
+ * This Window allows the end user to view what search method is selected, how a producer is acting
+ * and what a Document or User is following or being followed by.
+ * 
+ * @author Justin Fleming
+ * @author Reid Cain-Mondoux
+ * @author Noah Segal
+ *
+ */
 public class DoubleClickWindow extends JFrame {
 	private Document doc;
 	private User user;
@@ -84,6 +89,7 @@ public class DoubleClickWindow extends JFrame {
 				new RandomSearch(),
 				new FollowingSearch(),
 				new UserPopularitySearch(),
+				new SimilarLikeSearch()
 			};
 		comboPanel = new JPanel(new GridLayout(5,1));
 		strategiesBox = new JComboBox<Search>(searches);
