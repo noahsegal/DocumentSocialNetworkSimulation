@@ -1,6 +1,7 @@
 /**
  * @author Justin Fleming
  * @author Reid Cain-Mondoux
+ * @author Noah Segal
  */
 package main;
 
