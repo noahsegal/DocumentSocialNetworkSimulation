@@ -271,6 +271,20 @@ public class MainWindow extends JFrame implements Serializable{
 				loadState(chooser.getSelectedFile().toString());
 			}
 		});
+		
+		menuItem = new JMenuItem("Undo");
+		fMenu.add(menuItem);
+		//MONICA
+		menuItem.addActionListener(al -> {
+			
+		});
+		
+		menuItem = new JMenuItem("Redo");
+		fMenu.add(menuItem);
+		//MONICA
+		menuItem.addActionListener(al -> {
+			
+		});
 		return menuBar;
 	}
 
