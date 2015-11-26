@@ -8,11 +8,20 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.XMLEncoder;
+import java.io.BufferedOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.List;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -25,12 +34,13 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+
 /**
  *
  * @author Justin Fleming
  * Create and maintain the GUI for the user
  */
-public class MainWindow extends JFrame {
+public class MainWindow extends JFrame implements Serializable{
 	private JTextField numberOfTurnsField; // text field to get # of turns in sim
 	private JTextField numberOfProdsField; // text field to get # producers in sim
 	private JTextField numberOfConsField; // text field to get # of consumers in sim
@@ -55,8 +65,12 @@ public class MainWindow extends JFrame {
 	private boolean initialized;		// has the simulation been initialized
 	private boolean onGoing;
 
+	public MainWindow() {
+		
+	}
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		this.setJMenuBar(buildMenuBar());
 		GridBagLayout layout = new GridBagLayout();
 		GridBagConstraints con = new GridBagConstraints();
 		con.fill = GridBagConstraints.BOTH;
@@ -74,28 +88,28 @@ public class MainWindow extends JFrame {
 		numberOfSearchResultsField 	= new JTextField(20);
 		startButton					= new JButton("Start");
 
-		documentsTableModel			= new DefaultTableModel(5, 4) {
+		documentsTableModel	= new DefaultTableModel(5, 4) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
 		    }
 		};
-		consumersTableModel			= new DefaultTableModel() {
+		consumersTableModel	= new DefaultTableModel() {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
 		    }
 		};
-		producersTableModel			= new DefaultTableModel() {
+		producersTableModel	= new DefaultTableModel() {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
 		       return false;
 		    }
 		};
-		chartPanel 					= new JPanel(new BorderLayout());
+		chartPanel 	= new JPanel(new BorderLayout());
 		chartPanel.setMinimumSize(new Dimension(200, 200));
 
 		// Setting up ActionListioner
@@ -213,6 +227,9 @@ public class MainWindow extends JFrame {
 		}
 	}
 
+	/**
+	 * Removes all items from the Table Models
+	 */
 	private void clearTableModels() {
 		while(producersTableModel.getRowCount() > 0)
 			producersTableModel.removeRow(0);
@@ -222,6 +239,35 @@ public class MainWindow extends JFrame {
 
 		while(documentsTableModel.getRowCount() > 0)
 			documentsTableModel.removeRow(0);
+	}
+	
+	/**
+	 * Build the menu bar for Main Window
+	 * @return the JMenuBar for the main window
+	 */
+	private JMenuBar buildMenuBar() {
+		JMenuBar menuBar = new JMenuBar();
+		JMenu fMenu = new JMenu("File");
+		menuBar.add(fMenu);
+		
+		// Save Menu Item
+		JMenuItem menuItem = new JMenuItem("Save");
+		menuItem.addActionListener(al-> {
+			JFileChooser chooser = new JFileChooser();
+			if(chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+				save(chooser.getSelectedFile().toString());
+			}
+			
+		});
+		fMenu.add(menuItem);
+		
+		// Load Menu Item
+		menuItem = new JMenuItem("Load");
+		fMenu.add(menuItem);
+		menuItem.addActionListener(al-> {
+			
+		});
+		return menuBar;
 	}
 
 	/**
@@ -321,6 +367,19 @@ public class MainWindow extends JFrame {
 		else
 			return true;
 	}
+	
+	private void save(String filePath){
+		try {
+			XMLEncoder encoder = new XMLEncoder(
+					new BufferedOutputStream(
+							new FileOutputStream(filePath)));
+			encoder.writeObject(this);
+			encoder.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	/**
 	 * Creates a ScrollPane containing a JTable with tableModel and header
@@ -401,5 +460,69 @@ public class MainWindow extends JFrame {
 			dataset.addValue(new Double((Integer)model2.getValueAt(i, 4)), "", (Integer)model2.getValueAt(i, 0));
 		}
 		return dataset;
+	}
+
+	public Simulation getSim() {
+		return sim;
+	}
+
+	public void setSim(Simulation sim) {
+		this.sim = sim;
+	}
+
+	public int getNumberOfTurns() {
+		return numberOfTurns;
+	}
+
+	public void setNumberOfTurns(int numberOfTurns) {
+		this.numberOfTurns = numberOfTurns;
+	}
+
+	public int getNumberOfProds() {
+		return numberOfProds;
+	}
+
+	public void setNumberOfProds(int numberOfProds) {
+		this.numberOfProds = numberOfProds;
+	}
+
+	public int getNumberOfCons() {
+		return numberOfCons;
+	}
+
+	public void setNumberOfCons(int numberOfCons) {
+		this.numberOfCons = numberOfCons;
+	}
+
+	public int getNumberOfTags() {
+		return numberOfTags;
+	}
+
+	public void setNumberOfTags(int numberOfTags) {
+		this.numberOfTags = numberOfTags;
+	}
+
+	public int getNumberOfSearchResults() {
+		return numberOfSearchResults;
+	}
+
+	public void setNumberOfSearchResults(int numberOfSearchResults) {
+		this.numberOfSearchResults = numberOfSearchResults;
+	}
+
+	public boolean isInitialized() {
+		return initialized;
+	}
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
+
+	public boolean isOnGoing() {
+		return onGoing;
+	}
+
+	public void setOnGoing(boolean onGoing) {
+		this.onGoing = onGoing;
 	}
 }

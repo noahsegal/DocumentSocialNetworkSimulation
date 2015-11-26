@@ -1,5 +1,6 @@
 package main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,7 @@ import Search.Search;
  * Abstract Class responsible for the User
  */
 
-public abstract class User {
+public abstract class User implements Serializable{
 
 	//////////////////////////
 	//  Shared Variables   ///

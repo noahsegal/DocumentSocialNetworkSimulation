@@ -36,6 +36,10 @@ public class Producer extends User {
 		actAsConsumer = true;
 	}
 	
+	public Producer(){
+		
+	}
+	
 	/**
 	 * Take a turn in the simulation:
 	 *  Create a new document

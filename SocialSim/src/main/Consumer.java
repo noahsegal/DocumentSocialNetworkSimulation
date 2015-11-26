@@ -30,6 +30,10 @@ public class Consumer extends User {
 		likedDocs = new ArrayList<>();
 	}
 	
+	public Consumer(){
+		
+	}
+	
 	/**
 	 * Take a turn in the simulation:
 	 *  Likes documents & follow producers

@@ -1,5 +1,6 @@
 package main;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * @author Justin Fleming
  * Class to hold information on a document 
  */
-public class Document implements Comparable<Document> {
+public class Document implements Comparable<Document>, Serializable{
 	private List<User> likers;	// List of Users who like me
 	private String tag;				// Tag that specifies the interest
 	private String name;			// Document Name
@@ -18,6 +19,10 @@ public class Document implements Comparable<Document> {
 		this.name = name;
 		producer = p;
 		likers = new ArrayList<User>();
+	}
+	
+	public Document(){
+		
 	}
 	
 	/**

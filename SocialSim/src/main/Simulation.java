@@ -1,9 +1,10 @@
 package main;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import Search.PopularitySearch;
 
@@ -12,7 +13,7 @@ import Search.PopularitySearch;
  * Author: Monica Ruttle
  * Class responsible for iteration of turns and setting up the system
  */
-public class Simulation {
+public class Simulation implements Serializable{
 	
 	private List<String> tags;
 	private List<User> users;
