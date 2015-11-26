@@ -202,6 +202,15 @@ public class Simulation implements Serializable{
 				&& s.users.equals(users);
 	}
 	
+	/**
+	 * Do any restore things here
+	 * @param window
+	 */
+	public void restoreState(MainWindow window) {
+		mw = window;
+		mw.updateTables(documents, users);
+	}
+	
 	
 	//////////////////////////
 	//  Getters & Setters  ///

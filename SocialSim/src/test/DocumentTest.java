@@ -163,9 +163,9 @@ public class DocumentTest {
 	@Test
 	public void testSetProducerID() {
 		Producer p2 = new Producer(3, new DumbSearch());
-		d.setProducerID(null);
+		d.setProducer(null);
 		assertNull(d.getProducer());
-		d.setProducerID(p2);
+		d.setProducer(p2);
 		assertEquals(p2, d.getProducer());
 	}
 

@@ -170,7 +170,7 @@ public class Document implements Comparable<Document>, Serializable{
 	 * set the producerID for this document
 	 * @param producerID, new id
 	 */
-	public void setProducerID(Producer producer) {
+	public void setProducer(Producer producer) {
 		this.producer = producer;
 	}
 }

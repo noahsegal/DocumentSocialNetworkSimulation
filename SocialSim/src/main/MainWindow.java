@@ -8,8 +8,11 @@ import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
@@ -65,9 +68,6 @@ public class MainWindow extends JFrame implements Serializable{
 	private boolean initialized;		// has the simulation been initialized
 	private boolean onGoing;
 
-	public MainWindow() {
-		
-	}
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setJMenuBar(buildMenuBar());
@@ -137,6 +137,7 @@ public class MainWindow extends JFrame implements Serializable{
 				}
 				initialized = this.sim.takeTurn(numberOfSearchResults);
 				numberOfTurnsField.setText( (Integer.parseInt(numberOfTurnsField.getText()) - 1) + "" );
+				numberOfTurns = Integer.parseInt(numberOfTurnsField.getText());
 				plotData();
 
 				if(!initialized) {
@@ -265,7 +266,10 @@ public class MainWindow extends JFrame implements Serializable{
 		menuItem = new JMenuItem("Load");
 		fMenu.add(menuItem);
 		menuItem.addActionListener(al-> {
-			
+			JFileChooser chooser = new JFileChooser();
+			if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+				loadState(chooser.getSelectedFile().toString());
+			}
 		});
 		return menuBar;
 	}
@@ -368,17 +372,61 @@ public class MainWindow extends JFrame implements Serializable{
 			return true;
 	}
 	
+	/**
+	 * Save the State of the simulation
+	 * @param filePath the path of the file
+	 */
 	private void save(String filePath){
 		try {
 			XMLEncoder encoder = new XMLEncoder(
 					new BufferedOutputStream(
 							new FileOutputStream(filePath)));
-			encoder.writeObject(this);
+			encoder.writeObject(new MainWindowSave(this));
 			encoder.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Load the state from a file
+	 * @param filePath
+	 */
+	private void loadState(String filePath) {
+		try{
+			XMLDecoder decode = new XMLDecoder(
+					new BufferedInputStream(
+							new FileInputStream(filePath)));
+			MainWindowSave data = (MainWindowSave) decode.readObject();
+			decode.close();
+			numberOfTurns 			= data.getNumTurns();
+			numberOfProds 			= data.getNumProds();
+			numberOfCons  			= data.getNumCons();
+			numberOfTags  			= data.getNumTags();
+			numberOfSearchResults 	= data.getNumSearch();
+			sim 					= data.getSim();
+			initialized				= data.isInit();
+			onGoing					= data.isOnGoing();
+			restoreState();
+			if(initialized)
+				setFieldEnabled(false);
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * restore the state after a Load
+	 */
+	private void restoreState() {
+		numberOfTurnsField.setText(numberOfTurns +"");
+		numberOfProdsField.setText(numberOfProds +"");
+		numberOfConsField.setText(numberOfCons + "");
+		numberOfTagsField.setText(numberOfTags + "");
+		numberOfSearchResultsField.setText(numberOfSearchResults + "");
+		sim.restoreState(this);
 	}
 
 	/**
