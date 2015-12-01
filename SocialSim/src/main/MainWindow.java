@@ -73,6 +73,7 @@ public class MainWindow extends JFrame implements Serializable{
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
 	private boolean onGoing;
+	private int numberOfRedos;			//determine if there is a state to redo to
 	
 	private List<String> previousFilePaths;
 
@@ -151,6 +152,7 @@ public class MainWindow extends JFrame implements Serializable{
 				plotData();
 				
 				save("Turn" + numberOfTurns);
+				numberOfRedos = 0;
 				
 				if(!initialized) {
 					setFieldEnabled(true);
@@ -292,6 +294,12 @@ public class MainWindow extends JFrame implements Serializable{
 			plotData();
 		});
 		
+		menuItem = new JMenuItem("Redo");
+		fMenu.add(menuItem);
+		menuItem.addActionListener(al -> {
+			redo();
+			plotData();
+		});
 		return menuBar;
 	}
 
@@ -439,20 +447,27 @@ public class MainWindow extends JFrame implements Serializable{
 	}
 	
 	private void undo() {
-		if (sim.getCurrentTurn() == 1) {
+		if (numberOfTurns == sim.getNumberOfTurns()-1) {
 			JOptionPane alertWindow = new JOptionPane();
-			alertWindow.showMessageDialog(this, "Error", "Nothing to undo", JOptionPane.WARNING_MESSAGE);
+			alertWindow.showMessageDialog(this, "Nothing to Undo", "Error", JOptionPane.WARNING_MESSAGE);
 		} else {
 			numberOfTurns++;
 			loadState("Turn" + numberOfTurns);
 			save("Turn" + numberOfTurns);
-			
-			//delete the file from the previous turn before the undo.
-			String fileName = "Turn" + (numberOfTurns-1);
-			File f = new File(fileName);
-			f.delete();
 		}
-
+		numberOfRedos++;
+	}
+	
+	private void redo() {
+		if (numberOfRedos <= 0){
+			JOptionPane alertWindow = new JOptionPane();
+			alertWindow.showMessageDialog(this, "Nothing to Redo", "Error", JOptionPane.WARNING_MESSAGE);
+		} else {
+			numberOfTurns--;
+			loadState("Turn" + numberOfTurns);
+			save("Turn" + numberOfTurns);
+			numberOfRedos--;
+		}
 	}
 	
 	/**
