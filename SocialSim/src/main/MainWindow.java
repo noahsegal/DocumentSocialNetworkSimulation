@@ -454,8 +454,8 @@ public class MainWindow extends JFrame implements Serializable{
 			numberOfTurns++;
 			loadState("Turn" + numberOfTurns);
 			save("Turn" + numberOfTurns);
+			numberOfRedos++;
 		}
-		numberOfRedos++;
 	}
 	
 	private void redo() {
