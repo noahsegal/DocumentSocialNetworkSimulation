@@ -65,7 +65,7 @@ public class Simulation implements Serializable{
 		if (tags.size() < numberOfTags)
 			this.numberOfTags = tags.size();
 		
-		currentTurn = 1;
+		currentTurn = 0;
 		currentId = 1;
 		rand = new Random();
 		
@@ -103,6 +103,7 @@ public class Simulation implements Serializable{
 	 */
 	public boolean takeTurn(int k)
 	{
+		currentTurn++;
 		//select random consumer or producer
 		User u = users.get((int)(Math.random() * users.size()));
 		
@@ -126,10 +127,13 @@ public class Simulation implements Serializable{
 		{
 			return false;
 		} else {
-			currentTurn++;
 			return true;
 		}
 		
+	}
+	
+	public void decrementTurn() {
+		currentTurn--;
 	}
 	
 	/**
@@ -208,6 +212,7 @@ public class Simulation implements Serializable{
 	 */
 	public void restoreState(MainWindow window) {
 		mw = window;
+		copy(window.getSim());
 		mw.updateTables(documents, users);
 	}
 	

@@ -12,10 +12,16 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Paths;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -40,7 +46,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
- * @author Justin Fleming
+ * @author Justin Fleming and Monica Ruttle
  * Create and maintain the GUI for the user
  */
 public class MainWindow extends JFrame implements Serializable{
@@ -67,6 +73,8 @@ public class MainWindow extends JFrame implements Serializable{
 	private int numberOfSearchResults;  // number of Search Results each turn
 	private boolean initialized;		// has the simulation been initialized
 	private boolean onGoing;
+	
+	private List<String> previousFilePaths;
 
 	public MainWindow(Simulation sim){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -79,6 +87,7 @@ public class MainWindow extends JFrame implements Serializable{
 		this.setTitle("SocialSim: A File-Sharing Simulation");
 		initialized = false;
 		onGoing = false;
+		previousFilePaths = new ArrayList<String>();
 
 		// Initialize Components
  		numberOfTurnsField 			= new JTextField(20);
@@ -129,6 +138,7 @@ public class MainWindow extends JFrame implements Serializable{
 				return;
 			}
 			if(valuesValid()) {
+				
 				if(!initialized) {
 					this.sim.startGame(numberOfTurns, numberOfTags, numberOfProds, numberOfCons);
 					startButton.setText("Step");
@@ -139,7 +149,9 @@ public class MainWindow extends JFrame implements Serializable{
 				numberOfTurnsField.setText( (Integer.parseInt(numberOfTurnsField.getText()) - 1) + "" );
 				numberOfTurns = Integer.parseInt(numberOfTurnsField.getText());
 				plotData();
-
+				
+				save("Turn" + numberOfTurns);
+				
 				if(!initialized) {
 					setFieldEnabled(true);
 					numberOfTurnsField.setText("");
@@ -149,6 +161,7 @@ public class MainWindow extends JFrame implements Serializable{
 					numberOfSearchResultsField.setText("");
 					startButton.setText("Start");
 				}
+				
 			}
 		});
 
@@ -271,6 +284,14 @@ public class MainWindow extends JFrame implements Serializable{
 				loadState(chooser.getSelectedFile().toString());
 			}
 		});
+		
+		menuItem = new JMenuItem("Undo");
+		fMenu.add(menuItem);
+		menuItem.addActionListener(al -> {
+			undo();
+			plotData();
+		});
+		
 		return menuBar;
 	}
 
@@ -415,6 +436,23 @@ public class MainWindow extends JFrame implements Serializable{
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	private void undo() {
+		if (sim.getCurrentTurn() == 1) {
+			JOptionPane alertWindow = new JOptionPane();
+			alertWindow.showMessageDialog(this, "Error", "Nothing to undo", JOptionPane.WARNING_MESSAGE);
+		} else {
+			numberOfTurns++;
+			loadState("Turn" + numberOfTurns);
+			save("Turn" + numberOfTurns);
+			
+			//delete the file from the previous turn before the undo.
+			String fileName = "Turn" + (numberOfTurns-1);
+			File f = new File(fileName);
+			f.delete();
+		}
+
 	}
 	
 	/**
