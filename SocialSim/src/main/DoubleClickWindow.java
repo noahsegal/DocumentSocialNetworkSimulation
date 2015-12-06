@@ -47,6 +47,7 @@ public class DoubleClickWindow extends JFrame {
 	private JScrollPane followingPane;
 	private JScrollPane documentPane;
 	private JPanel comboPanel; // Put all your stuff in this panel and rename
+	private JPanel buttonPanel;
 	private JComboBox<Search> strategiesBox;
 	private Search[] searches;
 	
@@ -55,6 +56,8 @@ public class DoubleClickWindow extends JFrame {
 	private JRadioButton actAsProdRadio;
 	private ButtonGroup radioGroup;
 	private JComboBox<String> tagsBox;
+	private JButton setChangesButton;
+	private JButton cancelChangesButton;
 	
 	public DoubleClickWindow(Document doc) {
 		this.doc = doc;
@@ -81,6 +84,8 @@ public class DoubleClickWindow extends JFrame {
 		followerPane	= new JScrollPane(followerList);
 		followingPane	= new JScrollPane(followingList);
 		selectSearch	= new JLabel("Select Search Method:");
+		setChangesButton = new JButton("Ok");
+		cancelChangesButton = new JButton("Cancel");
 		selectSearch.setHorizontalAlignment(JLabel.CENTER);
 		searches = new Search[] {
 				new DumbSearch(),
@@ -91,17 +96,22 @@ public class DoubleClickWindow extends JFrame {
 				new UserPopularitySearch(),
 				new SimilarLikeSearch()
 			};
-		comboPanel = new JPanel(new GridLayout(5,1));
+		comboPanel = new JPanel(new GridLayout(6,1));
+		buttonPanel = new JPanel(new GridLayout(1,2));
 		strategiesBox = new JComboBox<Search>(searches);
 		JSplitPane leftCenterPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, comboPanel, buildPanel(followerPane,"Followers"));
 		JSplitPane rightPanel = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftCenterPanel, buildPanel(followingPane, "Following"));
 
 
 		strategiesBox.setSelectedItem(user.getSearchMethod());
-		strategiesBox.addActionListener(ae -> {
-				JComboBox<Search> cb = (JComboBox<Search>) ae.getSource();
-				user.setSearchMethod((Search)cb.getSelectedItem());
+		
+		setChangesButton.addActionListener(ae -> {
+				user.setSearchMethod((Search)strategiesBox.getSelectedItem());
+				this.dispose();
 			});
+		cancelChangesButton.addActionListener(ae -> {
+			this.dispose();
+		});
 		comboPanel.add(selectSearch);
 		comboPanel.add(strategiesBox);
 		
@@ -110,6 +120,9 @@ public class DoubleClickWindow extends JFrame {
 			Producer prod = (Producer) user;
 			buildProducerSpecificGUI(prod, tags);
 		}
+		buttonPanel.add(setChangesButton);
+		buttonPanel.add(cancelChangesButton);
+		comboPanel.add(buttonPanel);
 		
 		this.populateUserModels();
 		getContentPane().add(rightPanel);
