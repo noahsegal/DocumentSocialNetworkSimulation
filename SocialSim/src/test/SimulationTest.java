@@ -134,7 +134,7 @@ public class SimulationTest {
 
 	@Test
 	public void testGetCurrentTurn() {
-		assertEquals("The current turn is 1", 1, baseSimulation.getCurrentTurn());
+		assertEquals("The current turn is 0", 0, baseSimulation.getCurrentTurn());
 	}
 
 	@Test
