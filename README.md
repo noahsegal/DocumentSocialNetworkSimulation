@@ -32,11 +32,15 @@ To start the program run simulation.jar and follow the simulation instructions. 
  
 #### Milestone 3 due November 23rd
 
-- To be completed
+- Added all search methods.
+- Added alternate producer strategy.
+- Added ability to change a user search method.
 
 #### Milestone 4 due December 7th
 
-- To be completed
+- Added Ability to save.
+- Added Ability to undo and redo steps.
+- Added ability to cancel a change to search strategy.
 
 ## Known Issues
 
