@@ -209,8 +209,19 @@ public class Simulation implements Serializable{
 	/**
 	 * Do any restore things here
 	 * @param window
+	 * @param save 
 	 */
-	public void restoreState(MainWindow window) {
+	public void restoreState(MainWindow window, SimSave save) {
+		tags = save.getTags();
+		users = save.getUsers();
+		documents = save.getDocuments();
+		payoffs = save.getPayoffs();
+		numberOfTags = save.getNumberOfTags();
+		numberOfConsumers = save.getNumberOfConsumers();
+		numberOfProducers = save.getNumberOfProducers();
+		numberOfTurns = save.getNumberOfTurns();
+		currentTurn = save.getCurrentTurn();
+		currentId = save.getCurrentId();
 		mw = window;
 		copy(window.getSim());
 		mw.updateTables(documents, users);

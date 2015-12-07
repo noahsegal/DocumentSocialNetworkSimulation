@@ -434,10 +434,9 @@ public class MainWindow extends JFrame implements Serializable{
 			numberOfCons  			= data.getNumCons();
 			numberOfTags  			= data.getNumTags();
 			numberOfSearchResults 	= data.getNumSearch();
-			sim 					= data.getSim();
 			initialized				= data.isInit();
 			onGoing					= data.isOnGoing();
-			restoreState();
+			restoreState(data);
 			if(initialized)
 				setFieldEnabled(false);
 			
@@ -472,14 +471,15 @@ public class MainWindow extends JFrame implements Serializable{
 	
 	/**
 	 * restore the state after a Load
+	 * @param data 
 	 */
-	private void restoreState() {
+	private void restoreState(MainWindowSave data) {
 		numberOfTurnsField.setText(numberOfTurns +"");
 		numberOfProdsField.setText(numberOfProds +"");
 		numberOfConsField.setText(numberOfCons + "");
 		numberOfTagsField.setText(numberOfTags + "");
 		numberOfSearchResultsField.setText(numberOfSearchResults + "");
-		sim.restoreState(this);
+		sim.restoreState(this, data.getSim());
 	}
 
 	/**

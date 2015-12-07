@@ -10,7 +10,7 @@ public class MainWindowSave implements Serializable{
 	private int numSearch;
 	private boolean init;
 	private boolean onGoing;
-	private Simulation sim;
+	private SimSave sim;
 	
 	public MainWindowSave() {
 		
@@ -24,7 +24,7 @@ public class MainWindowSave implements Serializable{
 		numSearch 	= mw.getNumberOfSearchResults();
 		init 		= mw.isInitialized();
 		onGoing 	= mw.isOnGoing();
-		sim 		= mw.getSim();
+		sim 		= new SimSave(mw.getSim());
 	}
 
 	public int getNumTurns() {
@@ -83,11 +83,11 @@ public class MainWindowSave implements Serializable{
 		this.onGoing = onGoing;
 	}
 
-	public Simulation getSim() {
+	public SimSave getSim() {
 		return sim;
 	}
 
-	public void setSim(Simulation sim) {
+	public void setSim(SimSave sim) {
 		this.sim = sim;
 	}
 }
