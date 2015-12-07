@@ -56,6 +56,8 @@ public class DoubleClickWindow extends JFrame {
 	private JRadioButton actAsProdRadio;
 	private ButtonGroup radioGroup;
 	private JComboBox<String> tagsBox;
+	private final String SET_ALT = "Set Alt Tag";
+	
 	private JButton setChangesButton;
 	private JButton cancelChangesButton;
 	
@@ -105,13 +107,6 @@ public class DoubleClickWindow extends JFrame {
 
 		strategiesBox.setSelectedItem(user.getSearchMethod());
 		
-		setChangesButton.addActionListener(ae -> {
-				user.setSearchMethod((Search)strategiesBox.getSelectedItem());
-				this.dispose();
-			});
-		cancelChangesButton.addActionListener(ae -> {
-			this.dispose();
-		});
 		comboPanel.add(selectSearch);
 		comboPanel.add(strategiesBox);
 		
@@ -119,7 +114,26 @@ public class DoubleClickWindow extends JFrame {
 		if (user instanceof Producer) {
 			Producer prod = (Producer) user;
 			buildProducerSpecificGUI(prod, tags);
+			
+			setChangesButton.addActionListener(ae -> {
+				prod.setSearchMethod((Search)strategiesBox.getSelectedItem());
+				prod.setAltTag((String) tagsBox.getSelectedItem());
+				prod.setActAsConsumer(actAsConsRadio.isSelected());
+				this.dispose();
+			});
 		}
+		else {
+			setChangesButton.addActionListener(ae -> {
+				user.setSearchMethod((Search)strategiesBox.getSelectedItem());
+				this.dispose();
+			});
+		}
+		
+		cancelChangesButton.addActionListener(ae -> {
+			this.dispose();
+		});
+
+		
 		buttonPanel.add(setChangesButton);
 		buttonPanel.add(cancelChangesButton);
 		comboPanel.add(buttonPanel);
@@ -185,27 +199,18 @@ public class DoubleClickWindow extends JFrame {
 	 */
 	private void buildProducerSpecificGUI(Producer prod, String[] tags) {
 		actAsConsRadio = new JRadioButton("Act as Consumer");
-		actAsConsRadio.setSelected(true);
 		actAsProdRadio = new JRadioButton("Act as Producer (Select Tag)");
 		
-		actAsConsRadio.addActionListener(ae -> {
-			if (!prod.getActAsConsumer()) prod.toggleActAsConsumer();
-		});
-		actAsProdRadio.addActionListener(ae -> {
-			if (prod.getActAsConsumer()) prod.toggleActAsConsumer();
-			
-		});
+		if (prod.getActAsConsumer()) actAsConsRadio.setSelected(true);
+		else actAsProdRadio.setSelected(true);
+		
 		radioGroup = new ButtonGroup();
 		radioGroup.add(actAsConsRadio);
 		radioGroup.add(actAsProdRadio);
 		
 		tagsBox = new JComboBox<String>(tags);
-		tagsBox.addItem(prod.getAltTag());
+		tagsBox.addItem(SET_ALT);
 		tagsBox.setSelectedItem(prod.getAltTag());
-		tagsBox.addActionListener(ae -> {
-			JComboBox<String> cb = (JComboBox<String>) ae.getSource();
-			prod.setAltTag( (String)cb.getSelectedItem() );
-		});
 		
 		comboPanel.add(actAsConsRadio);
 		comboPanel.add(actAsProdRadio);
