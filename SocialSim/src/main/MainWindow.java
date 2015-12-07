@@ -162,8 +162,13 @@ public class MainWindow extends JFrame implements Serializable{
 					numberOfTagsField.setText("");
 					numberOfSearchResultsField.setText("");
 					startButton.setText("Start");
+					for(int i = 0; i <= sim.getNumberOfTurns(); i++){
+						File f = new File("Turn" + i);
+						if (f.exists()){
+							f.delete();
+						}
+					}
 				}
-				
 			}
 		});
 
@@ -284,6 +289,7 @@ public class MainWindow extends JFrame implements Serializable{
 			JFileChooser chooser = new JFileChooser();
 			if(chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 				loadState(chooser.getSelectedFile().toString());
+				plotData();
 			}
 		});
 		
