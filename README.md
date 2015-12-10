@@ -4,6 +4,8 @@ Social Sim is a social file sharing network emulation software. It emulates cons
 to discover which searching, liking and following strategies gives the consumer and producer their best results. The software
 allows you to define the number of comsumer and producers, the number of tags and the different strategies to use.
 
+This was created for Carleton University's SYSC 3110 Software Development Project. The project was completed during the Fall 2015 semester.
+
 ## Usage
 
 To start the program run simulation.jar and follow the simulation instructions. Ensure you have access to jfreechart-1.0.19.jar and jcommon-1.0.23.jar. http://www.jfree.org/jfreechart/download.html
